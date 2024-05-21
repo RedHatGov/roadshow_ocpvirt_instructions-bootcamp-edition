@@ -101,7 +101,7 @@ image::images/Create_VM_PVC/10_Fedora_Details.png[]
 . You may be presented with a pop up tha askes if you want to enable creating a VirtualMachine from an InstanceType
 .. Select Enable 
 . Select the volume you want to book from (Pick your favorite), in this example we will select centos-stream9
-. Next sleect General Purpose, U series, and select a medium 1 CPUs, 4 GiB Memory
+. Next sleect General Purpose, N series, and select a medium 1 CPUs, 4 GiB Memory
 . Scroll down and name your virtualMachine centos-test-instancetype-01
 . select Create Virtual Machine
 . You're VirtualMachine will be created
