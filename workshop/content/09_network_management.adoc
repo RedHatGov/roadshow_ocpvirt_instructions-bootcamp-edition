@@ -90,7 +90,7 @@ image::images/OCP_Terminal_Icon.png[]
 +
 image::images/OCP_Terminal.png[]
 
-.. Type the following command replacing the IP
+.. Type the following command, replacing the IP
 +
 [%nowrap]
 ----
@@ -98,7 +98,7 @@ curl 192.168.3.118:22
 ----
 +
 [NOTE]
-Replace the IP which the IP assigned to the node.
+Replace the IP with the IP assigned to the node.
 +
 .Sample Output
 +
