@@ -54,9 +54,9 @@ image::images/Create_VM_PVC/50_create_new_project.png[]
 +
 image::images/Create_VM_PVC/03_Create_Project.png[]
 
-== Create a Linux virtual machine
+== Create a Linux Virtual Machine
 
-. From the Virtual Machines inventory, click *Create VirtualMachine*
+. From the Virtual Machines inventory, click *Create VirtualMachine*.
 +
 image::images/Create_VM_PVC/53_create_vm_button.png[]
 
@@ -92,22 +92,22 @@ The IP address of the virtual machine on the software-defined network (SDN) is a
 +
 image::images/Create_VM_PVC/10_Fedora_Details.png[]
 
-== Create a VM using instancetypes 
+== Create a VM using an InstanceType
 
-. Select VirtualMachines on the side 
-. Select Create VirtualMachine
-. Select from template
-. In the upper middle you will see InstanceType, Select InstanceType
+. Select *VirtualMachines* on the side 
+. Select *Create VirtualMachine*
+. Select *From template*
+. In the upper middle you will see InstanceType, Select *InstanceType*
 . You may be presented with a pop up tha askes if you want to enable creating a VirtualMachine from an InstanceType
 .. Select Enable 
 . Select the volume you want to book from (Pick your favorite), in this example we will select centos-stream9
-. Next sleect General Purpose, U series, and select a medium 1 CPUs, 4 GiB Memory
-. Scroll down and name your virtualMachine centos-test-instancetype-01
-. select Create Virtual Machine
-. You're VirtualMachine will be created
+. Next, select General Purpose, N series, and select a medium 1 CPUs, 4 GiB Memory
+. Scroll down and name your VirtualMachine `centos-test-instancetype-01`
+. Select *Create Virtual Machine*
+. Your VirtualMachine will be created
 
 
-== Access the virtual machine console
+== Access the Virtual Machine Console
 
 . Click the *Console* tab to access the VM's console:
 +
