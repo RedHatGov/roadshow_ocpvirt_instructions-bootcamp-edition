@@ -30,3 +30,6 @@
 * xref:module-05.adoc[6. Migrating Virtual Machines]
 ** xref:module-05.adoc#prerequisites[Prerequisites for Migrations]
 ** xref:module-05.adoc#migrating_vms[Migrating Virtual Machines from VMware]
+
+* xref:bootcamp-modules.adoc[Additional Boot Camp Content]
+** xref:17_trilio_backup.adoc[Trilio Lab]
