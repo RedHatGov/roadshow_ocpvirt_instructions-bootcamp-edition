@@ -7,7 +7,7 @@
 * Thursday 9AM - 6PM EDT
 * Friday 9am - 12:30PM EDT
 
-== Tuesday
+== Tuesday 
 * 9AM - 10AM
 *** Getting setup
 *** Introductions
@@ -21,7 +21,7 @@
 * 1pm - 6pm (breaks as needed)
 *** OpenShift Disconnected Installation lab
 
-== Wednesday
+== Wednesday 
 * 9AM - 9:30AM
 *** Follow-ups, Clean-ups with Disconnected Lab
 * 9:30 - 10-30AM
@@ -31,25 +31,27 @@
 1:30PM - 6:00PM
 *** Labs
 
-== Thursay
-* 9AM
+== Thursay 
+* 9AM 
 *** Labs
 *** Close out
-*** Survey
+*** Survey 
+
 
 == Instructors
 
-image::introductions/sw.png[]
+image::introductions/mg.png[]
 
 * Scott Worthington
 * Presales Managing Architect, STP
 
-image::introductions/ah.png[]
+
+image::introductions/tb.png[]
 
 * Andrew Harrison
 * Managing Architect & Enablement Lead, STP
 
-image::introductions/tm.png[]
+image::introductions/ko.png[]
 
 * Tom McGinnis
 * Senior Consultant Infrastructure Consultant, STP
@@ -59,30 +61,26 @@ image::introductions/bb.png[]
 * Brian Beaudoin
 * Senior Principal Consultant, STP
 
-image::introductions/mg.png[]
 
-* Michael Galayda 
-* Senior Principal Architect
-
-image::introductions/tb.png[]
-
-* Thomas Bonds
-* Architect
 
 == BootCamp Vendor Guests
 
-image::introductions/trilio-rodolfo.jpg[]
+image::introductions/mb-kasten.png[]
 
-* Rodolfo Casas
-* Senior Solutions Architect at Trilio | RHCA and Red Hat Instructor
+* Matt Bator
+* Accomplisher of Stuff and Things
 
 == Class Introductions
 
 * All
 
+== TopGolf Signup
+
+* link:https://rltb.topgolf.com/membership/?e=1&v=16[Top Golf Signup]
+
 == BU
 
-* BU Product overview and roadmap with Andrew/Peter/Sachin
+* BU Product overview and roadmap with Peter Lauterbach
 
 == Lab URL
 
@@ -95,7 +93,7 @@ image::introductions/trilio-rodolfo.jpg[]
 ** Virtual machines as containers
 ** VM Deployments
 ** The great VM Migration
-** Automating with Ansible
+** Automating with GitOps
 ** VM networking
 ** Pre Sales
 ** Backup and Recovery
