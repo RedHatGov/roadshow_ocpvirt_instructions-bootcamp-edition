@@ -18,7 +18,7 @@
 *** Lunch
 * 12PM - 1PM
 *** BU Product overview and roadmap with Peter/Andrew/Sachin
-* 1pm - 6pm (breaks as needed)
+* 1PM - 6PM (breaks as needed)
 *** OpenShift Disconnected Installation lab
 
 == Wednesday
@@ -28,10 +28,17 @@
 *** Virt Lab Validation & Rosetta Stone Presentation
 * 12:30PM - 1:30PM
 *** Lunch
-1:30PM - 6:00PM
+1:30PM - 6PM (breaks as needed)
 *** Labs
 
-== Thursay
+== Thursday
+* 9AM - 9:30AM
+*** Presentation: OpenShift Virtualization Networking & Storage
+* 9:30AM - 11:30
+*** xrefNetworking Labs
+*** 
+
+== Friday
 * 9AM
 *** Labs
 *** Close out
