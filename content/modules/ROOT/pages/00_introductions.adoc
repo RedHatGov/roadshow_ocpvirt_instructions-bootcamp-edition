@@ -18,24 +18,28 @@
 *** Lunch
 * 12PM - 1PM
 *** BU Product overview and roadmap with Peter/Andrew/Sachin
-* 1PM - 6PM (breaks as needed)
-*** OpenShift Disconnected Installation lab
+* 1PM - 2PM 
+*** Virt Lab Validation & Rosetta Stone Presentation
+* 2PM - 6PM
+*** Virt Labs
 
 == Wednesday
 * 9AM - 9:30AM
-*** Follow-ups, Clean-ups with Disconnected Lab
-* 9:30 - 10-30AM
-*** Virt Lab Validation & Rosetta Stone Presentation
-* 12:30PM - 1:30PM
+*** Follow-ups, Clean-ups with Virt Labs
+* 9:30AM - 10AM
+*** Presentation: OpenShift Virtualization Networking & Storage
+* 10AM - 12PM
+*** Networking & Storage Labs
+* 12PM - 1PM
 *** Lunch
-1:30PM - 6PM (breaks as needed)
+1:PM - 6PM (breaks as needed)
 *** Labs
 
 == Thursday
 * 9AM - 9:30AM
-*** Presentation: OpenShift Virtualization Networking & Storage
+*** 
 * 9:30AM - 11:30
-*** xrefNetworking Labs
+*** 
 *** 
 
 == Friday
@@ -56,25 +60,10 @@ image::introductions/ah.png[]
 * Andrew Harrison
 * Managing Architect & Enablement Lead, STP
 
-image::introductions/tm.png[]
-
-* Tom McGinnis
-* Senior Consultant Infrastructure Consultant, STP
-
 image::introductions/bb.png[]
 
 * Brian Beaudoin
 * Senior Principal Consultant, STP
-
-image::introductions/mg.png[]
-
-* Michael Galayda 
-* Senior Principal Architect
-
-image::introductions/tb.png[]
-
-* Thomas Bonds
-* Architect
 
 == BootCamp Vendor Guests
 
