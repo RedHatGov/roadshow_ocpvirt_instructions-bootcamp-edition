@@ -65,6 +65,11 @@ image::introductions/bb.png[]
 * Brian Beaudoin
 * Senior Principal Consultant, STP
 
+image::introductions/fm.png[]
+
+* Freddy Montero
+* Managing Architect
+
 == BootCamp Vendor Guests
 
 image::introductions/trilio-rodolfo.jpg[]
