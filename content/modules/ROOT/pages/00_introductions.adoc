@@ -20,8 +20,8 @@
 *** BU Product overview and roadmap with Peter/Andrew/Sachin
 * 1PM - 2PM 
 *** Virt Lab Validation & Rosetta Stone Presentation
-* 2PM - 6PM
-*** Virt Labs
+* 2PM - 6PM (Breaks as needed)
+*** Additional Virt Labs from Workshop
 
 == Wednesday
 * 9AM - 9:30AM
@@ -33,18 +33,21 @@
 * 12PM - 1PM
 *** Lunch
 1:PM - 6PM (breaks as needed)
-*** Labs
+*** Additional Labs from DO316 Chapters 7 & 8
 
 == Thursday
-* 9AM - 9:30AM
-*** 
-* 9:30AM - 11:30
-*** 
-*** 
+* 9AM - 11:00AM
+*** Trilio demo, and lab presented by Rodolfo Casas, Senior Solutions Architect & Red Hat Certified Architect from Trilio
+* 11:00AM - 12:00PM
+*** Setup for Mock Discovery Sessions & Mock Virtualization Assessments
+* 12:00PM - 2:00PM (Breaks as needed)
+*** Split into teams for Mock Discovery Sessions
+* 2:00PM - 6:00PM
+*** Split into teams for Mock Virtualization Assessments
 
 == Friday
-* 9AM
-*** Labs
+* 9AM - 12:30PM
+*** Teams present readouts from Mock Assessments and Dicovery Sessions
 *** Close out
 *** Survey
 
