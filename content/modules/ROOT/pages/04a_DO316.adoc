@@ -37,8 +37,23 @@ You will have 30 minutes to complete this section/lab.  Once you complete the la
 
 = DO316 Section 7 -  Advanced Virtual Machine Management
 
+=== https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/ch07s02[Migrate Virtual Machines from Compatible Hypervisors]
 
-=== https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/ch07s09[Node Maintenance and OpenShift Virtualization Updates]
+You will have 20 minutes to complete this section/lab.  Once you complete the lab please stop and wait for the Instuctors to review the lab with everyone.  
+
+=== https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/ch07s04[Manage Virtual Machine Snapshots]
+
+You will have 20 minutes to complete this section/lab.  Once you complete the lab please stop and wait for the Instuctors to review the lab with everyone.  
+
+=== https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/ch07s06[Clone a Virtual Machine]
+
+You will have 20 minutes to complete this section/lab.  Once you complete the lab please stop and wait for the Instuctors to review the lab with everyone.  
+
+=== https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/ch07s08[Perform Virtual Machine Live Migrations]
+
+You will have 20 minutes to complete this section/lab.  Once you complete the lab please stop and wait for the Instuctors to review the lab with everyone.  
+
+=== https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/ch07s10[Node Maintenance and OpenShift Virtualization Updates]
 
 You will have 20 minutes to complete this section/lab.  Once you complete the lab please stop and wait for the Instuctors to review the lab with everyone.  
 
