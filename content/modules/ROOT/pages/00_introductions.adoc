@@ -32,7 +32,7 @@
 *** Networking & Storage Labs
 * 12PM - 1PM
 *** Lunch
-1:PM - 6PM (breaks as needed)
+* 1:PM - 6PM (breaks as needed)
 *** Additional Labs from DO316 Chapters 7 & 8
 
 == Thursday
