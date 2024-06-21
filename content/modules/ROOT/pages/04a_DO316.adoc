@@ -23,30 +23,43 @@ You will have 30 minutes to complete this section/lab.  Once you complete the la
 
 = DO316 Section 7 -  Advanced Virtual Machine Management
 
+
 === https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/ch07s02[Migrate Virtual Machines from Compatible Hypervisors]
 
 You will have 20 minutes to complete this section/lab.  Once you complete the lab please stop and wait for the Instuctors to review the lab with everyone.  
 
-=== Manage Virtual Machine Snapshots
+=== https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/ch07s04[Manage Virtual Machine Snapshots]
 
 You will have 20 minutes to complete this section/lab.  Once you complete the lab please stop and wait for the Instuctors to review the lab with everyone.  
 
-=== Clone a Virtual Machine
+=== https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/ch07s06[Clone a Virtual Machine]
 
 You will have 20 minutes to complete this section/lab.  Once you complete the lab please stop and wait for the Instuctors to review the lab with everyone.  
 
-=== Perform Virtual Machine Live Migrations
+=== https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/ch07s08[Perform Virtual Machine Live Migrations]
 
 You will have 20 minutes to complete this section/lab.  Once you complete the lab please stop and wait for the Instuctors to review the lab with everyone.  
 
-=== Node Maintenance and OpenShift Virtualization Updates
+=== https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/ch07s09[Node Maintenance and OpenShift Virtualization Updates]
 
 You will have 20 minutes to complete this section/lab.  Once you complete the lab please stop and wait for the Instuctors to review the lab with everyone.  
 
-=== Advanced Virtual Machine Management
+=== https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/ch07s11[Final Review Section 7 - Advanced Virtual Machine Management]
 
 
+= DO316 Section 8 - Configuring Kubernetes High Availability for Virtual Machines
 
-= DO316 Section 8 - 
+
+=== https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/ch08s02[Virtual Machine Load Balancing with Kubernetes Networking Resources]
 
 You will have 20 minutes to complete this section/lab.  Once you complete the lab please stop and wait for the Instuctors to review the lab with everyone.  
+
+=== https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/ch08s04[Configure Health Probes for Virtual Machines]
+
+You will have 20 minutes to complete this section/lab.  Once you complete the lab please stop and wait for the Instuctors to review the lab with everyone.  
+
+=== https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/ch08s06[Surviving Node Failure with Virtual Machines]
+
+You will have 20 minutes to complete this section/lab.  Once you complete the lab please stop and wait for the Instuctors to review the lab with everyone.  
+
+=== https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/ch08s07[Final Review Section 8 - Configuring Kubernetes High Availability for Virtual Machines]
