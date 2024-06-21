@@ -32,7 +32,10 @@
 ** xref:module-05.adoc#migrating_vms[Migrating Virtual Machines from VMware]
 
 * Additional Boot Camp Content
-** xref:17_trilio_backup.adoc[Trilio Lab]
 ** xref:22_disconnected.adoc[Disconnected Environments]
+** xref:19_service_route.adoc[Using a Service and Route to expose an application]
+** xref:metallb.adoc[MetalLB concepts]
+** xref:04a_DO316.adoc[Additional Labs from DO316 Chapters 7 & 8]
+** xref:17_trilio_backup.adoc[Trilio Lab]
 ** xref:24_presales.adoc[Pre Sales, Discovery Sessions, and Virtualization Assessments]
 
