@@ -1,13 +1,13 @@
 = Openshift Virtualization Field Enablement Introduction and Overview
 
-== Agenda, Tuesday, June 24 9AM through Friday June 28 12:30PM
+== Agenda, Tuesday, June 25 9AM through Friday June 28 12:30PM
 
 * Tuesday 9AM - 6PM  EDT
 * Wednesday 9AM - 6PM EDT
 * Thursday 9AM - 6PM EDT
 * Friday 9am - 12:30PM EDT
 
-== Tuesday
+== Tuesday, June 25th
 * 9AM - 10AM
 *** Getting setup
 *** Introductions
@@ -23,7 +23,7 @@
 * 2PM - 6PM (Breaks as needed)
 *** Additional Virt Labs from Workshop
 
-== Wednesday
+== Wednesday, June 26th
 * 9AM - 9:30AM
 *** Follow-ups, Clean-ups with Virt Labs
 * 9:30AM - 10AM
@@ -35,11 +35,11 @@
 * 1:PM - 6PM (breaks as needed)
 *** Additional Labs from DO316 Chapters 7 & 8
 
-== Thursday
+== Thursday, June 27th
 * 9AM - 11AM
 *** Trilio demo, and lab presented by Rodolfo Casas, Senior Solutions Architect & Red Hat Certified Architect from Trilio
 * 11AM - 11:30AM
-*** Follow-ups, Clean-ups with Virt Labs
+*** Exam Certification Acceleration Tips
 * 11:30AM - 12PM
 *** Setup for Mock Discovery Sessions & Mock Virtualization Assessments
 * 12:00PM - 1:00PM
@@ -49,7 +49,7 @@
 * 2:00PM - 6:00PM
 *** Split into teams for Mock Virtualization Assessments
 
-== Friday
+== Friday, June 28th
 * 9AM - 12:30PM
 *** Teams present readouts from Mock Assessments and Dicovery Sessions
 *** Close out
