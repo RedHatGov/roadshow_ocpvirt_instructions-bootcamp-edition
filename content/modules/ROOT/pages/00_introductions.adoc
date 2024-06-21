@@ -40,7 +40,7 @@
 *** Trilio demo, and lab presented by Rodolfo Casas, Senior Solutions Architect & Red Hat Certified Architect from Trilio
 * 11AM - 11:30AM
 *** Follow-ups, Clean-ups with Virt Labs
-11:30AM - 12PM
+* 11:30AM - 12PM
 *** Setup for Mock Discovery Sessions & Mock Virtualization Assessments
 * 12:00PM - 1:00PM
 *** Lunch
