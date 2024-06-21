@@ -46,6 +46,8 @@ You will have 20 minutes to complete this section/lab.  Once you complete the la
 
 === https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/ch07s11[Final Review Section 7 - Advanced Virtual Machine Management]
 
+You will have 30 minutes to complete this section/lab.  Once you complete the lab please stop and wait for the Instuctors to review the lab with everyone.  
+
 
 = DO316 Section 8 - Configuring Kubernetes High Availability for Virtual Machines
 
@@ -63,3 +65,5 @@ You will have 20 minutes to complete this section/lab.  Once you complete the la
 You will have 20 minutes to complete this section/lab.  Once you complete the lab please stop and wait for the Instuctors to review the lab with everyone.  
 
 === https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/ch08s07[Final Review Section 8 - Configuring Kubernetes High Availability for Virtual Machines]
+
+You will have 30 minutes to complete this section/lab.  Once you complete the lab please stop and wait for the Instuctors to review the lab with everyone.  
