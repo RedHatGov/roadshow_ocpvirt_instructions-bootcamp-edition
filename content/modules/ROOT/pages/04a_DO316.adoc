@@ -2,7 +2,7 @@ Please open up your browser to https://role.rhu.redhat.com/rol-rhu/app/courses/d
 
 
 
-= DO316 Section Chapter 5.  Configuring Kubernetes Storage for Virtual Machines
+= DO316 Section 5.  Configuring Kubernetes Storage for Virtual Machines
 
 
 === https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/ch05s02[Attach Persistent Storage to Virtual Machines]
@@ -19,7 +19,7 @@ You will have 20 minutes to complete this section/lab.  Once you complete the la
 
 === https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/ch05s07[Final Review Section 5 - Configuring Storage for Virtual Machines]
 
-You will have 20 minutes to complete this section/lab.  Once you complete the lab please stop and wait for the Instuctors to review the lab with everyone.  
+You will have 30 minutes to complete this section/lab.  Once you complete the lab please stop and wait for the Instuctors to review the lab with everyone.  
 
 = DO316 Section 7 -  Advanced Virtual Machine Management
 
@@ -27,6 +27,26 @@ You will have 20 minutes to complete this section/lab.  Once you complete the la
 
 You will have 20 minutes to complete this section/lab.  Once you complete the lab please stop and wait for the Instuctors to review the lab with everyone.  
 
-=== https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/ch04s05[Final Review Section 4 - Connecting Virtual Machines to External Networks]
+=== Manage Virtual Machine Snapshots
+
+You will have 20 minutes to complete this section/lab.  Once you complete the lab please stop and wait for the Instuctors to review the lab with everyone.  
+
+=== Clone a Virtual Machine
+
+You will have 20 minutes to complete this section/lab.  Once you complete the lab please stop and wait for the Instuctors to review the lab with everyone.  
+
+=== Perform Virtual Machine Live Migrations
+
+You will have 20 minutes to complete this section/lab.  Once you complete the lab please stop and wait for the Instuctors to review the lab with everyone.  
+
+=== Node Maintenance and OpenShift Virtualization Updates
+
+You will have 20 minutes to complete this section/lab.  Once you complete the lab please stop and wait for the Instuctors to review the lab with everyone.  
+
+=== Advanced Virtual Machine Management
+
+
+
+= DO316 Section 8 - 
 
 You will have 20 minutes to complete this section/lab.  Once you complete the lab please stop and wait for the Instuctors to review the lab with everyone.  
