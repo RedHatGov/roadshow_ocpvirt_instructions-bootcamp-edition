@@ -17,7 +17,7 @@
 * 11AM - 12PM
 *** Lunch
 * 12PM - 1PM
-*** BU Product overview and roadmap with Peter/Andrew/Sachin
+*** BU Product overview and roadmap with Sachin Mullick
 * 1PM - 2PM 
 *** Virt Lab Validation & Rosetta Stone Presentation
 * 2PM - 6PM (Breaks as needed)
