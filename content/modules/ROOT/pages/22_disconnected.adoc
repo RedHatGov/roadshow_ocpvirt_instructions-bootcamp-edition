@@ -15,7 +15,7 @@ This lab will introduce you to the basics of deploying and managing OpenShift Vi
 
 == Create a Local Registry
 
-Login to the bastion `ssh -o PreferredAuthentications=password lab-user@hypervisor.xxxxx.dynamic.redhatworkshops.io` as listed in the bookbag.
+Login to the bastion `ssh -o PreferredAuthentications=password lab-user@hypervisor.xxxxx.dynamic.redhatworkshops.io` as listed in the Showroom.
 
 Create a simple local registry using the createRegistry.sh script:
 
