@@ -17,6 +17,13 @@ This lab will introduce you to the basics of deploying and managing OpenShift Vi
 
 Login to the bastion `ssh -o PreferredAuthentications=password lab-user@hypervisor.xxxxx.dynamic.redhatworkshops.io` as listed in the Showroom.
 
+Ensure Podman is installed in your bastion: 
+
+[source,bash]
+----
+$ sudo dnf install podman -y
+----
+
 Create a simple local registry using the createRegistry.sh script:
 
 [source,bash]
@@ -63,13 +70,16 @@ else
   echo info: registry already running
 fi
 EOF
+----
+
+[source,bash]
 $ chmod +x createRegistry.sh
 $ ./createRegistry.sh
+----
 Generating a RSA private key
 ..........++++
 ...............................................................................................................................................................................++++
 writing new private key to '/root/certs/registry.key'
------
 Adding password for user registry
 starting registry
 Resolved "registry" as an alias (/etc/containers/registries.conf.d/000-shortnames.conf)
@@ -83,7 +93,6 @@ Copying blob 862815ae87dc done   |
 Copying config d6b2c32a0f done   | 
 Writing manifest to image destination
 ad1562a864d448f51df611e47bb0676571275754bf160d293fc7bb5e4a11c2d5
-----
 
 == Mirror Required Packages for OpenShift Virtualization
 
