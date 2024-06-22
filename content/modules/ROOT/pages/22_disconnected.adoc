@@ -73,6 +73,7 @@ EOF
 ----
 
 [source,bash]
+----
 $ chmod +x createRegistry.sh
 $ ./createRegistry.sh
 ----
