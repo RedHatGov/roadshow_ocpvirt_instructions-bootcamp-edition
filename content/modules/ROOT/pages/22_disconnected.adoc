@@ -77,6 +77,8 @@ EOF
 $ chmod +x createRegistry.sh
 $ ./createRegistry.sh
 ----
+[source,bash]
+----
 Generating a RSA private key
 ..........++++
 ...............................................................................................................................................................................++++
@@ -94,7 +96,7 @@ Copying blob 862815ae87dc done   |
 Copying config d6b2c32a0f done   | 
 Writing manifest to image destination
 ad1562a864d448f51df611e47bb0676571275754bf160d293fc7bb5e4a11c2d5
-
+----
 == Mirror Required Packages for OpenShift Virtualization
 
 In this section, we create an image set config file for the oc-mirror plugin and mirror content to a local registry. The standalone mirror-registry is a good option for a local registry and is included with OpenShift SKUs. Mirror-registry is supported for supplying disconnected OpenShift images.
