@@ -13,13 +13,13 @@
 *** Introductions
 *** Lab URLs and details
 * 10AM - 11AM
-*** OpenShift and Virtualization in a Disconnected World
+*** Presentation: OpenShift and Virtualization in a Disconnected World
 * 11AM - 12PM
 *** Lunch
 * 12PM - 1PM
 *** BU Product overview and roadmap with Sachin Mullick
 * 1PM - 2PM 
-*** Virt Lab Validation & Rosetta Stone Presentation
+*** Presentation: Virt Lab Validation & Rosetta Stone
 * 2PM - 6PM (Breaks as needed)
 *** Additional Virt Labs from Workshop
 
@@ -32,7 +32,7 @@
 *** Networking & Storage Labs
 * 12PM - 1PM
 *** Lunch
-* 1:PM - 6PM (breaks as needed)
+* 1PM - 6PM (breaks as needed)
 *** Additional Labs from DO316 Chapters 7 & 8
 
 == Thursday, June 27th
@@ -42,19 +42,21 @@
 *** Exam Certification Acceleration Tips
 * 11:30AM - 12PM
 *** Setup for Mock Discovery Sessions & Mock Virtualization Assessments
-* 12:00PM - 1:00PM
+* 12PM - 1PM
 *** Lunch
 * 1PM - 2PM 
 *** Split into teams for Mock Discovery Sessions
-* 2:00PM - 6:00PM
+* 2PM - 6PM
 *** Split into teams for Mock Virtualization Assessments
 
 == Friday, June 28th
-* 9AM - 12:30PM
+* 9AM - 12PM
 *** Teams present readouts from Mock Assessments and Dicovery Sessions
+* 12PM - 12:30PM
+*** Ask an OpenShift Architect, with https://www.youtube.com/@AlesNosekTSP[Ales Nosek]
+* 12:30 ->
 *** Close out
 *** Survey (Please do the survey, it's the only metrics we get from these events. It just takes a couple minutes)
-* 12:30 ->
 *** Lunch & Go Home!
 
 == Instructors
@@ -67,7 +69,7 @@ image::introductions/sw.png[]
 image::introductions/ah.png[]
 
 * Andrew Harrison
-* Managing Architect & Enablement Lead, STP
+* Managing Architect, STP
 
 image::introductions/bb.png[]
 
@@ -77,7 +79,7 @@ image::introductions/bb.png[]
 image::introductions/fm.png[]
 
 * Freddy Montero
-* Managing Architect
+* Managing Architect, STP
 
 == BootCamp Vendor Guests
 
@@ -92,7 +94,7 @@ image::introductions/trilio-rodolfo.jpg[]
 
 == BU
 
-* BU Product overview and roadmap with Andrew/Peter/Sachin
+* BU Product overview and roadmap with Sachin Mullick
 
 == Lab URL
 
@@ -134,21 +136,19 @@ link:https://github.com/emcon33/Virtualization-on-ROSA[OpenShift on ROSA]
 
 link:https://red.ht/virtkit[Content Kit]
 
-https://catalog.redhat.com/platform/red-hat-openshift/virtualization[Certified Partners list]
+link:https://catalog.redhat.com/platform/red-hat-openshift/virtualization[Certified Partners list]
 
 link:https://source.redhat.com/departments/sales/globalservices/virtualization[OCP-Virtualization Enablement Global Page]
 
-link:https://source.redhat.com/groups/public/gtm_power_hour[BU PowerHour]
+link:https://portfoliohub.redhat.com/v3/serviceskit/openshift_virtualization_assessment[Virtualization Migration Assessment]
+
+link:https://portfoliohub.redhat.com/v3/serviceskit/openshift_virt_pov[OpenShift Virtualization Proof of Value]
 
 link:https://portfoliohub.redhat.com/v3/servicesmap/openshift_virt[Pre-Sales Virt]
 
-link:https://docs.google.com/document/d/11Vo5sMBgwtFuOUAyMwIuHPzSOVtEfpbPXHQQmWW8V0Y/edit[Services One Pager]
+link:https://docs.google.com/document/d/177hXVSm1hSwG4tvCQ_jx1Cg2RwSjTe4yMVqLx0k17_U/edit?usp=sharing[Virtualization Migration Assessment Delivery Guide]
 
 link:https://docs.google.com/document/d/1-sm-mjAyYezDGd0ZgbjZFcur8Tf1J2vezHNBVGYwb68/edit?usp=sharing[Technical OpenShift Virt Discovery Questions]
-
-link:https://developers.redhat.com/developer-sandbox[OCP Virt in Developer Sandbox]
-
-link:https://docs.google.com/presentation/d/1v_IV31u5QLGxTibqnNbAEBWiUlAiH4rm5vfHi-VC2rA/edit#slide=id.g2234bf4836e_0_220[Migrating Thousands of Virtual Machines to OpenShift Virtualization at Ally Bank]
 
 link:https://docs.google.com/spreadsheets/d/1i7e57sZVfju87Zw32lyyv1cWLN0fvP5FJW2qZlVMwoE/edit#gid=0[Resource Master]
 
