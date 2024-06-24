@@ -1,4 +1,4 @@
-== Pre Sales
+== Pre Sales Discovery & Virtualizaton Migration Assessment Mock Sessions and links.
 
 Open Discussion! 
 
@@ -10,4 +10,6 @@ link:https://docs.google.com/document/d/11Vo5sMBgwtFuOUAyMwIuHPzSOVtEfpbPXHQQmWW
 
 link:https://docs.google.com/document/d/1-sm-mjAyYezDGd0ZgbjZFcur8Tf1J2vezHNBVGYwb68/edit?usp=sharing[Technical OpenShift Virt Discovery Questions]
 
-link:https://docs.google.com/spreadsheets/d/1i7e57sZVfju87Zw32lyyv1cWLN0fvP5FJW2qZlVMwoE/edit#gid=0[Resource Master]
+link:https://docs.google.com/presentation/d/12EewrL3izPKt_GVpA-8NpSyR2n1OvhTBxcpWTdkDY2M/edit?usp=sharing[Red Hat OCP-Virt PreSales and Discovery]
+
+link:https://docs.google.com/presentation/d/1ZeYvyEaVJFpYXnYM7REcttLGylBHBWFHPTh2TaumFVk/edit?usp=sharing[Red Hat OCP-Virt Mock Assessment]
