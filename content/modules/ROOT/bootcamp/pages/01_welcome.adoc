@@ -1,6 +1,6 @@
 :preinstall_operators: %preinstall_operators%
 
-== Welcome to the NAPS Openshift Virtualization Field Enablement 
+== Welcome to the LATAM Openshift Virtualization Field Enablement 
 
 OpenShift Virtualization enables you to bring virtual machines onto a modern, Kubernetes-based infrastructure. It enables the development and delivery of new applications as well as the modernization of existing ones and can create applications that consist of virtual machines, containers, and serverless functions - all managed together using Kubernetes-native tools and paradigms.
 

@@ -1,32 +1,48 @@
 Please open up your browser to https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/pr01[DO316-v414-Role-Course]
 
 
+= DO316 Section 7 -  Advanced Virtual Machine Management
 
-= DO316 Section 3 - Configure Kubernetes Networking for Virtual Machines
-
-
-=== https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/ch03s02[ Kubernetes Networking Objects]
+=== https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/ch07s02[Migrate Virtual Machines from Compatible Hypervisors]
 
 You will have 20 minutes to complete this section/lab.  Once you complete the lab please stop and wait for the Instuctors to review the lab with everyone.  
 
-=== https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/ch03s04[Configure External Access to Virtual Machines]
+=== https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/ch07s04[Manage Virtual Machine Snapshots]
 
 You will have 20 minutes to complete this section/lab.  Once you complete the lab please stop and wait for the Instuctors to review the lab with everyone.  
 
-=== https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/ch03s06[Configure External Access with Load Balancer Services]
+=== https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/ch07s06[Clone a Virtual Machine]
 
 You will have 20 minutes to complete this section/lab.  Once you complete the lab please stop and wait for the Instuctors to review the lab with everyone.  
 
-=== https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/ch03s07[Final Review Section 3 - Configure Kubernetes Networking for Virtual Machines]
+=== https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/ch07s08[Perform Virtual Machine Live Migrations]
 
 You will have 20 minutes to complete this section/lab.  Once you complete the lab please stop and wait for the Instuctors to review the lab with everyone.  
 
-= DO316 Section 4 -  Connecting Virtual Machines to External Networks
-
-=== https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/ch04s04[Configure Multihomed Nodes and Virtual Machines]
+=== https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/ch07s10[Node Maintenance and OpenShift Virtualization Updates]
 
 You will have 20 minutes to complete this section/lab.  Once you complete the lab please stop and wait for the Instuctors to review the lab with everyone.  
 
-=== https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/ch04s05[Final Review Section 4 - Connecting Virtual Machines to External Networks]
+=== https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/ch07s11[Final Review Section 7 - Advanced Virtual Machine Management]
+
+You will have 30 minutes to complete this section/lab.  Once you complete the lab please stop and wait for the Instuctors to review the lab with everyone.  
+
+
+= DO316 Section 8 - Configuring Kubernetes High Availability for Virtual Machines
+
+
+=== https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/ch08s02[Virtual Machine Load Balancing with Kubernetes Networking Resources]
 
 You will have 20 minutes to complete this section/lab.  Once you complete the lab please stop and wait for the Instuctors to review the lab with everyone.  
+
+=== https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/ch08s04[Configure Health Probes for Virtual Machines]
+
+You will have 20 minutes to complete this section/lab.  Once you complete the lab please stop and wait for the Instuctors to review the lab with everyone.  
+
+=== https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/ch08s06[Surviving Node Failure with Virtual Machines]
+
+You will have 20 minutes to complete this section/lab.  Once you complete the lab please stop and wait for the Instuctors to review the lab with everyone.  
+
+=== https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/ch08s07[Final Review Section 8 - Configuring Kubernetes High Availability for Virtual Machines]
+
+You will have 30 minutes to complete this section/lab.  Once you complete the lab please stop and wait for the Instuctors to review the lab with everyone.  

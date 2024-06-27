@@ -1,0 +1,320 @@
+= Template Management
+
+== Introduction
+
+Pre-configured Red Hat virtual machine templates are listed in the *Virtualization* -> *Templates* page. These templates are available for different versions of Red Hat Enterprise Linux, Fedora, CentOS, Microsoft Windows Desktop, and Microsoft Windows Server editions. Each Red Hat virtual machine template is preconfigured with an operating system image, the default settings for the operating system, the flavor (CPU and memory), and the workload type (server).
+
+The *Templates* page displays four types of virtual machine templates:
+
+* *Red Hat Supported* templates are fully supported by Red Hat.
+* *User Supported* templates are *Red Hat Supported* templates that were cloned and created by users.
+* *Red Hat Provided* templates have limited support from Red Hat.
+* *User Provided* templates are *Red Hat Provided* templates that were cloned and created by users.
+
+[[clone_customize_template]]
+== Clone and Customize a Template
+
+By default pre-configured templates provided by Red Hat OpenShift Virtualization cannot be customized. However you can clone a template and make adjustments to it for your particular workload in order to make it easier to request specific types of virtual machines for specific workloads. In this section of the lab we are going to do just this, by creating a template that will provide a database server on demand for our end users.
+
+. To begin, navigate to *Virtualization* -> *Templates* and select *All projects*
++
+image::module-04/01_Template_List.png[link=self, window=blank, width=100%]
++
+. In the search bar type in *centos9* and in the list of templates that appear find the template for *centos-stream9-server-large*. 
++
+image::module-04/02_Search_Centos9.png[link=self, window=blank, width=100%]
++
+. Select the three-dot menu to the far right, and click on the option to *Clone* from the menu that pops out.
++
+image::module-04/03_Clone_Template.png[link=self, window=blank, width=100%]
++
+. A new menu called *Clone template* will appear, fill in the the following values, and when finished click on the *Clone* button.
++
+* *Template name:* centos-stream9-server-db-xl
+* *Template project:* vmexamples
+* *Template display name:* CentOS Stream 9 VM - Database XL Template
++
+image::module-04/04_Clone_Template_Options.png[link=self, window=blank, width=100%]
++
+. This will take you to the *Details* page for the template where we will be able to customize some options. Start by finding the CPU and Memory near the bottom of the page, and click on the pencil icon to edit it.
++
+image::module-04/05_Clone_Details.png[link=self, window=blank, width=100%]
++
+. A new window will pop out where you can edit the amount of CPU and Memory. For our XL template set the value of CPUs to 4, and Memory to 16 GiB, and click the *Save* button.
++
+image::module-04/06_Edit_CPU_Mem.png[link=self, window=blank, width=100%]
++
+. Navigate to the *Network Interfaces* tab, to the right of the *default* interface, select the three-dot menu and the edit option.
++
+image::module-04/07_Edit_Network.png[link=self, window=blank, width=100%]
++
+. When the *Edit network interface* menu appears, set the *Network* value to the *vmexamples/vlan0* network, and click the *Save* button.
++
+image::module-04/08_Edit_Net_Int.png[link=self, window=blank, width=100%]
++
+. Next click on the *Scripts* tab at the top, and in the section called *Cloud-init* click the *Edit* button.
++
+image::module-04/09_Scripts_CloudInit.png[link=self, window=blank, width=100%]
++
+. When the *Cloud-init* dialog opens, click the radio button to *Configure via: Script* then add the following YAML snippet to the end of the script.
++
+[source,yaml,role=execute]
+----
+  packages:
+    - mariadb-server
+  runcmd:
+    - systemctl enable mariadb
+    - systemctl start mariadb
+----
++
+image::module-04/10_Cloud_Init_Script.png[link=self, window=blank, width=100%]
++
+. Click the *Save* button, followed by the *Apply* button.
+. Now click on the *Virtualization -> Catalog* menu on the left, select the *Template catalog* option and click on *User templates*. You should see our created template available as a tile.
++
+image::module-04/11_User_Templates.png[link=self, window=blank, width=100%]
++
+. Click on the tile and you will be prompted with the VM startup screen. Click the *Quick create VirtualMachine* button.
++
+image::module-04/12_Quick_Create_Template.png[link=self, window=blank, width=100%]
++
+. When the virtual machine boots you can see on the *Overview* page that it was created from our template, and has the system resources we defined, and is already attached to the *vmexamples/vlan0* network with an assigned IP address.
++
+image::module-04/13_VM_From_Template.png[link=self, window=blank, width=100%]
++
+. Click on the *Console* tab at the top and use the *Guest login credentials* option to login to the console of the virtual machine.
++
+image::module-04/14_VM_Console.png[link=self, window=blank, width=100%]
++
+. Once you are logged into the virtual machine, run the following command to test the install of MariaDB.
++
+[source,sh,role=execute]
+----
+sudo mysql -u root
+----
++
+image::module-04/15_MariaDB_Login.png[link=self, window=blank, width=100%]
+
+[[create_win]]
+== Create a Windows VM Template
+
+In this segment of our lab, we will install Microsoft Windows Server 2019 using an ISO hosted on a web server. This represents one way to install an operating system to a virtual machine that takes advantage of the ability to source disks from many locations, including a web server, object storage, or other persistent volumes in the cluster.
+
+This process can be streamlined after the initial operating system installation by creating a template from the virtual machine. The specific process for preparing the guest operating system to be used as a template will vary, be sure to follow your organization's guidelines and requirements when preparing a template OS.
+
+. From the left menu, navigate to *Virtualization* -> *Catalog*, and click on the *Template catalog* tab near the top..
++
+image::module-04/16_Template_Catalog.png[link=self, window=blank, width=100%]
++
+. Scroll down until you find the *Microsoft Windows Server 2019 VM* tile.
++
+image::module-04/17_Windows_2k19_Tile.png[link=self, window=blank, width=100%]
++
+. A dialog will appear showing the default configuration related to the template.
++
+NOTE: Notice that there is intially no option to quick create this VM, and we must customize the VM to fit our needs.
++
+image::module-04/18_Windows_2k19_Dialog.png[link=self, window=blank, width=100%]
++
+. In this dialog:
+.. Specify the name *windows*
+.. Enable the checkbox *Boot from CD*
+.. Choose URL *(creates PVC)* from the drop-down menu
+.. Specify the url: http://192.168.123.100:81/Windows2019.iso
+.. Reduce the CD disk size to *5 GiB*
+.. Keep the *Disk source* size disk to the default value *60 GiB*
+.. Ensure the *Mount Windows drivers disk* checkbox is enabled. **This is required to install Windows systems, which will provide the drivers for VirtIO.**
++
+image::module-04/19_Windows_2k19_Parameters.png[link=self, window=blank, width=100%]
++
+. With the options filled out, we want to click on the *Customize VirtualMachine* button at the bottom to continue configuring our Template.
++
+. On the *Customize and create VirtualMachine screen, click on the *Scripts* tab, and then scroll down to the *Sysprep* section and click on the *Edit* button.
++
+image::module-04/20_Customize_Scripts.png[link=self, window=blank, width=100%]
++
+. A new window will pop up for you to create *Sysprep* actions for your new template.
++
+image::module-04/21_Sysprep.png[link=self, window=blank, width=100%]
++
+. Copy and paste the following code block into the *autounattend.xml* section:
++
+[source,xml,role=execute]
+----
+<?xml version="1.0" encoding="utf-8"?>
+<unattend xmlns="urn:schemas-microsoft-com:unattend" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:schemas-microsoft-com:unattend">
+  <settings pass="windowsPE">
+    <component name="Microsoft-Windows-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+      <DiskConfiguration>
+        <Disk wcm:action="add">
+          <CreatePartitions>
+            <CreatePartition wcm:action="add">
+              <Order>1</Order>
+              <Extend>true</Extend>
+              <Type>Primary</Type>
+            </CreatePartition>
+          </CreatePartitions>
+          <ModifyPartitions>
+            <ModifyPartition wcm:action="add">
+              <Active>true</Active>
+              <Format>NTFS</Format>
+              <Label>System</Label>
+              <Order>1</Order>
+              <PartitionID>1</PartitionID>
+            </ModifyPartition>
+          </ModifyPartitions>
+          <DiskID>0</DiskID>
+          <WillWipeDisk>true</WillWipeDisk>
+        </Disk>
+      </DiskConfiguration>
+      <ImageInstall>
+        <OSImage>
+          <InstallFrom>
+            <MetaData wcm:action="add">
+              <Key>/IMAGE/NAME</Key>
+              <Value>Windows Server 2019 SERVERSTANDARD</Value>
+            </MetaData>
+          </InstallFrom>
+          <InstallTo>
+            <DiskID>0</DiskID>
+            <PartitionID>1</PartitionID>
+          </InstallTo>
+        </OSImage>
+      </ImageInstall>
+      <UserData>
+        <AcceptEula>true</AcceptEula>
+        <FullName>Administrator</FullName>
+        <Organization>My Organization</Organization>
+      </UserData>
+      <EnableFirewall>false</EnableFirewall>
+    </component>
+    <component name="Microsoft-Windows-International-Core-WinPE" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+      <SetupUILanguage>
+        <UILanguage>en-US</UILanguage>
+      </SetupUILanguage>
+      <InputLocale>en-US</InputLocale>
+      <SystemLocale>en-US</SystemLocale>
+      <UILanguage>en-US</UILanguage>
+      <UserLocale>en-US</UserLocale>
+    </component>
+  </settings>
+  <settings pass="offlineServicing">
+    <component name="Microsoft-Windows-LUA-Settings" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+      <EnableLUA>false</EnableLUA>
+    </component>
+  </settings>
+  <settings pass="specialize">
+    <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+      <AutoLogon>
+        <Password>
+          <Value>R3dh4t1!</Value>
+          <PlainText>true</PlainText>
+        </Password>
+        <Enabled>true</Enabled>
+        <LogonCount>999</LogonCount>
+        <Username>Administrator</Username>
+      </AutoLogon>
+      <OOBE>
+        <HideEULAPage>true</HideEULAPage>
+        <HideLocalAccountScreen>true</HideLocalAccountScreen>
+        <HideOnlineAccountScreens>true</HideOnlineAccountScreens>
+        <HideWirelessSetupInOOBE>true</HideWirelessSetupInOOBE>
+        <NetworkLocation>Work</NetworkLocation>
+        <ProtectYourPC>3</ProtectYourPC>
+        <SkipMachineOOBE>true</SkipMachineOOBE>
+      </OOBE>
+      <UserAccounts>
+        <LocalAccounts>
+          <LocalAccount wcm:action="add">
+            <Description>Local Administrator Account</Description>
+            <DisplayName>Administrator</DisplayName>
+            <Group>Administrators</Group>
+            <Name>Administrator</Name>
+          </LocalAccount>
+        </LocalAccounts>
+      </UserAccounts>
+      <TimeZone>Eastern Standard Time</TimeZone>
+    </component>
+  </settings>
+  <settings pass="oobeSystem">
+    <component name="Microsoft-Windows-International-Core" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+      <InputLocale>en-US</InputLocale>
+      <SystemLocale>en-US</SystemLocale>
+      <UILanguage>en-US</UILanguage>
+      <UserLocale>en-US</UserLocale>
+    </component>
+    <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+      <AutoLogon>
+        <Password>
+          <Value>R3dh4t1!</Value>
+          <PlainText>true</PlainText>
+        </Password>
+        <Enabled>true</Enabled>
+        <LogonCount>999</LogonCount>
+        <Username>Administrator</Username>
+      </AutoLogon>
+      <OOBE>
+        <HideEULAPage>true</HideEULAPage>
+        <HideLocalAccountScreen>true</HideLocalAccountScreen>
+        <HideOnlineAccountScreens>true</HideOnlineAccountScreens>
+        <HideWirelessSetupInOOBE>true</HideWirelessSetupInOOBE>
+        <NetworkLocation>Work</NetworkLocation>
+        <ProtectYourPC>3</ProtectYourPC>
+        <SkipMachineOOBE>true</SkipMachineOOBE>
+      </OOBE>
+      <UserAccounts>
+        <LocalAccounts>
+          <LocalAccount wcm:action="add">
+            <Description>Local Administrator Account</Description>
+            <DisplayName>Administrator</DisplayName>
+            <Group>Administrators</Group>
+            <Name>Administrator</Name>
+          </LocalAccount>
+        </LocalAccounts>
+      </UserAccounts>
+      <TimeZone>Eastern Standard Time</TimeZone>
+    </component>
+  </settings>
+</unattend>
+----
++
+. Once the code is pasted, click the *Save* button on the dialog.
++
+image::module-04/22_Windows_2k19_Sysprep.png[link=self, window=blank, width=100%]
++
+. You will be returned to the *Customize and create Virtual Machine* screen, Click on the *Disks* tab, and locate the line for the *installation-CDROM*, click the three-dot menu on the right, and select *Edit*.
++
+image::module-04/23_Edit_Boot_Media.png[link=self, window=blank, width=100%]
++
+. Select the option for *Use this disk as a boot source*, and click on the *Save* button at the bottom.
++
+image::module-04/24_Boot_Source.png[link=self, window=blank, width=100%]
++
+. When you return to the *Disks* tab, click on the *Create VirtualMachine* button at the bottom.
+. The Virtual Machine will start the provisioning process by downloading the ISO image, configuring, and starting the instance.
++
+image::module-04/25_Windows_2k19_Provisioning.png[link=self, window=blank, width=100%]
++
+. After a few minutes, the Virtual VM will be in *Running* status. Switch to the *Console* tab:
++
+image::module-04/26_Windows_2k19_Console.png[link=self, window=blank, width=100%]
++
+IMPORTANT: The VM is marked as "Not migratable" because a CD-ROM disk is attached. 
++
+. Once the VM installation process is complete, go ahead and power it off with the stop button. We can now take a snapshot of the root disk, and use that to create a bootable volume template that we can use to boot other Windows 2k19 machines.
++
+. Click on *Storage* -> *PersistentVolumeClaims* to see a list of PVCs available in the vmexamples namespace.
++
+image::module-04/27_Windows_PVC.png[link=self, window=blank, width=100%]
++
+. Find the *windows* PVC that is listed and using the three-dot menu on the right select *Clone PVC*. On the menu that pops up, name the new PVC *windows-2k19-template*.
++
+image::module-04/28_Clone_Windows_PVC.png[link=self, window=blank, width=100%]
++
+. Once this is saved, you can return to the *Virtualization -> Catalog* menu, and use this cloned PVC as a future boot source for creating new Virtual Machines by selecting the option for *PVC (clone PVC)* as the *Disk source*, and selecting the *Windows-2k19-Template* PVC as the *PVC name* to clone.
++
+image::module-04/29_Windows_Template.png[link=self, window=blank, width=100%]
+
+== Summary
+
+In this section we learned how to clone and customize and existing template to create one that can be used for specific workloads like databases. We also learned how to configure one of the existing Windows templates that exists without a boot source, and automate it's installation process, so we can create future templates by cloning the installation PVC that is created with that VM.

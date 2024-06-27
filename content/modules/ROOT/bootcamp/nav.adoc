@@ -1,26 +1,33 @@
 * xref:00_introductions.adoc[Introductions]
-
 * xref:01_welcome.adoc[Welcome]
 
-* xref:02_migrate_vms.adoc[Migrating Virtual Machines]
+* Modules
 
-* xref:03_ocpv_basics.adoc[OpenShift Virtualization Basics]
+** xref:module-01.adoc[Baremetal VM Management and OpenShift Virtualization Requirements]
+** xref:08_bare_metal.adoc[Module Lab: Bare Metal OpenShift Overview]
+** xref:module-00.adoc[Virtual Machine Management]
+** xref:03_ocpv_basics.adoc[Module Lab: OpenShift Virtualization Basics]
+** xref:module-05.adoc[Migrating Virtual Machines]
+** xref:02_migrate_vms.adoc[Module Lab: Migrating Virtual Machines]
+** xref:module-04.adoc[Introduction to Virtual Machine Customization]
+** xref:05_ocpv_customization.adoc[Module Lab: Customize Virtual Machines]
+** xref:06_windows_vm.adoc[Module Lab: Windows Virtual Machines]
+** xref:module-03.adoc[Network Management]
+** xref:09_network_management.adoc[Module Lab: Network Management]
+** xref:module-02.adoc[Storage Management]
+** xref:10_storage_management.adoc[Module Lab: Storage Management]
+** xref:15_backup_restore.adoc[Module Lab: Backup and Restore]
+** xref:19_service_route.adoc[Module Lab: Exposing apps using a Route]
+** xref:07_vm_management.adoc[Module Lab: Virtual Machine Management]
+** xref:20_metallb.adoc[Module Lab: Exposing apps using MetalLB]
+** xref:04a_DO316.adoc[Module Lab: DO316 Sections 7 and 8]
+** xref:17_trilio_backup.adoc[Module Lab: Trilo Backup and Recovery Lab]
+
 
 * xref:04_thanks.adoc[Thank you and next steps]
 
-* Modules
-** xref:04a_DO316.adoc[Module: DO316 Sections 3 and 4]
-** xref:05_ocpv_customization.adoc[Module: Customize Virtual Machines]
-** xref:06_windows_vm.adoc[Module: Windows Virtual Machines]
-** xref:07_vm_management.adoc[Module: Virtual Machine Management]
-** xref:08_bare_metal.adoc[Module: Bare Metal OpenShift Overview]
-** xref:09_network_management.adoc[Module: Network Management]
-** xref:10_storage_management.adoc[Module: Storage Management]
-** xref:15_backup_restore.adoc[Module: Backup and Restore]
-** xref:16_kasten.adoc[Module: Kasten Lab]
-** xref:17_trilio_backup.adoc[Module: Trilo Backup and Recovery Lab]
-** xref:19_service_route.adoc[Module: Exposing apps using a Route]
-** xref:20_metallb.adoc[Module: Exposing apps using MetalLB]
+* Modules Extras
+
 ** xref:23_ROSAVirt.adoc[Module: ROSA OCP Virt lab]
 ** xref:22_disconnected.adoc[Module: Disconnected Environments]
 ** xref:24_presales.adoc[Module: Pre Sales]
