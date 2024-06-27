@@ -1,27 +1,86 @@
-= Openshift Virtualization Field Enablement Introduction and Overview
+= Openshift Virtualization Field Enablement Introduction and Overview for LATAM
 
-== Agenda, Tuesday, June 25 9AM through Friday June 28 12:30PM
+== Agenda, Tuesday, July 2nd 9AM through Thursday July 4th
 
-* Tuesday 9AM - 6PM  EDT
-* Wednesday 9AM - 6PM EDT
-* Thursday 9AM - 6PM EDT
-* Friday 9am - 12:30PM EDT
+* Tuesday 830AM - 6PM  EDT
+* Wednesday 830AM - 6PM EDT
+* Thursday 839AM - 6PM EDT
 
-== Tuesday, June 25th
-* 9AM - 10AM
+== Tuesday, July 2nd
+
+* 8:30 AM - 9:00 AM
+** Welcome - Icebreakers
+* 9:00 AM - 11:00 AM
+** Migration Overview
+** Module 1 - Welcome to the Red Hat OpenShift Virtualization Roadshow
+*** Agenda: 
+**** Welcome and Introductions
+**** INTERNAL Virtualization Migration Promotion - field package
+**** Red Hat OpenShift Virtualization - Core Deck
+**** Sales Motion and Getting the Technical Win
+**** Forward looking technical roadmap CY24 Feature Progress - INTERNAL
+**** Example Oppy Discussion
+**** Objectives: Understand the overall solution and GTM 
+
+* 11:00 AM-12:00PM
+** Pre-Assessment Triage and Discovery Session
+*** Agenda:
+**** Delivering a Discovery Session for OCPV
+**** Review of current VM environment
+**** Categorize and rank workload complexity
+**** ID pilot workloads
+**** Define Day 2 integrations (security, network, storage, etc.)
+**** Design High Level Solution
+**** Scope Pilot
+**** OCP-V Migration Analysis Checklist Template
+**** Example report
+***** NZ Police Migration Analysis
+
+
+* 12:00-:12:45PM
+** Lunch 
+
+* 12:45 PM - 1:45 PM
+** Virtualization Migration Assessment (VMA)
+*** Agenda
+**** Assessment Prep
+**** Delivery Guide
+**** Positioning, scoping, and estimating  an OCPV Assessment
+**** Analyze current VM Architecture
+**** Identify VM workloads
+**** Define integrations
+**** Understand day-2 operations
+**** Propose a high-level design
+**** Generate roadmap 
+
+* 1:45 PM - 2:45 PM
+** OpenShift Virtualisation Pilot vs POV (vs Pre-sales POC)
+** Agenda
+**** 3 point estimation
+**** Pilot Overview and delivery
+**** PoV Overview and difference vs. Pilot
+
+* 2.45 PM-3:00 PM
+** Break
+
+
+* 3:00 PM - 4:00 PM
+** Virtualization Reference Architecture
+** Reference Architect OpenShift Virtualization Reference Implementation Guideture for Virtualisation Deep Dive
+
+* 4:00 PM - 5:00PM
+** Module 1 - OpenShift Virtualization RoadShow Presentation - Source Deck 
+*** Agenda:
+**** OpenShift Virtualization Overview
+**** Introduction
+
+* 5:00 PM - 5:30 PM
 *** Getting setup
-*** Introductions
 *** Lab URLs and details
-* 10AM - 11AM
-*** Presentation: OpenShift and Virtualization in a Disconnected World
-* 11AM - 12PM
-*** Lunch
-* 12PM - 1PM
-*** BU Product overview and roadmap with Sachin Mullick
-* 1PM - 2PM 
-*** Presentation: Virt Lab Validation & Rosetta Stone
-* 2PM - 6PM (Breaks as needed)
-*** Additional Virt Labs from Workshop
+
+== Wednesday, July 3rd
+
+
 
 == Wednesday, June 26th
 * 9AM - 9:30AM
