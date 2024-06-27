@@ -61,25 +61,15 @@
 
 == Instructors
 
-image::introductions/sw.png[]
+image::introductions/jvp.png[]
 
-* Scott Worthington
-* Presales Managing Architect, STP
+* Julio Villareal Peregrino
+* Distinguished Architect, Global STP
 
-image::introductions/ah.png[]
+image::introductions/lrc.png[]
 
-* Andrew Harrison
-* Managing Architect, STP
-
-image::introductions/bb.png[]
-
-* Brian Beaudoin
-* Senior Principal Consultant, STP
-
-image::introductions/fm.png[]
-
-* Freddy Montero
-* Managing Architect, STP
+* Lester Claudio
+* Sr Principal Architect, Global STP
 
 == BootCamp Vendor Guests
 
