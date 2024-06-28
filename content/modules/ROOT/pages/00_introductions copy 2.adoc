@@ -1,0 +1,330 @@
+= Openshift Virtualization Field Enablement Introduction and Overview for LATAM
+
+== Agenda, Tuesday, July 2nd 9AM through Thursday July 4th
+
+* Tuesday 830AM - 6PM  EDT
+* Wednesday 830AM - 6PM EDT
+* Thursday 839AM - 6PM EDT
+
+== Tuesday, July 2nd
+
+* 8:30 AM - 9:00 AM
+** Welcome - Icebreakers
+* 9:00 AM - 11:00 AM
+** Migration Overview
+** Module 1 - Welcome to the Red Hat OpenShift Virtualization Roadshow
+*** Agenda: 
+**** Welcome and Introductions
+**** INTERNAL Virtualization Migration Promotion - field package
+**** Red Hat OpenShift Virtualization - Core Deck
+**** Sales Motion and Getting the Technical Win
+**** Forward looking technical roadmap CY24 Feature Progress - INTERNAL
+**** Example Oppy Discussion
+**** Objectives: Understand the overall solution and GTM 
+
+* 11:00 AM-12:00PM
+** Pre-Assessment Triage and Discovery Session
+*** Agenda:
+**** Delivering a Discovery Session for OCPV
+**** Review of current VM environment
+**** Categorize and rank workload complexity
+**** ID pilot workloads
+**** Define Day 2 integrations (security, network, storage, etc.)
+**** Design High Level Solution
+**** Scope Pilot
+**** OCP-V Migration Analysis Checklist Template
+**** Example report
+***** NZ Police Migration Analysis
+
+
+* 12:00-:12:45PM
+** Lunch 
+
+* 12:45 PM - 1:45 PM
+** Virtualization Migration Assessment (VMA)
+*** Agenda
+**** Assessment Prep
+**** Delivery Guide
+**** Positioning, scoping, and estimating  an OCPV Assessment
+**** Analyze current VM Architecture
+**** Identify VM workloads
+**** Define integrations
+**** Understand day-2 operations
+**** Propose a high-level design
+**** Generate roadmap 
+
+* 1:45 PM - 2:45 PM
+** OpenShift Virtualisation Pilot vs POV (vs Pre-sales POC)
+** Agenda
+**** 3 point estimation
+**** Pilot Overview and delivery
+**** PoV Overview and difference vs. Pilot
+
+* 2.45 PM-3:00 PM
+** Break
+
+* 3:00 PM - 4:00 PM
+** Virtualization Reference Architecture
+** Reference Architect OpenShift Virtualization Reference Implementation Guideture for Virtualisation Deep Dive
+
+* 4:00 PM - 5:00PM
+** Module 1 - OpenShift Virtualization RoadShow Presentation - Source Deck 
+*** Agenda:
+**** OpenShift Virtualization Overview
+**** Introduction
+
+* 5:00 PM - 5:30 PM
+*** Getting setup
+*** Lab URLs and details
+
+* 5:30 PM - 6:00 PM 
+** Module 01 (module-01) - Baremetal VM Management and OpenShift Virtualization Requirements
+*** Agenda:
+**** Introduction
+**** Supported Platforms
+**** Requirements for OpenShift Virtualization
+**** Review Red Hat OpenShift Cluster
+**** Review Nodes and Machines
+**** Review Bare Metal hosts
+
+== Wednesday, July 3rd
+
+* 8:30 AM - 9:30 AM
+** Review Module-00 (module-00) - Virtual Machine Management
+** Lab 03 (03_ocpv_basics) - OpenShift Virtualization Basics
+*** Agenda:
+**** Create a new Project
+**** Create a Linux virtual machine
+**** Access the virtual machine console
+**** Live migrate a virtual machine
+**** Controlling virtual machine state
+**** Virtualization Overview dashboard
+
+* 9:30AM - 10:00 
+** Module 5 (module-05) - Migrating Virtual Machines
+** Lab 2 (02_migrate_vms) - Migration Toolkit for Virtualization
+*** Agenda:
+**** OpenShift Virtualization Overview
+**** Introduction
+**** Prerequisites for the VMware Provider
+**** Migrating Virtual Machines from VMware
+**** Review the VMware environment
+**** Review the VMware provider to the migration toolkit
+**** Create storage and network mappings
+**** Create a Migration Plan
+**** Review and configure migrated Virtual Machines
+
+* 10:00 AM - 10:30 AM
+** Module 4 (module-04) - Introduction to Virtual Machine Customization
+** Lab 5 (05_ocpv_customization)  - Introduction to virtual machine customization
+*** Agenda:
+**** Customizing a virtual machine at creation
+
+* 10:30 AM: 11:30 AM
+** Lab (06_windows_vm.adoc) - Windows Virtual Machines with OpenShift Virtualization
+*** Agenda:
+**** Create a Windows virtual machine
+
+* 11:30 AM: 12:30 AM
+* Module 3 (module-03) - Network Management
+* Lab (09_network_management) - Network Management Lab
+*** Agenda:
+**** Introduction to Network Management
+**** Create Network Attachment Definition
+**** Connect a virtual machine to the external network
+
+* 12:30 PM -  1:30 PM
+** Lunch
+
+* 1:30 PM - 2:30 PM
+** Module 2 (module-02) - Storage Management
+** Lab (10_storage_management) - Storage Management Lab
+*** Agenda:
+**** Introduction to Storage Management
+**** OpenShift Virtualization Default Boot Sources
+**** Snapshots
+**** Introduction
+**** Creating and using Snapshots
+**** Clone a Virtual Machine
+
+* 2:30 PM - 3:00 PM
+** Lab (15_backup_restore) - Backup and Restore
+*** Agenda:
+**** Introduction
+**** Review Operator
+**** Create a backup
+**** Restore a backup
+
+* 3:00 PM - 3:30 PM
+**  Lab (19_service_route) - Service Routes
+*** Agenda:
+**** Introduction
+**** Using a Service and Route to expose an application
+**** Create the Service
+**** Create the Route
+
+* 3:30 PM - 4:00 PM
+** Lab (07_vm_management) - Virtual Machine Management
+*** Agenda:
+**** Examine resources associated with the virtual machine
+**** Controlling virtual machine state
+**** Live Migrate a virtual machine
+
+* 4:00 PM - 4:30 PM
+** Lab (20_metallb) - Load Balancer Concepts
+*** Agenda: 
+**** MetalLB concepts
+**** Layer2 mode
+**** Layer 3 (BGP) mode
+**** Define IP AddressPool
+**** Configure Layer2 mode
+**** Expose the database node externally
+
+* 4:30 PM - 6:00 PM 
+** Additional Labs from DO316 Chapters 7 & 8
+
+== Thursday, July 4th 
+
+* 8:30 AM - 11:30 AM
+**  Trilio demo, and lab presented by Rodolfo Casas, Senior Solutions Architect & Red Hat Certified Architect from Trilio
+** Lab (17_trilio_backup) - Backing up with Trilio
+*** Agenda
+**** Trillio Overview
+**** Trillio T40 Product Overview and positioning
+**** Red Hat and Trilio Engagement Model
+**** Trillio Demonstration
+
+* 11:30 AM - 12:00 PM
+** VMware vSphere Overview Presentation 
+** VMware to OpenShift Presentation
+
+* 12:00 PM - 12:30 PM
+** Quick Lunch
+
+* 12:30 AM - 1:00 AM
+** Migration Factory Deep Dive
+** Deep Dive on the Migration Factory offering: OpenShift Virtualization Ansible Migration Factory Collection
+
+* 1:00 PM - 2:00 PM
+** Scenario Exercise
+*** Agenda & Objectives
+**** We are going to divide the group into three teams. 
+**** Each team is going to get a scenario with customer use cases and data. 
+**** Each team is expected to produce a presentation with: 
+**** High-Level Design 
+**** Constrains / Assumptions 
+**** Migration Approach 
+**** Each team is going to present its approach and defend it in from of the other teams. 
+
+* 2:00 PM - 3:30 PM
+** Scenario Excercise - Presentation Time 
+*** Agenda & Objectives
+**** Each team will have 20 minutes to present their approach and answer questions
+
+* 3:30 PM - 3:45 PM 
+** Break
+
+* 3:45 PM - 4:30 PM
+** Ask me Anything Discussion
+
+* 4:30 PM - 5:00 PM
+** Close Out
+*** Agenda:
+**** Account/Opportunities Overview
+**** Verbiage in Close Out Bootcamp notes to sign up for Exam
+**** Survey
+
+
+
+== Friday, July 5th
+
+* Travel Day
+
+== Instructors
+
+image::introductions/jvp.png[]
+
+* Julio Villareal Peregrino
+* Distinguished Architect, Global STP
+
+image::introductions/lrc.png[]
+
+* Lester Claudio
+* Sr Principal Architect, Global STP
+
+== BootCamp Vendor Guests
+
+image::introductions/trilio-rodolfo.jpg[]
+
+* Rodolfo Casas
+* Senior Solutions Architect at Trilio | RHCA and Red Hat Instructor
+
+== Class Introductions
+
+* All
+
+== Lab URL
+
+* link:https://redhat.enterprise.slack.com/archives/C07048NFL6M[Labs URL in SLACK Channel]
+
+== Objectives
+
+* Everything OpenShift VIRT
+** Admin
+** Virtual machines as containers
+** VM Deployments
+** The great VM Migration
+** Automating with Ansible
+** VM networking
+** Pre Sales
+** Backup and Recovery
+
+== OCP and Virt
+** Why switch from a traditional VM platform?
+Adopt cloud-native development and/or cloud-native operations: Red Hat OpenShift helps your team build applications with speed, agility, confidence, and choice. Code in production mode, anywhere you choose to build. Get back to doing work that matters.
+
+** Complete app dev stack: Red Hat OpenShift Dev Spaces (formerly Red Hat CodeReady Workspaces), Runtimes, Integration and Process Automation, Serverless, Pipelines, and more with security throughout.
+
+** Shift infrastructure spend to innovation: OpenShift native architecture changes the heavyweight cost structure from SDDC legacy to lightweight container-native frameworks.
+
+** Risk mitigation: With OpenShift support for on-premises and public cloud options, OpenShift is insurance against public cloud lock-in.
+
+** Independent from infrastructure: Red Hat OpenShift runs consistently on bare metal, on-premises virtualization, or public cloud for ultimate choice and flexibility of deployment and updates.
+
+** Pure open source innovation: The innovation in Kubernetes, serverless, service mesh, Kubernetes Operators, and more powered by the velocity of open source, with Red Hat in the lead.
+
+== Content Links
+
+link:http://demo.redhat.com[Openshift Virtualization Roadshow]
+
+link:https://role.rhu.redhat.com/rol-rhu/app/catalog?q=do316[ROLE DO316]
+
+link:https://github.com/emcon33/Virtualization-on-ROSA[OpenShift on ROSA]
+
+link:https://red.ht/virtkit[Content Kit]
+
+link:https://catalog.redhat.com/platform/red-hat-openshift/virtualization[Certified Partners list]
+
+link:https://source.redhat.com/departments/sales/globalservices/virtualization[OCP-Virtualization Enablement Global Page]
+
+link:https://portfoliohub.redhat.com/v3/serviceskit/openshift_virtualization_assessment[Virtualization Migration Assessment]
+
+link:https://portfoliohub.redhat.com/v3/serviceskit/openshift_virt_pov[OpenShift Virtualization Proof of Value]
+
+link:https://portfoliohub.redhat.com/v3/servicesmap/openshift_virt[Pre-Sales Virt]
+
+link:https://docs.google.com/document/d/177hXVSm1hSwG4tvCQ_jx1Cg2RwSjTe4yMVqLx0k17_U/edit?usp=sharing[Virtualization Migration Assessment Delivery Guide]
+
+link:https://docs.google.com/document/d/1-sm-mjAyYezDGd0ZgbjZFcur8Tf1J2vezHNBVGYwb68/edit?usp=sharing[Technical OpenShift Virt Discovery Questions]
+
+link:https://docs.google.com/spreadsheets/d/1i7e57sZVfju87Zw32lyyv1cWLN0fvP5FJW2qZlVMwoE/edit#gid=0[Resource Master]
+
+== Getting there with your friends
+
+image::introductions/virt=partners.png[]
+
+== Coming to OpenShift Virt
+
+image::introductions/toocpvirt.png[]
+
+
