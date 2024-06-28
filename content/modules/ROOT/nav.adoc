@@ -1,5 +1,5 @@
+* xref:00_introductions.adoc[Introductions & Bootcamp Agenda]
 * xref:index.adoc[Introduction]
-* xref:00_introductions.adoc[Introductions]
 * xref:01_welcome.adoc[Welcome]
 
 * Modules
