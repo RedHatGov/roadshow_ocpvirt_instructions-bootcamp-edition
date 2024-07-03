@@ -184,3 +184,5 @@ image::module-01/17_Worker_4_Details.png[link=self, window=blank, width=100%]
 
 In this lab, you became familiar with your Red Hat OpenShift cluster and the hardware that makes up the environment. You also used the web console to expand your cluster by discovering an additional bare metal node, and adding it to the cluster machineset used to scale the number of worker nodes that are available.
 
+Note: Before we proceed with the lab, please remove the newly added worker as this will prevent other labs from completing.
+
