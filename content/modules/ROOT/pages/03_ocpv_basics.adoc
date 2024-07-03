@@ -250,12 +250,13 @@ rhel9            30h
 [source,console]
 ----
 [root@ocp4-bastion ~]# oc project vmexamples
-[root@ocp4-bastion ~]# virtctl create vm \
+[root@ocp4-bastion ~]# virctl create vm \
     --name rhel9-enablement \
-    --instancetype n1.medium \
-    --infer-preference \
-    --volume-datasource name:root,src:openshift-virtualization-os-rhel9,size:50Gi | oc create -f -
+    --instancetype u1.small \
+    --infer-preference  \
+    --volume-datasource name:root,src:openshift-virtualization-os-images/rhel9,size:50Gi | oc create -f -
 ----
+
 
 . We can also do this slightly differently
 +
