@@ -46,6 +46,8 @@ In a production environment you would want to backup to an external storage syst
 
 == Create a backup
 
+NOTE: Please ensure that the virtual machine named fedora02 has a label assigned "app=fedora02" and "vm.kubevirt.io/name=fedora02" to ensure that the restore function works. This is needed since the fedora02 machine was a clone of fedora01 and has the old labels from that virtual machine instance.
+
 You will perform a backup of the VM `fedora02`. The selection of the objects to be backed up is defined by the labels `app` and `vm.kubevirt.io/name`. This includes the VM definition, disks, and additional objects being used by the virtual machine such as config maps and secrets.
 
 . Go back one screen to the main Operator page by clicking on the Operator name
