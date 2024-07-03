@@ -9,7 +9,6 @@
 ** xref:03_ocpv_basics.adoc[Module Lab: OpenShift Virtualization Basics]
 ** xref:module-05.adoc[Migrating Virtual Machines]
 ** xref:module-04.adoc[Introduction to Virtual Machine Customization]
-** xref:05_ocpv_customization.adoc[Module Lab: Customize Virtual Machines]
 ** xref:06_windows_vm.adoc[Module Lab: Windows Virtual Machines]
 ** xref:module-03.adoc[Network Management]
 ** xref:09_network_management.adoc[Module Lab: Network Management]
@@ -37,6 +36,7 @@
 
 ** xref:02_migrate_vms.adoc[Module Lab: Migrating Virtual Machines]
 ** xref:08_bare_metal.adoc[Module Lab: Bare Metal OpenShift Overview]
+** xref:05_ocpv_customization.adoc[Module Lab: Customize Virtual Machines]
 
 * Appendix
 
