@@ -1,12 +1,12 @@
-= Openshift Virtualization Field Enablement Introduction and Overview for LATAM
+= Openshift Virtualization Field Enablement Introduction and Overview for EMEA
 
-== Agenda, Tuesday, July 2nd 9AM through Thursday July 4th
+== Agenda, Tuesday, August 19 through Thursday August 22th, 2024
 
-* Tuesday 830AM - 6PM  EDT
+* Monday 1:00PM - 6PM  EDT
 * Wednesday 830AM - 6PM EDT
 * Thursday 839AM - 6PM EDT
 
-== Tuesday, July 2nd
+== Monday, August 19
 
 * 8:30 AM - 9:00 AM
 ** Welcome - Icebreakers
@@ -88,7 +88,7 @@
 **** Review Nodes and Machines
 **** Review Bare Metal hosts
 
-== Wednesday, July 3rd
+== Tuesday, August 20th
 
 * 8:30 AM - 9:30 AM
 ** Review Module-00 (module-00) - Virtual Machine Management
@@ -184,7 +184,11 @@
 * 4:30 PM - 6:00 PM 
 ** Additional Labs from DO316 Chapters 7 & 8
 
-== Thursday, July 4th 
+== Thursday, August 21st 
+
+
+
+== Thursday, August 22st 
 
 * 8:30 AM - 11:30 AM
 **  Trilio demo, and lab presented by Rodolfo Casas, Senior Solutions Architect & Red Hat Certified Architect from Trilio
