@@ -6,11 +6,16 @@
 * Wednesday 830AM - 6PM EDT
 * Thursday 839AM - 6PM EDT
 
-== Monday, August 19
+== Monday, August 19 2024
 
-* 8:30 AM - 9:00 AM
+* 8:30 AM - 1:00 PM
+** Arrival at Frankfurt Office
+*** Red Hat GmbH, MesseTurm (11th floor), Friedrich-Ebert-Anlage 49, 60308 Frankfurt am Main
+
+* 1:00 PM - 1:30 PM
 ** Welcome - Icebreakers
-* 9:00 AM - 11:00 AM
+
+* 1:30 PM - 3:00 PM
 ** Migration Overview
 ** Module 1 - Welcome to the Red Hat OpenShift Virtualization Roadshow
 *** Agenda: 
@@ -22,7 +27,7 @@
 **** Example Oppy Discussion
 **** Objectives: Understand the overall solution and GTM 
 
-* 11:00 AM-12:00PM
+* 3:00 PM - 4:00PM
 ** Pre-Assessment Triage and Discovery Session
 *** Agenda:
 **** Delivering a Discovery Session for OCPV
@@ -36,11 +41,7 @@
 **** Example report
 ***** NZ Police Migration Analysis
 
-
-* 12:00-:12:45PM
-** Lunch 
-
-* 12:45 PM - 1:45 PM
+* 4:00 PM - 5:00 PM
 ** Virtualization Migration Assessment (VMA)
 *** Agenda
 **** Assessment Prep
@@ -53,44 +54,30 @@
 **** Propose a high-level design
 **** Generate roadmap 
 
-* 1:45 PM - 2:45 PM
+* 5:00 PM - 6:00 PM
 ** OpenShift Virtualisation Pilot vs POV (vs Pre-sales POC)
 ** Agenda
 **** 3 point estimation
 **** Pilot Overview and delivery
 **** PoV Overview and difference vs. Pilot
 
-* 2.45 PM-3:00 PM
-** Break
+* 6:00 PM - 6:30 PM
+** Lab Access and Setup
+*** Getting setup
+*** Lab URLs and details
 
+* Night 1: Dinner at Will
+** Off to hotels and free night
 
-* 3:00 PM - 4:00 PM
-** Virtualization Reference Architecture
-** Reference Architect OpenShift Virtualization Reference Implementation Guideture for Virtualisation Deep Dive
+== Tuesday, August 20th 2024
 
-* 4:00 PM - 5:00PM
+* 8:30 AM - 9:30 AM
 ** Module 1 - OpenShift Virtualization RoadShow Presentation - Source Deck 
 *** Agenda:
 **** OpenShift Virtualization Overview
 **** Introduction
 
-* 5:00 PM - 5:30 PM
-*** Getting setup
-*** Lab URLs and details
-
-* 5:30 PM - 6:00 PM 
-** Module 01 (module-01) - Baremetal VM Management and OpenShift Virtualization Requirements
-*** Agenda:
-**** Introduction
-**** Supported Platforms
-**** Requirements for OpenShift Virtualization
-**** Review Red Hat OpenShift Cluster
-**** Review Nodes and Machines
-**** Review Bare Metal hosts
-
-== Tuesday, August 20th
-
-* 8:30 AM - 9:30 AM
+* 9:30 AM - 10:00 AM
 ** Review Module-00 (module-00) - Virtual Machine Management
 ** Lab 03 (03_ocpv_basics) - OpenShift Virtualization Basics
 *** Agenda:
@@ -101,7 +88,15 @@
 **** Controlling virtual machine state
 **** Virtualization Overview dashboard
 
-* 9:30AM - 10:00 
+* 10:00 AM: 10:30 AM
+* Module 3 (module-03) - Network Management
+* Lab (09_network_management) - Network Management Lab
+*** Agenda:
+**** Introduction to Network Management
+**** Create Network Attachment Definition
+**** Connect a virtual machine to the external network
+
+* 10:30AM - 11:00 
 ** Module 5 (module-05) - Migrating Virtual Machines
 ** Lab 2 (02_migrate_vms) - Migration Toolkit for Virtualization
 *** Agenda:
@@ -115,24 +110,16 @@
 **** Create a Migration Plan
 **** Review and configure migrated Virtual Machines
 
-* 10:00 AM - 10:30 AM
+* 11:00 AM - 11:30 AM
 ** Module 4 (module-04) - Introduction to Virtual Machine Customization
 ** Lab 5 (05_ocpv_customization)  - Introduction to virtual machine customization
 *** Agenda:
 **** Customizing a virtual machine at creation
 
-* 10:30 AM: 11:30 AM
+* 11:30 AM: 12:30 AM
 ** Lab (06_windows_vm.adoc) - Windows Virtual Machines with OpenShift Virtualization
 *** Agenda:
 **** Create a Windows virtual machine
-
-* 11:30 AM: 12:30 AM
-* Module 3 (module-03) - Network Management
-* Lab (09_network_management) - Network Management Lab
-*** Agenda:
-**** Introduction to Network Management
-**** Create Network Attachment Definition
-**** Connect a virtual machine to the external network
 
 * 12:30 PM -  1:30 PM
 ** Lunch
@@ -184,13 +171,35 @@
 * 4:30 PM - 6:00 PM 
 ** Additional Labs from DO316 Chapters 7 & 8
 
-== Thursday, August 21st 
+* 6:00 PM - 7 PM 
+** Beer & Winw retro on Labs 
+*** To cool down from the labs
+
+* 7:00 PM 
+** Team Dinner - Naiv Brewery Frankfurt
+
+* EXTRA LAB
+** Module 01 (module-01) - Baremetal VM Management and OpenShift Virtualization Requirements
+*** Agenda:
+**** Introduction
+**** Supported Platforms
+**** Requirements for OpenShift Virtualization
+**** Review Red Hat OpenShift Cluster
+**** Review Nodes and Machines
+**** Review Bare Metal hosts
 
 
+== Wednesday, August 21st 2024
 
-== Thursday, August 22st 
+* 8:30 AM - 9:00 AM
+** Virtualization Reference Architecture
+** Reference Architect OpenShift Virtualization Reference Implementation Guideture for Virtualisation Deep Dive
 
-* 8:30 AM - 11:30 AM
+* 9:00 AM - 9:30 PM
+** VMware vSphere Overview Presentation 
+** VMware to OpenShift Presentation
+
+* 9:30 AM - 12:30 PM
 **  Trilio demo, and lab presented by Rodolfo Casas, Senior Solutions Architect & Red Hat Certified Architect from Trilio
 ** Lab (17_trilio_backup) - Backing up with Trilio
 *** Agenda
@@ -199,18 +208,14 @@
 **** Red Hat and Trilio Engagement Model
 **** Trillio Demonstration
 
-* 11:30 AM - 12:00 PM
-** VMware vSphere Overview Presentation 
-** VMware to OpenShift Presentation
+* 12:30 PM - 1:30 PM
+** Lunch
 
-* 12:00 PM - 12:30 PM
-** Quick Lunch
-
-* 12:30 AM - 1:00 AM
+* 1:30 PM - 2:00 PM
 ** Migration Factory Deep Dive
 ** Deep Dive on the Migration Factory offering: OpenShift Virtualization Ansible Migration Factory Collection
 
-* 1:00 PM - 2:00 PM
+* 2:00 PM - 2:30 PM
 ** Scenario Exercise
 *** Agenda & Objectives
 **** We are going to divide the group into three teams. 
@@ -221,28 +226,35 @@
 **** Migration Approach 
 **** Each team is going to present its approach and defend it in from of the other teams. 
 
-* 2:00 PM - 3:30 PM
+* 2:30 PM - 6:00 PM
+** Team Work on the scenario
+
+* 6:00 PM 
+** Team dinners 
+*** Teams go out together for dinner at will. 
+
+== Thursday, August 22nd 2024
+
+* 8:30 AM - 9:30 AM 
+** Final Preparations for scenario presentations
+
+* 9:30 AM - 11 AM
 ** Scenario Excercise - Presentation Time 
 *** Agenda & Objectives
 **** Each team will have 20 minutes to present their approach and answer questions
 
-* 3:30 PM - 3:45 PM 
-** Break
-
-* 3:45 PM - 4:30 PM
+* 11:00 AM - 12:30 PM
 ** Ask me Anything Discussion
-
-* 4:30 PM - 5:00 PM
 ** Close Out
 *** Agenda:
 **** Account/Opportunities Overview
 **** Verbiage in Close Out Bootcamp notes to sign up for Exam
 **** Survey
 
+* 12:30 PM - 1:30 PM
+** Lunch
 
-
-== Friday, July 5th
-
+* Departure to Airport, Trains, Autobahn
 * Travel Day
 
 == Instructors
@@ -252,10 +264,10 @@ image::introductions/jvp.png[]
 * Julio Villareal Peregrino
 * Distinguished Architect, Global STP
 
-image::introductions/lrc.png[]
+image::introductions/mth.png[]
 
-* Lester Claudio
-* Sr Principal Architect, Global STP
+* Martijn Ten Heuvel
+* Sr Architect, EMEA STP
 
 == BootCamp Vendor Guests
 
