@@ -264,7 +264,7 @@ image::introductions/jvp.png[]
 * Julio Villareal Peregrino
 * Distinguished Architect, Global STP
 
-image::introductions/mth.png[]
+image::introductions/mth.jpeg[]
 
 * Martijn Ten Heuvel
 * Sr Architect, EMEA STP
