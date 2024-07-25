@@ -1,0 +1,19 @@
+== Pre Sales Discovery & Virtualizaton Migration Assessment Mock Sessions and links.
+
+
+
+link:https://docs.google.com/presentation/d/12EewrL3izPKt_GVpA-8NpSyR2n1OvhTBxcpWTdkDY2M/edit?usp=sharing[Red Hat OCP-Virt PreSales and Discovery]
+
+link:https://docs.google.com/presentation/d/1ZeYvyEaVJFpYXnYM7REcttLGylBHBWFHPTh2TaumFVk/edit?usp=sharing[Red Hat OCP-Virt Mock Assessment]
+
+link:https://portfoliohub.redhat.com/v3/servicesmap/openshift_virt[Pre-Sales Virt]
+
+link:https://docs.google.com/document/d/11Vo5sMBgwtFuOUAyMwIuHPzSOVtEfpbPXHQQmWW8V0Y/edit[Services One Pager]
+
+link:https://docs.google.com/document/d/1-sm-mjAyYezDGd0ZgbjZFcur8Tf1J2vezHNBVGYwb68/edit?usp=sharing[Technical OpenShift Virt Discovery Questions]
+
+link:https://docs.google.com/document/d/16sbWf6-LJYdIy-rFCtCM4_pcC6X62-EJbLLSdK7CSLA/edit?usp=sharing[Mock Scenarios]
+
+link:https://miro.com/app/board/uXjVK547j8s=/[Miro Board from Scenario 1]
+
+link:https://miro.com/app/board/uXjVK54Hu9w=/[Miro Board from Scenario 2]

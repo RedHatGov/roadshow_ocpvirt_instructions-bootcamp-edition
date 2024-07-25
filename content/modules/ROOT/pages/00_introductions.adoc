@@ -1,0 +1,163 @@
+= Openshift Virtualization Field Enablement Introduction and Overview
+
+== Agenda, Tuesday, June 25 9AM through Friday June 28 12:30PM
+
+* Tuesday 9AM - 6PM  EDT
+* Wednesday 9AM - 6PM EDT
+* Thursday 9AM - 6PM EDT
+* Friday 9am - 12:30PM EDT
+
+== Tuesday, June 25th
+* 9AM - 10AM
+*** Getting setup
+*** Introductions
+*** Lab URLs and details
+* 10AM - 11AM
+*** Presentation: OpenShift and Virtualization in a Disconnected World
+* 11AM - 12PM
+*** Lunch
+* 12PM - 1PM
+*** BU Product overview and roadmap with Sachin Mullick
+* 1PM - 2PM 
+*** Presentation: Virt Lab Validation & Rosetta Stone
+* 2PM - 6PM (Breaks as needed)
+*** Additional Virt Labs from Workshop
+
+== Wednesday, June 26th
+* 9AM - 9:30AM
+*** Follow-ups, Clean-ups with Virt Labs
+* 9:30AM - 10AM
+*** Presentation: OpenShift Virtualization Networking & Storage
+* 10AM - 12PM
+*** Networking & Storage Labs
+* 12PM - 1PM
+*** Lunch
+* 1PM - 6PM (breaks as needed)
+*** Additional Labs from DO316 Chapters 7 & 8
+
+== Thursday, June 27th
+* 9AM - 11AM
+*** Trilio demo, and lab presented by Rodolfo Casas, Senior Solutions Architect & Red Hat Certified Architect from Trilio
+* 11AM - 11:30AM
+*** Exam Certification Acceleration Tips
+* 11:30AM - 12PM
+*** Setup for Mock Discovery Sessions & Mock Virtualization Assessments
+* 12PM - 1PM
+*** Lunch
+* 1PM - 2PM 
+*** Split into teams for Mock Discovery Sessions
+* 2PM - 6PM
+*** Split into teams for Mock Virtualization Assessments
+
+== Friday, June 28th
+* 9AM - 12PM
+*** Teams present readouts from Mock Assessments and Dicovery Sessions
+* 12PM - 12:30PM
+*** Ask an OpenShift Architect, with https://www.youtube.com/@AlesNosekTSP[Ales Nosek]
+* 12:30 ->
+*** Close out
+*** Survey (Please do the survey, it's the only metrics we get from these events. It just takes a couple minutes)
+*** Lunch & Go Home!
+
+== Instructors
+
+image::introductions/sw.png[]
+
+* Scott Worthington
+* Presales Managing Architect, STP
+
+image::introductions/ah.png[]
+
+* Andrew Harrison
+* Managing Architect, STP
+
+image::introductions/bb.png[]
+
+* Brian Beaudoin
+* Senior Principal Consultant, STP
+
+image::introductions/fm.png[]
+
+* Freddy Montero
+* Managing Architect, STP
+
+== BootCamp Vendor Guests
+
+image::introductions/trilio-rodolfo.jpg[]
+
+* Rodolfo Casas
+* Senior Solutions Architect at Trilio | RHCA and Red Hat Instructor
+
+== Class Introductions
+
+* All
+
+== BU
+
+* BU Product overview and roadmap with Sachin Mullick
+
+== Lab URL
+
+* link:https://redhat.enterprise.slack.com/archives/C07048NFL6M[Labs URL in SLACK Channel]
+
+== Objectives
+
+* Everything OpenShift VIRT
+** Admin
+** Virtual machines as containers
+** VM Deployments
+** The great VM Migration
+** Automating with Ansible
+** VM networking
+** Pre Sales
+** Backup and Recovery
+
+== OCP and Virt
+** Why switch from a traditional VM platform?
+Adopt cloud-native development and/or cloud-native operations: Red Hat OpenShift helps your team build applications with speed, agility, confidence, and choice. Code in production mode, anywhere you choose to build. Get back to doing work that matters.
+
+** Complete app dev stack: Red Hat OpenShift Dev Spaces (formerly Red Hat CodeReady Workspaces), Runtimes, Integration and Process Automation, Serverless, Pipelines, and more with security throughout.
+
+** Shift infrastructure spend to innovation: OpenShift native architecture changes the heavyweight cost structure from SDDC legacy to lightweight container-native frameworks.
+
+** Risk mitigation: With OpenShift support for on-premises and public cloud options, OpenShift is insurance against public cloud lock-in.
+
+** Independent from infrastructure: Red Hat OpenShift runs consistently on bare metal, on-premises virtualization, or public cloud for ultimate choice and flexibility of deployment and updates.
+
+** Pure open source innovation: The innovation in Kubernetes, serverless, service mesh, Kubernetes Operators, and more powered by the velocity of open source, with Red Hat in the lead.
+
+== Content Links
+
+link:http://demo.redhat.com[Openshift Virtualization Roadshow]
+
+link:https://role.rhu.redhat.com/rol-rhu/app/catalog?q=do316[ROLE DO316]
+
+link:https://github.com/emcon33/Virtualization-on-ROSA[OpenShift on ROSA]
+
+link:https://red.ht/virtkit[Content Kit]
+
+link:https://catalog.redhat.com/platform/red-hat-openshift/virtualization[Certified Partners list]
+
+link:https://source.redhat.com/departments/sales/globalservices/virtualization[OCP-Virtualization Enablement Global Page]
+
+link:https://portfoliohub.redhat.com/v3/serviceskit/openshift_virtualization_assessment[Virtualization Migration Assessment]
+
+link:https://portfoliohub.redhat.com/v3/serviceskit/openshift_virt_pov[OpenShift Virtualization Proof of Value]
+
+link:https://portfoliohub.redhat.com/v3/servicesmap/openshift_virt[Pre-Sales Virt]
+
+link:https://docs.google.com/document/d/177hXVSm1hSwG4tvCQ_jx1Cg2RwSjTe4yMVqLx0k17_U/edit?usp=sharing[Virtualization Migration Assessment Delivery Guide]
+
+link:https://docs.google.com/document/d/1-sm-mjAyYezDGd0ZgbjZFcur8Tf1J2vezHNBVGYwb68/edit?usp=sharing[Technical OpenShift Virt Discovery Questions]
+
+link:https://docs.google.com/spreadsheets/d/1i7e57sZVfju87Zw32lyyv1cWLN0fvP5FJW2qZlVMwoE/edit#gid=0[Resource Master]
+
+== Getting there with your friends
+
+image::introductions/virt=partners.png[]
+
+== Coming to OpenShift Virt
+
+image::introductions/toocpvirt.png[]
+
+
