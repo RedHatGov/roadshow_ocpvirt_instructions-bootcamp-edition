@@ -1,0 +1,30 @@
+* xref:00_introductions.adoc[Introductions]
+
+* xref:01_welcome.adoc[Welcome]
+
+* xref:02_migrate_vms.adoc[Migrating Virtual Machines]
+
+* xref:03_ocpv_basics.adoc[OpenShift Virtualization Basics]
+
+* xref:04_thanks.adoc[Thank you and next steps]
+
+* Modules
+** xref:04a_DO316.adoc[Module: DO316 Sections 3 and 4]
+** xref:05_ocpv_customization.adoc[Module: Customize Virtual Machines]
+** xref:06_windows_vm.adoc[Module: Windows Virtual Machines]
+** xref:07_vm_management.adoc[Module: Virtual Machine Management]
+** xref:08_bare_metal.adoc[Module: Bare Metal OpenShift Overview]
+** xref:09_network_management.adoc[Module: Network Management]
+** xref:10_storage_management.adoc[Module: Storage Management]
+** xref:15_backup_restore.adoc[Module: Backup and Restore]
+** xref:16_kasten.adoc[Module: Kasten Lab]
+** xref:17_trilio_backup.adoc[Module: Trilo Backup and Recovery Lab]
+** xref:19_service_route.adoc[Module: Exposing apps using a Route]
+** xref:20_metallb.adoc[Module: Exposing apps using MetalLB]
+** xref:23_ROSAVirt.adoc[Module: ROSA OCP Virt lab]
+** xref:22_disconnected.adoc[Module: Disconnected Environments]
+** xref:24_presales.adoc[Module: Pre Sales]
+** xref:25_virtualization_gitops.adoc[Module: GitOps + CI/CD lab]
+* xref:26_Closeout.adoc[Closeout]
+
+* xref:27_steps_to_disable_os_images.adoc[Appendix: Steps to disable OS images]
