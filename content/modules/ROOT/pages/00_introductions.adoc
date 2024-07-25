@@ -1,13 +1,12 @@
-= Openshift Virtualization Field Enablement Introduction and Overview
+= NA Openshift Virtualization POC Field Enablement Introduction and Overview
 
-== Agenda, Tuesday, June 25 9AM through Friday June 28 12:30PM
+== Agenda: Wednesday, August 28 9AM through Thrusday August 29 5:00PM
 
-* Tuesday 9AM - 6PM  EDT
 * Wednesday 9AM - 6PM EDT
-* Thursday 9AM - 6PM EDT
-* Friday 9am - 12:30PM EDT
+* Thursday 9AM - 5PM EDT
 
-== Tuesday, June 25th
+
+== Wednesday, August 28th
 * 9AM - 10AM
 *** Getting setup
 *** Introductions
