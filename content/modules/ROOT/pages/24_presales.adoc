@@ -12,6 +12,8 @@ link:https://docs.google.com/document/d/11Vo5sMBgwtFuOUAyMwIuHPzSOVtEfpbPXHQQmWW
 
 link:https://docs.google.com/document/d/1-sm-mjAyYezDGd0ZgbjZFcur8Tf1J2vezHNBVGYwb68/edit?usp=sharing[Technical OpenShift Virt Discovery Questions]
 
+link:https://docs.google.com/document/d/16sbWf6-LJYdIy-rFCtCM4_pcC6X62-EJbLLSdK7CSLA/edit?usp=sharing[Mock Scenarios]
+
 link:https://miro.com/app/board/uXjVK547j8s=/[Miro Board from Scenario 1]
 
 link:https://miro.com/app/board/uXjVK54Hu9w=/[Miro Board from Scenario 2]
