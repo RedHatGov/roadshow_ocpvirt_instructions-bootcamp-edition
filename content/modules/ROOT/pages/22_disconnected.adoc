@@ -17,7 +17,14 @@ This lab will introduce you to the basics of deploying and managing OpenShift Vi
 
 **Login to the bastion host as listed in the Showroom.**
 
-**All exercises in this module should take place on the BASTION host NOT the hypervisor.  Please ensure you are logged in to the bastion host defined earlier in the class!**
+**All exercises in this module should take place on the BASTION host NOT the hypervisor!!**
+
+For SSH access to the bastion execute the following:
+
+[source,sh,role=execute,subs="attributes"]
+----
+sudo ssh root@192.168.123.100
+----
 
 Ensure Podman is installed in your bastion: 
 
