@@ -117,7 +117,7 @@ Download the oc-mirror tool from the OpenShift public mirror. Credentials for Re
 [source,bash]
 ----
 $ jq . ~/pull-secret.json > ~/.docker/config.json
-$ podman login --auth-file ~/.docker/config.json --username registry ocp4-bastion.aio.example.com:8443
+$ podman login --authfile ~/.docker/config.json --username registry ocp4-bastion.aio.example.com:8443
 Password: RedHat1
 Login Succeeded!
 ----
@@ -176,7 +176,7 @@ The oc-mirror tool generates a catalog image for each index mirrored along with 
 $ oc create -n openshift-config configmap custom-ca --from-file=ocp4-bastion.aio.example.com..8443=~/certs/registry.crt
 $ oc patch image.config.openshift.io/cluster --patch '{"spec":{"additionalTrustedCA":{"name":"custom-ca"}}}' --type=merge
 $ oc extract secret/pull-secret -n openshift-config --confirm --to=.
-$ podman login --auth-file .dockerconfigjson --username registry ocp4-bastion.aio.example.com:8443
+$ podman login --authfile .dockerconfigjson --username registry ocp4-bastion.aio.example.com:8443
 Password: RedHat1
 Login Succeeded!
 $ oc set data secret/pull-secret -n openshift-config --from-file=.dockerconfigjson=.dockerconfigjson
@@ -319,13 +319,13 @@ Create a pull secret for the registry along with a trust bundle if needed:
 apiVersion: v1
 kind: Secret
 metadata:
- name: mirror-registry-creds
- namespace: example
- labels:
-   app: containerized-data-importer
+  name: mirror-registry-creds
+  namespace: example
+  labels:
+    app: containerized-data-importer
 data:
- accessKeyId: cmVnaXN0cnk=
- secretKey: UmVkSGF0MQ==
+  accessKeyId: cmVnaXN0cnk=
+  secretKey: UmVkSGF0MQ==
 type: Opaque
 ----
 
@@ -343,11 +343,11 @@ $ oc create cm -n example mirror-registry-cert --from-file=ca.pem=~/certs/regist
 kind: ConfigMap
 apiVersion: v1
 metadata:
- name: mirror-registry-cert
- namespace: example
+  name: mirror-registry-cert
+  namespace: example
 data:
- ca.pem: |
-   <TLS-CA>
+  ca.pem: |
+    <TLS-CA>
 ----
 
 [NOTE]
