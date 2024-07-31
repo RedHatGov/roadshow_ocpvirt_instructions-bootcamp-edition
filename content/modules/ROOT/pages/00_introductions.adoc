@@ -80,10 +80,6 @@ image::introductions/ds.png[]
 
 * All
 
-== BU
-
-* BU Product overview and roadmap with Sachin Mullick
-
 == Lab URL
 
 * link:https://redhat.enterprise.slack.com/archives/C07048NFL6M[Labs URL in SLACK Channel]
