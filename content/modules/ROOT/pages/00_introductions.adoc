@@ -60,32 +60,21 @@
 
 == Instructors
 
-image::introductions/sw.png[]
+image::introductions/ks.png[]
 
-* Scott Worthington
-* Presales Managing Architect, STP
+* Ken Savich
+* Senior Manager, NA HQ Virt Team
 
-image::introductions/ah.png[]
+image::introductions/bm.png[]
 
-* Andrew Harrison
-* Managing Architect, STP
+* Brenda Mclaren
+* Senior Specialist Solution Architect, NA HQ Virt Team
 
-image::introductions/bb.png[]
+image::introductions/ds.png[]
 
-* Brian Beaudoin
-* Senior Principal Consultant, STP
+* Darin Sorrentino
+* Principal Specialist Solution Architect, NA HQ Virt Team
 
-image::introductions/fm.png[]
-
-* Freddy Montero
-* Managing Architect, STP
-
-== BootCamp Vendor Guests
-
-image::introductions/trilio-rodolfo.jpg[]
-
-* Rodolfo Casas
-* Senior Solutions Architect at Trilio | RHCA and Red Hat Instructor
 
 == Class Introductions
 
