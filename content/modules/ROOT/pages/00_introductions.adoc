@@ -3,60 +3,36 @@
 == Agenda: Wednesday, August 28 9AM through Thrusday August 29 5:00PM
 
 * Wednesday 9AM - 6PM EDT
-* Thursday 9AM - 5PM EDT
+* Thursday 9AM - 6PM EDT
 
 
 == Wednesday, August 28th
-* 9AM - 10AM
-*** Getting setup
-*** Introductions
-*** Lab URLs and details
-* 10AM - 11AM
-*** Presentation: OpenShift and Virtualization in a Disconnected World
-* 11AM - 12PM
-*** Lunch
-* 12PM - 1PM
-*** BU Product overview and roadmap with Sachin Mullick
-* 1PM - 2PM 
-*** Presentation: Virt Lab Validation & Rosetta Stone
-* 2PM - 6PM (Breaks as needed)
-*** Additional Virt Labs from Workshop
+* 9AM - 10:30AM
+** Introductions & Lab Sign Up
+** Presentation: OpenShift Virtualization Overview & Sales Positioning
+  *** Competitive Positioning
+  **** VMWare
+  **** Nutanix
+  **** OpenStack
+* 10:30 - 10:45AM Break
+* 10:45 - 12:15AM
+** The POC Process
+* 12:00PM Lunch
+* 1:15 - 4:00PM
+* Deploying on Bare Metal
+* 4:00 - 4:15 Break
+* 4:15 - 6:00
+* Advanced Use Cases
 
-== Wednesday, June 26th
+== Thursday, August 29th
 * 9AM - 9:30AM
-*** Follow-ups, Clean-ups with Virt Labs
-* 9:30AM - 10AM
-*** Presentation: OpenShift Virtualization Networking & Storage
-* 10AM - 12PM
-*** Networking & Storage Labs
-* 12PM - 1PM
+*** Lab Overview
+* 9:30AM - 12:15
+*** Executing on the POC - Lab Tasks
+* 12:15 - 1:15PM
 *** Lunch
-* 1PM - 6PM (breaks as needed)
-*** Additional Labs from DO316 Chapters 7 & 8
-
-== Thursday, June 27th
-* 9AM - 11AM
-*** Trilio demo, and lab presented by Rodolfo Casas, Senior Solutions Architect & Red Hat Certified Architect from Trilio
-* 11AM - 11:30AM
-*** Exam Certification Acceleration Tips
-* 11:30AM - 12PM
-*** Setup for Mock Discovery Sessions & Mock Virtualization Assessments
-* 12PM - 1PM
-*** Lunch
-* 1PM - 2PM 
-*** Split into teams for Mock Discovery Sessions
-* 2PM - 6PM
-*** Split into teams for Mock Virtualization Assessments
-
-== Friday, June 28th
-* 9AM - 12PM
-*** Teams present readouts from Mock Assessments and Dicovery Sessions
-* 12PM - 12:30PM
-*** Ask an OpenShift Architect, with https://www.youtube.com/@AlesNosekTSP[Ales Nosek]
-* 12:30 ->
-*** Close out
-*** Survey (Please do the survey, it's the only metrics we get from these events. It just takes a couple minutes)
-*** Lunch & Go Home!
+* 1:15 - 6:00PM
+*** Completing Lab Use Cases
 
 == Instructors
 
