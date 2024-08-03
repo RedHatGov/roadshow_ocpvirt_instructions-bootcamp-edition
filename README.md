@@ -2,6 +2,7 @@
  
 North America virtualization bootcamp branch.
 
+- schedule
 - intro
 - lab setup
 - course overview
