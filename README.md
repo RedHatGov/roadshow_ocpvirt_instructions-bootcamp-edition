@@ -6,4 +6,5 @@ North America virtualization bootcamp branch.
 - intro
 - lab setup
 - course overview
+- Extra credit
 
