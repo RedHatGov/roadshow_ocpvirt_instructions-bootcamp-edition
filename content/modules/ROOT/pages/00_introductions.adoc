@@ -51,6 +51,16 @@ image::introductions/ds.png[]
 * Darin Sorrentino
 * Principal Specialist Solution Architect, NA HQ Virt Team
 
+image::introductions/cj.png[]
+
+* Chris Janiszewski
+* Senior Principal Specialist Solution Architect, NA HQ Virt Team
+
+image::introductions/ml.png[]
+
+* Maciej Lecki
+* Senior Specialist Solution Architect, NA HQ Virt Team
+
 
 == Class Introductions
 
