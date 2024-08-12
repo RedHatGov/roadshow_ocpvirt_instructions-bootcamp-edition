@@ -31,6 +31,8 @@
 ** xref:module-05.adoc#prerequisites[Prerequisites for Migrations]
 ** xref:module-05.adoc#migrating_vms[Migrating Virtual Machines from VMware]
 
+* xref:module-06.adoc[7. Troubleshooting]
+
 * Additional Boot Camp Content
 ** xref:22_disconnected.adoc[Disconnected Environments]
 ** xref:19_service_route.adoc[Using a Service and Route to expose an application]
