@@ -35,7 +35,7 @@
 *** Completing Lab Use Cases
 
 == Instructors
-
+// this is a test comment
 image::introductions/ks.png[]
 
 * Ken Savich
