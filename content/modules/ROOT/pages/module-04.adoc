@@ -1,320 +1,214 @@
-= Template Management
+= Network Management
 
 == Introduction
 
-Pre-configured Red Hat virtual machine templates are listed in the *Virtualization* -> *Templates* page. These templates are available for different versions of Red Hat Enterprise Linux, Fedora, CentOS, Microsoft Windows Desktop, and Microsoft Windows Server editions. Each Red Hat virtual machine template is preconfigured with an operating system image, the default settings for the operating system, the flavor (CPU and memory), and the workload type (server).
+By default, all virtual machines are attached to the OpenShift software-defined network (SDN), which enables access from other workloads on the OpenShift cluster, including other VMs and any OpenShift native applications.
 
-The *Templates* page displays four types of virtual machine templates:
+* The SDN provides additional features for abstracting, connecting, and exposing applications in a controlled manner, whether deployed as VMs or Pods in the cluster. These include the *Service* and *Route* features of OpenShift.
+* OpenShift's network policy engine allows the VM user or administrator to create rules which allow or deny network traffic to and from individual VMs or entire projects/namespaces.
 
-* *Red Hat Supported* templates are fully supported by Red Hat.
-* *User Supported* templates are *Red Hat Supported* templates that were cloned and created by users.
-* *Red Hat Provided* templates have limited support from Red Hat.
-* *User Provided* templates are *Red Hat Provided* templates that were cloned and created by users.
+However, virtual machines may also connect directly to one or more external networks, such as VLANs, when needed. This is in addition to the SDN, which means that, for example, the administrator can connect to the VM from an external IP address, but the application communicates across the SDN with other VMs hosted by OpenShift Virtualization.
 
-[[clone_customize_template]]
-== Clone and Customize a Template
+At a high level, this is done by configuring the host networking, by creating a *NodeNetworkConfigurationPolicy* such as creating a mode 4 (LACP) bond and a OVS bridge on top. With this networking infrastructure set up, we can define *NetworkAttachmentDefinitions* to allow VMs to connect to that bridge, and therefore, directly to the external network. The next section in this lab will cover those steps. 
 
-By default pre-configured templates provided by Red Hat OpenShift Virtualization cannot be customized. However you can clone a template and make adjustments to it for your particular workload in order to make it easier to request specific types of virtual machines for specific workloads. In this section of the lab we are going to do just this, by creating a template that will provide a database server on demand for our end users.
+[NOTE]
+The OpenShift environment has already been configured with an OVS Bridge on each compute node your virtual machines will connect to, thus allowing for easy connectivity with/from outside network resources.
 
-. To begin, navigate to *Virtualization* -> *Templates* and select *All projects*
+.Goals
+* Create a network attachment definition
+* Connect a VM to the external network
+
+[[create_netattach]]
+
+== Create a Network Attachment Definition
+
+In order to use the OVS Bridge with your VM you need to create a *Network Attachment Definition*. This is what tells OpenShift about the network and allows the virtual machines to connect to it. Network Attachment Definitions are specific to the project/namespace they're created in, unless they're created in the *default* project. This gives you, the administrator, the ability to control which networks are and aren't available to users who have access to manage their own VMs. Once the Network Attachment Definition has been created, it can then be used by virtual machines when configuring their network adapters.
+
+[NOTE]
+A network attachment definition instructs openshift to utilise an existing network device. In our case that device was previously created and is named ovs-br1. You must use that name or OpenShift won’t be able to place your VM on any compute nodes as it can only utilise nodes with that specifically named network device on it.
+
+How is this done?
+
+To manage an OpenShift node's network configuration you use a tool, available as an operator, called nmstate. With nmstate you can create network interfaces on OpenShift compute nodes using Kubernetes constructs or the *NodeNetworkConfigurationPolicy* wizard available in the OpenShift console. You can create devices and customize those so that they follow the naming conventions that suit your needs, and your network requirements. For more info about nmstate, and to learn more about the host networking and how to view and manage the configuration, see the https://docs.openshift.com/container-platform/4.15/networking/k8s_nmstate/k8s-nmstate-about-the-k8s-nmstate-operator.html[documentation here].
+
+. Navigate to *Networking* -> *Network Attachment Definitions* and click *Create network attachment definition*:
 +
-image::module-04/01_Template_List.png[link=self, window=blank, width=100%]
+image::module-03/01_NAD_Dashboard.png[link=self, window=blank, width=100%]
 +
-. In the search bar type in *centos9* and in the list of templates that appear find the template for *centos-stream9-server-large*. 
+. Click the *Edit YAML* button at the top of the page.
 +
-image::module-04/02_Search_Centos9.png[link=self, window=blank, width=100%]
+image::module-03/02_NAD_Create.png[link=self, window=blank, width=100%]
 +
-. Select the three-dot menu to the far right, and click on the option to *Clone* from the menu that pops out.
-+
-image::module-04/03_Clone_Template.png[link=self, window=blank, width=100%]
-+
-. A new menu called *Clone template* will appear, fill in the the following values, and when finished click on the *Clone* button.
-+
-* *Template name:* centos-stream9-server-db-xl
-* *Template project:* vmexamples
-* *Template display name:* CentOS Stream 9 VM - Database XL Template
-+
-image::module-04/04_Clone_Template_Options.png[link=self, window=blank, width=100%]
-+
-. This will take you to the *Details* page for the template where we will be able to customize some options. Start by finding the CPU and Memory near the bottom of the page, and click on the pencil icon to edit it.
-+
-image::module-04/05_Clone_Details.png[link=self, window=blank, width=100%]
-+
-. A new window will pop out where you can edit the amount of CPU and Memory. For our XL template set the value of CPUs to 4, and Memory to 16 GiB, and click the *Save* button.
-+
-image::module-04/06_Edit_CPU_Mem.png[link=self, window=blank, width=100%]
-+
-. Navigate to the *Network Interfaces* tab, to the right of the *default* interface, select the three-dot menu and the edit option.
-+
-image::module-04/07_Edit_Network.png[link=self, window=blank, width=100%]
-+
-. When the *Edit network interface* menu appears, set the *Network* value to the *vmexamples/vlan0* network, and click the *Save* button.
-+
-image::module-04/08_Edit_Net_Int.png[link=self, window=blank, width=100%]
-+
-. Next click on the *Scripts* tab at the top, and in the section called *Cloud-init* click the *Edit* button.
-+
-image::module-04/09_Scripts_CloudInit.png[link=self, window=blank, width=100%]
-+
-. When the *Cloud-init* dialog opens, click the radio button to *Configure via: Script* then add the following YAML snippet to the end of the script.
+. Paste in the following yaml snippet, and click the Create button:
 +
 [source,yaml,role=execute]
 ----
-  packages:
-    - mariadb-server
-  runcmd:
-    - systemctl enable mariadb
-    - systemctl start mariadb
+apiVersion: k8s.cni.cncf.io/v1
+kind: NetworkAttachmentDefinition
+metadata:
+  annotations:
+    description: l2 connection for vms
+  name: vlan0
+  namespace: vmexamples
+spec:
+  config: |-
+    {
+      "cniVersion": "0.4.0", 
+      "name": "vm-network", 
+      "type": "ovn-k8s-cni-overlay", 
+      "topology": "localnet", 
+      "netAttachDefName": "vmexamples/vlan0"
+    }
 ----
 +
-image::module-04/10_Cloud_Init_Script.png[link=self, window=blank, width=100%]
+image::module-03/03_NAD_YAML.png[link=self, window=blank, width=100%]
 +
-. Click the *Save* button, followed by the *Apply* button.
-. Now click on the *Virtualization -> Catalog* menu on the left, select the *Template catalog* option and click on *User templates*. You should see our created template available as a tile.
+NOTE: In most cases a single OVS bridge can support many Network Attachment Definitions each with their own designated *VLAN Tag Number*. In this lab we use an untagged network, so no VLAN number is required here, as such our Network Attachment Definition is labeled as vlan0. 
 +
-image::module-04/11_User_Templates.png[link=self, window=blank, width=100%]
+. Examine the details of the network attachment definition. Because this was created in the *vmexamples* project, it will be available only to attach to VMs that are in that project.
 +
-. Click on the tile and you will be prompted with the VM startup screen. Click the *Quick create VirtualMachine* button.
+image::module-03/04_NAD_Created.png[link=self, window=blank, width=100%]
+
+[[connect_external_net]]
+== Connect a Virtual Machine to an External Network
+
+. Navigate to *Virtualization* -> *VirtualMachines*, select the *fedora01* VM. Click *Configuration* tab and then click the *Network* subtab:
 +
-image::module-04/12_Quick_Create_Template.png[link=self, window=blank, width=100%]
+image::module-03/05_VM_Network_Tab.png[link=self, window=blank, width=100%]
 +
-. When the virtual machine boots you can see on the *Overview* page that it was created from our template, and has the system resources we defined, and is already attached to the *vmexamples/vlan0* network with an assigned IP address.
+NOTE: Notice that the VM is currently using a single interface *default* which is connected to the  *Pod networking* network. We can choose to modify this existing connection or add a new interface to the VM. Either action we choose currently requires a VM restart.
 +
-image::module-04/13_VM_From_Template.png[link=self, window=blank, width=100%]
+. Click the three-dot menu at the end of the *default* network adapter line, and click on edit in the drop down menu.
 +
-. Click on the *Console* tab at the top and use the *Guest login credentials* option to login to the console of the virtual machine.
+image::module-03/06_Edit_Default.png[link=self, window=blank, width=100%]
 +
-image::module-04/14_VM_Console.png[link=self, window=blank, width=100%]
+. Click the dropdown menu for the *Network* field, and select the vmexamples/vlan0 network attachment definition that we created. Click on *Save*.
 +
-. Once you are logged into the virtual machine, run the following command to test the install of MariaDB.
+image::module-03/07_VM_Net_Modify.png[link=self, window=blank, width=100%]
++
+. Use the *Actions* menu or icon in the upper right corner to restart the VM. After rebooting, navigate to the *Overview* tab:
++
+. Once the machine restarts, you can see in the *Network Interfaces* section of the *Overview* screen that the *default* interface obtains a DHCP IP address from the flat network (*192.168.3.x/24*).  
++
+image::module-03/08_New_IP_Address.png[link=self, window=blank, width=100%]
+
+IMPORTANT: Before the next section of this lab, please repeat the actions to attach the fedora02 VM to the same vlan0 network.
+
+[[multinetwork_policy]]
+
+== Using a MultiNetwork Policy
+
+A multinetwork policy allows you to configure network access to a namespace and to define granular rules allowing ingress and egress from the namespace to enhance security of the applications and VMs that are running in the namespace.
+
+NOTE: This section of the lab is primarily performed through the CLI. You will need to ssh to your Bastion host where the CLI tools are already installed. Use the SSH Terminal on the right to connect to your bastion host *sudo ssh root@192.168.123.100*
+
+=== Create a MultiNetwork Policy
+
+For this section of the lab we are going to create a *MultiNetwork Policy* that prevents all network traffice from reaching the VM's that are attached to our vmexamples/vlan0 *Network Attachment Definition* including our VMs fedora01, and fedora02. We will then explictly allow one-way connectivity from fedora02 to fedora01 to show how we can find tune network connections, even within the same namespace.
+
+NOTE: The IP addresses of your virtual guests may differ from those in the attached images or examples, verify the correct addresses present in your lab environment by clicking on the Overview screen for each VM and taking a look at the *Network interfaces* tile.
+
+image::module-03/10_Find_IP_Addresses.png[link=self, window=blank, width=100%]
+
+. From our bastion host we want to paste the following content into a new file called deny-all.yaml:
++
+[source,yaml,role=execute]
+----
+apiVersion: k8s.cni.cncf.io/v1beta1
+kind: MultiNetworkPolicy
+metadata:
+  name: deny-by-default
+  annotations:
+    k8s.v1.cni.cncf.io/policy-for: vmexamples/vlan0
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  ingress: []
+----
++
+. Once the file is saved, start a ping to the IP address of the *fedora01* virtual machine to confirm that you can currently connect.
++
+image::module-03/11_Bastion_Ping.png[link=self, window=blank, width=100%]
++
+. Apply the multinetwork policy with the following syntax:
 +
 [source,sh,role=execute]
 ----
-sudo mysql -u root
+oc apply -f deny-all.yaml -n vmexamples
 ----
 +
-image::module-04/15_MariaDB_Login.png[link=self, window=blank, width=100%]
-
-[[create_win]]
-== Create a Windows VM Template
-
-In this segment of our lab, we will install Microsoft Windows Server 2019 using an ISO hosted on a web server. This represents one way to install an operating system to a virtual machine that takes advantage of the ability to source disks from many locations, including a web server, object storage, or other persistent volumes in the cluster.
-
-This process can be streamlined after the initial operating system installation by creating a template from the virtual machine. The specific process for preparing the guest operating system to be used as a template will vary, be sure to follow your organization's guidelines and requirements when preparing a template OS.
-
-. From the left menu, navigate to *Virtualization* -> *Catalog*, and click on the *Template catalog* tab near the top..
+image::module-03/12_Deny_All_Applied.png[link=self, window=blank, width=100%]
 +
-image::module-04/16_Template_Catalog.png[link=self, window=blank, width=100%]
+. Now try again to ping the IP address of the fedora01 virtual machine, your ping attempts should now fail.
 +
-. Scroll down until you find the *Microsoft Windows Server 2019 VM* tile.
+image::module-03/13_Bastion_Ping_Fail.png[link=self, window=blank, width=100%]
 +
-image::module-04/17_Windows_2k19_Tile.png[link=self, window=blank, width=100%]
+. Return to your OpenShift console, and click on *Virtualization -> VirtualMachines* and select your *fedora02* machine. 
 +
-. A dialog will appear showing the default configuration related to the template.
+image::module-03/14_Fedora02_Overview.png[link=self, window=blank, width=100%]
 +
-NOTE: Notice that there is intially no option to quick create this VM, and we must customize the VM to fit our needs.
+. Click on the button to open it's web console, and login with the provided credentials.
 +
-image::module-04/18_Windows_2k19_Dialog.png[link=self, window=blank, width=100%]
+image::module-03/15_Fedora02_Console.png[link=self, window=blank, width=100%]
 +
-. In this dialog:
-.. Specify the name *windows*
-.. Enable the checkbox *Boot from CD*
-.. Choose URL *(creates PVC)* from the drop-down menu
-.. Specify the url: http://192.168.123.100:81/Windows2019.iso
-.. Reduce the CD disk size to *5 GiB*
-.. Keep the *Disk source* size disk to the default value *60 GiB*
-.. Ensure the *Mount Windows drivers disk* checkbox is enabled. **This is required to install Windows systems, which will provide the drivers for VirtIO.**
+. Attempt to ping the ip address for the *fedora01* virtual machine, notice that it is also blocked, even though we are on the same subnet, in the same namespace. *Leave the ping running.*
 +
-image::module-04/19_Windows_2k19_Parameters.png[link=self, window=blank, width=100%]
+image::module-03/16_Fedora02_Ping_Fail.png[link=self, window=blank, width=100%]
 +
-. With the options filled out, we want to click on the *Customize VirtualMachine* button at the bottom to continue configuring our Template.
+. Return to the bastion host console, and create a new file called allow-host.yaml, and paste in the following content:
 +
-. On the *Customize and create VirtualMachine screen, click on the *Scripts* tab, and then scroll down to the *Sysprep* section and click on the *Edit* button.
-+
-image::module-04/20_Customize_Scripts.png[link=self, window=blank, width=100%]
-+
-. A new window will pop up for you to create *Sysprep* actions for your new template.
-+
-image::module-04/21_Sysprep.png[link=self, window=blank, width=100%]
-+
-. Copy and paste the following code block into the *autounattend.xml* section:
-+
-[source,xml,role=execute]
+[source,yaml,role=execute]
 ----
-<?xml version="1.0" encoding="utf-8"?>
-<unattend xmlns="urn:schemas-microsoft-com:unattend" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:schemas-microsoft-com:unattend">
-  <settings pass="windowsPE">
-    <component name="Microsoft-Windows-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
-      <DiskConfiguration>
-        <Disk wcm:action="add">
-          <CreatePartitions>
-            <CreatePartition wcm:action="add">
-              <Order>1</Order>
-              <Extend>true</Extend>
-              <Type>Primary</Type>
-            </CreatePartition>
-          </CreatePartitions>
-          <ModifyPartitions>
-            <ModifyPartition wcm:action="add">
-              <Active>true</Active>
-              <Format>NTFS</Format>
-              <Label>System</Label>
-              <Order>1</Order>
-              <PartitionID>1</PartitionID>
-            </ModifyPartition>
-          </ModifyPartitions>
-          <DiskID>0</DiskID>
-          <WillWipeDisk>true</WillWipeDisk>
-        </Disk>
-      </DiskConfiguration>
-      <ImageInstall>
-        <OSImage>
-          <InstallFrom>
-            <MetaData wcm:action="add">
-              <Key>/IMAGE/NAME</Key>
-              <Value>Windows Server 2019 SERVERSTANDARD</Value>
-            </MetaData>
-          </InstallFrom>
-          <InstallTo>
-            <DiskID>0</DiskID>
-            <PartitionID>1</PartitionID>
-          </InstallTo>
-        </OSImage>
-      </ImageInstall>
-      <UserData>
-        <AcceptEula>true</AcceptEula>
-        <FullName>Administrator</FullName>
-        <Organization>My Organization</Organization>
-      </UserData>
-      <EnableFirewall>false</EnableFirewall>
-    </component>
-    <component name="Microsoft-Windows-International-Core-WinPE" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
-      <SetupUILanguage>
-        <UILanguage>en-US</UILanguage>
-      </SetupUILanguage>
-      <InputLocale>en-US</InputLocale>
-      <SystemLocale>en-US</SystemLocale>
-      <UILanguage>en-US</UILanguage>
-      <UserLocale>en-US</UserLocale>
-    </component>
-  </settings>
-  <settings pass="offlineServicing">
-    <component name="Microsoft-Windows-LUA-Settings" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
-      <EnableLUA>false</EnableLUA>
-    </component>
-  </settings>
-  <settings pass="specialize">
-    <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
-      <AutoLogon>
-        <Password>
-          <Value>R3dh4t1!</Value>
-          <PlainText>true</PlainText>
-        </Password>
-        <Enabled>true</Enabled>
-        <LogonCount>999</LogonCount>
-        <Username>Administrator</Username>
-      </AutoLogon>
-      <OOBE>
-        <HideEULAPage>true</HideEULAPage>
-        <HideLocalAccountScreen>true</HideLocalAccountScreen>
-        <HideOnlineAccountScreens>true</HideOnlineAccountScreens>
-        <HideWirelessSetupInOOBE>true</HideWirelessSetupInOOBE>
-        <NetworkLocation>Work</NetworkLocation>
-        <ProtectYourPC>3</ProtectYourPC>
-        <SkipMachineOOBE>true</SkipMachineOOBE>
-      </OOBE>
-      <UserAccounts>
-        <LocalAccounts>
-          <LocalAccount wcm:action="add">
-            <Description>Local Administrator Account</Description>
-            <DisplayName>Administrator</DisplayName>
-            <Group>Administrators</Group>
-            <Name>Administrator</Name>
-          </LocalAccount>
-        </LocalAccounts>
-      </UserAccounts>
-      <TimeZone>Eastern Standard Time</TimeZone>
-    </component>
-  </settings>
-  <settings pass="oobeSystem">
-    <component name="Microsoft-Windows-International-Core" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
-      <InputLocale>en-US</InputLocale>
-      <SystemLocale>en-US</SystemLocale>
-      <UILanguage>en-US</UILanguage>
-      <UserLocale>en-US</UserLocale>
-    </component>
-    <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
-      <AutoLogon>
-        <Password>
-          <Value>R3dh4t1!</Value>
-          <PlainText>true</PlainText>
-        </Password>
-        <Enabled>true</Enabled>
-        <LogonCount>999</LogonCount>
-        <Username>Administrator</Username>
-      </AutoLogon>
-      <OOBE>
-        <HideEULAPage>true</HideEULAPage>
-        <HideLocalAccountScreen>true</HideLocalAccountScreen>
-        <HideOnlineAccountScreens>true</HideOnlineAccountScreens>
-        <HideWirelessSetupInOOBE>true</HideWirelessSetupInOOBE>
-        <NetworkLocation>Work</NetworkLocation>
-        <ProtectYourPC>3</ProtectYourPC>
-        <SkipMachineOOBE>true</SkipMachineOOBE>
-      </OOBE>
-      <UserAccounts>
-        <LocalAccounts>
-          <LocalAccount wcm:action="add">
-            <Description>Local Administrator Account</Description>
-            <DisplayName>Administrator</DisplayName>
-            <Group>Administrators</Group>
-            <Name>Administrator</Name>
-          </LocalAccount>
-        </LocalAccounts>
-      </UserAccounts>
-      <TimeZone>Eastern Standard Time</TimeZone>
-    </component>
-  </settings>
-</unattend>
+apiVersion: k8s.cni.cncf.io/v1beta1
+kind: MultiNetworkPolicy
+metadata:
+  name:  ingress-ipblock
+  annotations:
+    k8s.v1.cni.cncf.io/policy-for: vmexamples/vlan0
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - ipBlock:
+        cidr: <IP_ADDR_FROM_FEDORA02>/32
 ----
 +
-. Once the code is pasted, click the *Save* button on the dialog.
+IMPORTANT: Make sure that you substitute the correct IP from the Fedora02 VM.
 +
-image::module-04/22_Windows_2k19_Sysprep.png[link=self, window=blank, width=100%]
+image::module-03/17_Allow_Host_Syntax.png[link=self, window=blank, width=100%]
 +
-. You will be returned to the *Customize and create Virtual Machine* screen, Click on the *Disks* tab, and locate the line for the *installation-CDROM*, click the three-dot menu on the right, and select *Edit*.
+. Apply the policy using the following syntax:
 +
-image::module-04/23_Edit_Boot_Media.png[link=self, window=blank, width=100%]
+[source,sh,role=execute]
+----
+oc apply -f allow-host.yaml -n vmexamples
+----
+
 +
-. Select the option for *Use this disk as a boot source*, and click on the *Save* button at the bottom.
+image::module-03/18_Allow_Host_Applied.png[link=self, window=blank, width=100%]
 +
-image::module-04/24_Boot_Source.png[link=self, window=blank, width=100%]
+. Attempt to ping from the bastion host. This attempt should still fail as we have not explictly allowed it.
 +
-. When you return to the *Disks* tab, click on the *Create VirtualMachine* button at the bottom.
-. The Virtual Machine will start the provisioning process by downloading the ISO image, configuring, and starting the instance.
+image::module-03/19_Bastion_Still_Blocked.png[link=self, window=blank, width=100%]
 +
-image::module-04/25_Windows_2k19_Provisioning.png[link=self, window=blank, width=100%]
+. Return to your *fedora02* VM console, you should find that the ping has now resumed successfully.
 +
-. After a few minutes, the Virtual VM will be in *Running* status. Switch to the *Console* tab:
+image::module-03/20_Fedora02_Ping_Allowed.png[link=self, window=blank, width=100%]
 +
-image::module-04/26_Windows_2k19_Console.png[link=self, window=blank, width=100%]
+. Let's clean up the policies for the next section.
 +
-IMPORTANT: The VM is marked as "Not migratable" because a CD-ROM disk is attached. 
+IMPORTANT: For the next lab, it's important that we clear out the two network policies we created.
 +
-. Once the VM installation process is complete, go ahead and power it off with the stop button. We can now take a snapshot of the root disk, and use that to create a bootable volume template that we can use to boot other Windows 2k19 machines.
+Please run the following two commands:
 +
-. Click on *Storage* -> *PersistentVolumeClaims* to see a list of PVCs available in the vmexamples namespace.
-+
-image::module-04/27_Windows_PVC.png[link=self, window=blank, width=100%]
-+
-. Find the *windows* PVC that is listed and using the three-dot menu on the right select *Clone PVC*. On the menu that pops up, name the new PVC *windows-2k19-template*.
-+
-image::module-04/28_Clone_Windows_PVC.png[link=self, window=blank, width=100%]
-+
-. Once this is saved, you can return to the *Virtualization -> Catalog* menu, and use this cloned PVC as a future boot source for creating new Virtual Machines by selecting the option for *PVC (clone PVC)* as the *Disk source*, and selecting the *Windows-2k19-Template* PVC as the *PVC name* to clone.
-+
-image::module-04/29_Windows_Template.png[link=self, window=blank, width=100%]
+[source,sh,role=execute]
+----
+oc delete -f allow-host.yaml -f deny-all.yaml -n vmexamples
+----
 
 == Summary
 
-In this section we learned how to clone and customize and existing template to create one that can be used for specific workloads like databases. We also learned how to configure one of the existing Windows templates that exists without a boot source, and automate it's installation process, so we can create future templates by cloning the installation PVC that is created with that VM.
+In this section we learned a little bit more about how networking works in OpenShift Virtualization. We created a network attachment definition so that our VMs have network access from outside of the cluster. We also implemented a MultiNetwork Policy to demonstrate how we can secure connections to our VMs by only allowing specified hosts access. 

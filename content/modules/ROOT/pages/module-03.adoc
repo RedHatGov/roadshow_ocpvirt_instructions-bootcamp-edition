@@ -1,214 +1,150 @@
-= Network Management
+= Storage Management
 
-== Introduction
+Red Hat OpenShift supports multiple types of storage, both for on-premises and cloud providers. OpenShift Virtualization can use any supported container storage interface (CSI) provisioner in the environment you're running on. For example, OpenShift Data Foundation, NetApp, Dell/EMC, Fujitsu, Hitachi, Pure Storage, Portworx, and many others support on-premises, CSI provisioned, ReadWriteMany (RWX) volumes with OpenShift Virtualization.
 
-By default, all virtual machines are attached to the OpenShift software-defined network (SDN), which enables access from other workloads on the OpenShift cluster, including other VMs and any OpenShift native applications.
+This workshop segment will explore Persistent Volume Claims (PVCs), which are used to request storage from the provider and store a VM disk. Many storage providers also support snapshots and clones of their devices, be sure to check with your vendor to verify the features supported by the CSI driver and storage device.
 
-* The SDN provides additional features for abstracting, connecting, and exposing applications in a controlled manner, whether deployed as VMs or Pods in the cluster. These include the *Service* and *Route* features of OpenShift.
-* OpenShift's network policy engine allows the VM user or administrator to create rules which allow or deny network traffic to and from individual VMs or entire projects/namespaces.
+Notably, there are no restrictions on storage protocol (e.g. NFS, iSCSI, FC, etc.) specific to OpenShift Virtualization. The only requirement is that the RWX access mode is available to support live migration of VMs within the cluster. Otherwise, the storage that best meets the needs of your VMs and applications is always the right choice.
 
-However, virtual machines may also connect directly to one or more external networks, such as VLANs, when needed. This is in addition to the SDN, which means that, for example, the administrator can connect to the VM from an external IP address, but the application communicates across the SDN with other VMs hosted by OpenShift Virtualization.
+image::module-02/00_disk_concepts.png[link=self, window=blank, width=100%]
 
-At a high level, this is done by configuring the host networking, by creating a *NodeNetworkConfigurationPolicy* such as creating a mode 4 (LACP) bond and a OVS bridge on top. With this networking infrastructure set up, we can define *NetworkAttachmentDefinitions* to allow VMs to connect to that bridge, and therefore, directly to the external network. The next section in this lab will cover those steps. 
+[[examine_pvc]]
 
+== Examine the PVC for a VM
+
+In this lab, we are going to take a closer look at the storage behind the virtual machine we just created *fedora01*. 
+
+. Start by clicking on the left menu for *Storage* -> *Persistent Volume Claims*. Make sure you are in the *vmexamples* namespace, you should see the *fedora01* VM from the previous section listed.
++
+//add image
++
+. Click on the *fedora01* VM and you will be presented with a screen that shows additional details about the storage volume backing the VM. 
++
+. Notice the following information about the persistent volume claim:
+.. The PVC is currently bound successfuly
+.. The PVC has a requested capacity and size of 30GiB
+.. The Access mode of the PVC is ReadWriteMany (RWX)
+.. The Volume mode of the PVC is Block
+.. The volume is using the *ocs-storagecluster-ceph-rbd-virtualization* storage class. 
++
+image::module-02/02_Fedora01_PVC_Details.png[link=self, window=blank, width=100%]
+
+[[managing_snapshots]]
+== Managing Snapshots
+
+OpenShift Virtualization relies on the CSI storage provider's snapshot capability to create disk snapshots for the virtual machine, which can be taken "online" while the VM is running or "offline" while the VM is powered off. If the KVM integrations are installed on the VM, you will also have the option of quiescing the guest operating system (quiescing ensures that the snapshot of the disk represents a consistent state of the guest file systems, e.g., buffers are flushed and the journal is consistent).
+
+Since disk snapshots are dependent on the storage implementation, abstracted by the CSI, performance impact and capacity used will depend on the storage provider. Work with your storage vendor to determine how the system will manage PVC snapshots and the impact they may or may not have.
+
+[IMPORTANT]
+====
+Snapshots, by themselves, are not a backup or disaster recovery capability. The data needs to be protected in other ways, such as one or more copies stored in a different location, to recover from the storage system failing.
+
+In addition to the OpenShift API for Data Protection (OADP), partners such as Kasten by Veeam, Trilio, and Storware support the ability to backup and restore virtual machines to the same cluster or other clusters as needed.
+====
+
+With the VM snapshots feature, cluster administrators and application developers can:
+
+* Create a new snapshot
+* List all snapshots attached to a specific VM
+* Revert a VM to a snapshot
+* Delete an existing VM snapshot
+
+=== Creating and Using Snapshots
+
+. Navigate back to *Virtualization* -> *VirtualMachines* and select the virtual machine, *fedora01* in the project *vmexamples*.
++
+image::module-02/03_VM_Overview.png[link=self, window=blank, width=100%]
++
+. Notice there are currently no snapshots of this VM listed on the overview page. 
++
+image::module-02/04_Snapshots_Overview.png[link=self, window=blank, width=100%]
++
+. Navigate to the *Snapshots* tab.
++
+image::module-02/05_Snapshot_Menu.png[link=self, window=blank, width=100%]
+
+. Press *Take snapshot* and a dialog will open
++
 [NOTE]
-The OpenShift environment has already been configured with an OVS Bridge on each compute node your virtual machines will connect to, thus allowing for easy connectivity with/from outside network resources.
+There is a warning about the *cloudinitdisk* not being included in the snapshot. This is expected and happens because it is an ephemeral disk.
++
+image::module-02/06_VM_Snapshot_Dialog.png[link=self, window=blank, width=100%]
 
-.Goals
-* Create a network attachment definition
-* Connect a VM to the external network
+. Press *Save* and wait till the _Snapshot_ has been created and the *status* shows as *Succeeded*.
++
+image::module-02/07_VM_Snapshot_Taken.png[link=self, window=blank, width=100%]
 
-[[create_netattach]]
+. Press the three-dot menu, and see that the *Restore* option is greyed out because the VM is currently running.
++
+image::module-02/08_VM_Restore_Disabled.png[link=self, window=blank, width=100%]
 
-== Create a Network Attachment Definition
-
-In order to use the OVS Bridge with your VM you need to create a *Network Attachment Definition*. This is what tells OpenShift about the network and allows the virtual machines to connect to it. Network Attachment Definitions are specific to the project/namespace they're created in, unless they're created in the *default* project. This gives you, the administrator, the ability to control which networks are and aren't available to users who have access to manage their own VMs. Once the Network Attachment Definition has been created, it can then be used by virtual machines when configuring their network adapters.
-
-[NOTE]
-A network attachment definition instructs openshift to utilise an existing network device. In our case that device was previously created and is named ovs-br1. You must use that name or OpenShift won’t be able to place your VM on any compute nodes as it can only utilise nodes with that specifically named network device on it.
-
-How is this done?
-
-To manage an OpenShift node's network configuration you use a tool, available as an operator, called nmstate. With nmstate you can create network interfaces on OpenShift compute nodes using Kubernetes constructs or the *NodeNetworkConfigurationPolicy* wizard available in the OpenShift console. You can create devices and customize those so that they follow the naming conventions that suit your needs, and your network requirements. For more info about nmstate, and to learn more about the host networking and how to view and manage the configuration, see the https://docs.openshift.com/container-platform/4.15/networking/k8s_nmstate/k8s-nmstate-about-the-k8s-nmstate-operator.html[documentation here].
-
-. Navigate to *Networking* -> *Network Attachment Definitions* and click *Create network attachment definition*:
+. Next, switch to the *Console* tab. We are going to login and perform a modification that prevents the VM from being able to boot. 
 +
-image::module-03/01_NAD_Dashboard.png[link=self, window=blank, width=100%]
+image::module-02/09_Console_Login.png[link=self, window=blank, width=100%]
 +
-. Click the *Edit YAML* button at the top of the page.
+. Click on the *Guest login credentials* dropdown to gather the username and password to log into your console.
 +
-image::module-03/02_NAD_Create.png[link=self, window=blank, width=100%]
+NOTE: There is a *Copy to clipboard* button and a *Paste* button available here, which makes the login process much easier.
 +
-. Paste in the following yaml snippet, and click the Create button:
-+
-[source,yaml,role=execute]
-----
-apiVersion: k8s.cni.cncf.io/v1
-kind: NetworkAttachmentDefinition
-metadata:
-  annotations:
-    description: l2 connection for vms
-  name: vlan0
-  namespace: vmexamples
-spec:
-  config: |-
-    {
-      "cniVersion": "0.4.0", 
-      "name": "vm-network", 
-      "type": "ovn-k8s-cni-overlay", 
-      "topology": "localnet", 
-      "netAttachDefName": "vmexamples/vlan0"
-    }
-----
-+
-image::module-03/03_NAD_YAML.png[link=self, window=blank, width=100%]
-+
-NOTE: In most cases a single OVS bridge can support many Network Attachment Definitions each with their own designated *VLAN Tag Number*. In this lab we use an untagged network, so no VLAN number is required here, as such our Network Attachment Definition is labeled as vlan0. 
-+
-. Examine the details of the network attachment definition. Because this was created in the *vmexamples* project, it will be available only to attach to VMs that are in that project.
-+
-image::module-03/04_NAD_Created.png[link=self, window=blank, width=100%]
-
-[[connect_external_net]]
-== Connect a Virtual Machine to an External Network
-
-. Navigate to *Virtualization* -> *VirtualMachines*, select the *fedora01* VM. Click *Configuration* tab and then click the *Network* subtab:
-+
-image::module-03/05_VM_Network_Tab.png[link=self, window=blank, width=100%]
-+
-NOTE: Notice that the VM is currently using a single interface *default* which is connected to the  *Pod networking* network. We can choose to modify this existing connection or add a new interface to the VM. Either action we choose currently requires a VM restart.
-+
-. Click the three-dot menu at the end of the *default* network adapter line, and click on edit in the drop down menu.
-+
-image::module-03/06_Edit_Default.png[link=self, window=blank, width=100%]
-+
-. Click the dropdown menu for the *Network* field, and select the vmexamples/vlan0 network attachment definition that we created. Click on *Save*.
-+
-image::module-03/07_VM_Net_Modify.png[link=self, window=blank, width=100%]
-+
-. Use the *Actions* menu or icon in the upper right corner to restart the VM. After rebooting, navigate to the *Overview* tab:
-+
-. Once the machine restarts, you can see in the *Network Interfaces* section of the *Overview* screen that the *default* interface obtains a DHCP IP address from the flat network (*192.168.3.x/24*).  
-+
-image::module-03/08_New_IP_Address.png[link=self, window=blank, width=100%]
-
-IMPORTANT: Before the next section of this lab, please repeat the actions to attach the fedora02 VM to the same vlan0 network.
-
-[[multinetwork_policy]]
-
-== Using a MultiNetwork Policy
-
-A multinetwork policy allows you to configure network access to a namespace and to define granular rules allowing ingress and egress from the namespace to enhance security of the applications and VMs that are running in the namespace.
-
-NOTE: This section of the lab is primarily performed through the CLI. You will need to ssh to your Bastion host where the CLI tools are already installed. Use the SSH Terminal on the right to connect to your bastion host *sudo ssh root@192.168.123.100*
-
-=== Create a MultiNetwork Policy
-
-For this section of the lab we are going to create a *MultiNetwork Policy* that prevents all network traffice from reaching the VM's that are attached to our vmexamples/vlan0 *Network Attachment Definition* including our VMs fedora01, and fedora02. We will then explictly allow one-way connectivity from fedora02 to fedora01 to show how we can find tune network connections, even within the same namespace.
-
-NOTE: The IP addresses of your virtual guests may differ from those in the attached images or examples, verify the correct addresses present in your lab environment by clicking on the Overview screen for each VM and taking a look at the *Network interfaces* tile.
-
-image::module-03/10_Find_IP_Addresses.png[link=self, window=blank, width=100%]
-
-. From our bastion host we want to paste the following content into a new file called deny-all.yaml:
-+
-[source,yaml,role=execute]
-----
-apiVersion: k8s.cni.cncf.io/v1beta1
-kind: MultiNetworkPolicy
-metadata:
-  name: deny-by-default
-  annotations:
-    k8s.v1.cni.cncf.io/policy-for: vmexamples/vlan0
-spec:
-  podSelector: {}
-  policyTypes:
-  - Ingress
-  ingress: []
-----
-+
-. Once the file is saved, start a ping to the IP address of the *fedora01* virtual machine to confirm that you can currently connect.
-+
-image::module-03/11_Bastion_Ping.png[link=self, window=blank, width=100%]
-+
-. Apply the multinetwork policy with the following syntax:
+. Once you are logged in, execute the following command: 
 +
 [source,sh,role=execute]
 ----
-oc apply -f deny-all.yaml -n vmexamples
+sudo rm -rf /boot/grub2; sudo shutdown -r now
 ----
 +
-image::module-03/12_Deny_All_Applied.png[link=self, window=blank, width=100%]
+. The virtual machine will no longer be able to boot. 
 +
-. Now try again to ping the IP address of the fedora01 virtual machine, your ping attempts should now fail.
+image::module-02/10_Bootloader_Broken.png[link=self, window=blank, width=100%]
 +
-image::module-03/13_Bastion_Ping_Fail.png[link=self, window=blank, width=100%]
+IMPORTANT: In the previous step, the operating system was shutdown from within the guest. However, OpenShift Virtualization will restart it automatically by default. This behavior can be changed globally or on a per-VM basis.
 +
-. Return to your OpenShift console, and click on *Virtualization -> VirtualMachines* and select your *fedora02* machine. 
+. Using the *Actions* dropdown menu or the shortcut button in the top right corner, *Stop* the VM. This process can take a long time since it attempts a graceful shutdown and the machine is in an unstable state. If you click on the *Actions* dropdown menu again you will have the option to *Force stop*. Please make use of this option in order to continue with the lab. 
 +
-image::module-03/14_Fedora02_Overview.png[link=self, window=blank, width=100%]
+. You can click on the *Overview* tab to confirm that the VM has stopped. You can also see the snapshot we recently took listed in the *Snapshots* tile. (You may need to Force Stop the VM via the dropdown. This is fine as we are about to restore the snapshot.)
 +
-. Click on the button to open it's web console, and login with the provided credentials.
+image::module-02/11_VM_Stopped_Snapshot.png[link=self, window=blank, width=100%] 
 +
-image::module-03/15_Fedora02_Console.png[link=self, window=blank, width=100%]
+. Navigate back to the *Snapshots* tab, click the three-dot menu, and with the VM stopped, you will find *Restore* is no longer greyed out. Click it.
 +
-. Attempt to ping the ip address for the *fedora01* virtual machine, notice that it is also blocked, even though we are on the same subnet, in the same namespace. *Leave the ping running.*
+image::module-02/12_VM_Restore.png[link=self, window=blank, width=100%]
 +
-image::module-03/16_Fedora02_Ping_Fail.png[link=self, window=blank, width=100%]
+. In the dialog shown, press *Restore*.
 +
-. Return to the bastion host console, and create a new file called allow-host.yaml, and paste in the following content:
-+
-[source,yaml,role=execute]
-----
-apiVersion: k8s.cni.cncf.io/v1beta1
-kind: MultiNetworkPolicy
-metadata:
-  name:  ingress-ipblock
-  annotations:
-    k8s.v1.cni.cncf.io/policy-for: vmexamples/vlan0
-spec:
-  podSelector: {}
-  policyTypes:
-  - Ingress
-  ingress:
-  - from:
-    - ipBlock:
-        cidr: <IP_ADDR_FROM_FEDORA02>/32
-----
-+
-IMPORTANT: Make sure that you substitute the correct IP from the Fedora02 VM.
-+
-image::module-03/17_Allow_Host_Syntax.png[link=self, window=blank, width=100%]
-+
-. Apply the policy using the following syntax:
-+
-[source,sh,role=execute]
-----
-oc apply -f allow-host.yaml -n vmexamples
-----
+image::module-02/13_VM_Restore_Dialog.png[link=self, window=blank, width=100%]
 
+. Wait until the VM is restored, the process should be fairly quick.
 +
-image::module-03/18_Allow_Host_Applied.png[link=self, window=blank, width=100%]
+image::module-02/14_VM_Restored.png[link=self, window=blank, width=100%]
 +
-. Attempt to ping from the bastion host. This attempt should still fail as we have not explictly allowed it.
+. Return to *Overview* tab, and start the VM.
 +
-image::module-03/19_Bastion_Still_Blocked.png[link=self, window=blank, width=100%]
+image::module-02/15_VM_Start.png[link=self, window=blank, width=100%]
 +
-. Return to your *fedora02* VM console, you should find that the ping has now resumed successfully.
+. Click on the console tab to confirm that the VM has now restarted successfully. 
 +
-image::module-03/20_Fedora02_Ping_Allowed.png[link=self, window=blank, width=100%]
+image::module-02/16_VM_Running.png[link=self, window=blank, width=100%]
+
+[[clone_vm]]
+== Clone a Virtual Machine
+
+Cloning creates a new VM that uses it's own disk image for storage, but most of the clone's configuration and stored data is identical to the source VM.
+
+. Return to the *Overview* screen, and click the *Actions* dropdown menu to see the option to clone the VM.
 +
-. Let's clean up the policies for the next section.
+image::module-02/17_Overview_Actions_Clone.png[link=self, window=blank, width=100%]
+. Press *Clone* from the *Actions* menu, and a dialog will open. Name the cloned VM *fedora02*, and select the check box to *Start VirtualMachine on clone*.
 +
-IMPORTANT: For the next lab, it's important that we clear out the two network policies we created.
+image::module-02/18_VM_Clone_Dialog.png[link=self, window=blank, width=100%]
 +
-Please run the following two commands:
+. A new VM is created, the disks are cloned and automatically the portal will redirect you to the new VM, and you can see the *Created* time as very recently.
 +
-[source,sh,role=execute]
-----
-oc delete -f allow-host.yaml -f deny-all.yaml -n vmexamples
-----
+image::module-02/19_VM_Cloned.png[link=self, window=blank, width=100%]
++
+[IMPORTANT]
+The cloned VM will have the same identity as the source VM, which may cause conflicts with applications and other clients interacting with the VM. Use caution when cloning a VM connected to an external network or in the same project.
 
 == Summary
 
-In this section we learned a little bit more about how networking works in OpenShift Virtualization. We created a network attachment definition so that our VMs have network access from outside of the cluster. We also implemented a MultiNetwork Policy to demonstrate how we can secure connections to our VMs by only allowing specified hosts access. 
+In this section of our lab we explored the storage options that are available to us when managing virtual machines. We also performed several VM management functions that are dependant on the storage provisioned for the virtual machine, including taking snapshots of VMs and cloning VMs to be used in another project or to help streamline development.

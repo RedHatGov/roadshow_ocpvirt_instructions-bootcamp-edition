@@ -1,0 +1,11 @@
+= Troubleshooting
+
+== Introduction
+
+For this section of the lab, we will be covering common issues that occur when performing a Bare Metal Deployment and how to triage these issues.
+
+[[boot_source_na]]
+== Boot Source Not Available
+
+[[network_connectivity]]
+== Network Connectivity
