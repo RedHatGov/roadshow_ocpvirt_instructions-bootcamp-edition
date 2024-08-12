@@ -51,7 +51,6 @@ image::introductions/ds.png[]
 * Darin Sorrentino
 * Principal Specialist Solution Architect, NA HQ Virt Team
 
-<<<<<<< HEAD
 image::introductions/cj.png[]
 
 * Chris Janiszewski
@@ -61,12 +60,10 @@ image::introductions/ml.png[]
 
 * Maciej Lecki
 * Senior Specialist Solution Architect, NA HQ Virt Team
-=======
 image::introductions/dm.png[]
 
 * Dawn Marini
 * Specialist Solution Architect, NA HQ Virt Team
->>>>>>> 5b6b88c (Added Dawn to the 00_introductions)
 
 
 == Class Introductions
