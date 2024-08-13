@@ -7,5 +7,59 @@ For this section of the lab, we will be covering common issues that occur when p
 [[boot_source_na]]
 == Boot Source Not Available
 
+We have run into issues in the past where the downloaded Boot Sources from Red Hat existed one day and then seemed to have gone missing the next day.  The confusing part happens when you look and see the PVC for the disk image, but it still says the Boot Source is missing.  To troubleshoot this, we need to walk through how the volume is associated with the templated.  Start by looking at the DataSource that is associated with one of the Templates that has gone missing.  By default, the Template definition has the following for the location of the DataSource:
+
+```
+    spec:
+      dataVolumeTemplates:
+        - apiVersion: cdi.kubevirt.io/v1beta1
+          kind: DataVolume
+          metadata:
+            name: '${NAME}'
+          spec:
+            sourceRef:
+              kind: DataSource
+              name: '${DATA_SOURCE_NAME}'
+              namespace: '${DATA_SOURCE_NAMESPACE}'
+            storage:
+              resources:
+                requests:
+                  storage: 30Gi
+...
+parameters:
+  - name: NAME
+    description: VM name
+    generate: expression
+    from: 'centos7-[a-z0-9]{16}'
+  - name: DATA_SOURCE_NAME
+    description: Name of the DataSource to clone
+    value: centos7
+  - name: DATA_SOURCE_NAMESPACE
+    description: Namespace of the DataSource
+    value: openshift-virtualization-os-images
+...
+```
+
+We see here we need to look at the `centos7` DataSource name in the `opnshift-virtualization-os-images` namespace. Navigate to `Administration->CustomResourceDefinitions` and search for `DataSource` and select that Custom Resource Definition (CRD).  Click `Instances` and find the associated DataVolume for the Template and click on it to open the DataSource. Switch to the `YAML` view and look at the spec section:
+
+```
+spec:
+  source:
+    snapshot:
+      name: centos7-02aa45fbcbad
+      namespace: openshift-virtualization-os-images
+```
+
+Here we can see the DataSource is actually a `snapshot` and not a `pvc`.  Next, see if that `snapshot` exists by navigating to `Storage->VolumeSnapshots` and looking for the associated snapshot.  Ensure that you are looking in the `openshift-virtualization-os-images` namespace.  If you do not see this here, however, you do see a `pvc` with the same name, then the issue is that something changed in the environment (Operator update?) that caused a disassociation of the DataSource to the Template.
+
+To fix this, note the StorageClass that the `pvc` exists on and navigated to `Administration->CustomResourceDefinitions` and search for `StorageProfile`.  You may see more than one, select the one in the `cdi.kubervirt.io` Group. Click `Instances` and then select the StorageProfile with the same name as the StorageClass for that `pvc.` In the spec section, change or add `dataImportCronSourceFormat` to match how the images are actually stored in your environment, either `pvc` or `snapshot`.
+
+```
+spec:
+  dataImportCronSourceFormat: pvc
+```
+
+Once this is corrected, then all of the Boot Sources should now once again show as Available.
+
 [[network_connectivity]]
 == Network Connectivity
