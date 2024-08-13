@@ -1,7 +1,7 @@
 * xref:index.adoc[Introduction]
 * xref:00_introductions.adoc[Agenda & Instructors]
 
-* xref:module-00.adoc[0. Operators]
+* xref:module-00.adoc[0. Installation & Operators]
 ** xref:module-00.adoc#storage_operator[Openshift Storage]
 ** xref:module-00.adoc#virtualization_operator[Openshift Virtualization]
 ** xref:module-00.adoc#nmstate_operator[NMState]

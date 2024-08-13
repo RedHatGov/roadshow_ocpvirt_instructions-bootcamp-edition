@@ -1,19 +1,29 @@
-= Operators
+= Installation & Operators
 
-== Introduction
+== Installation
+
+For the lab portion of this training, the Openshift environment is already pre-provisioned, which unfortunately skips a major hurdle which is encountered as part of these Proof of Concept deliveries.  As many of you are aware, there's several different ways to deploy Openshift at a customer site.  The two methods that we have found the most success with both utilizae the Assisted Installer:
+
+* Interactive Assisted Installer
+* Local Agent Installer
+
+We estimate 99% of the deployments we do for a Proof of Concept utilize the Interactive Assisted Installer where the customer is walked through the process of configuring the cluster, booting the bare-metal machines and deploying the cluster. When this method is not feasible due to connectivity, we fallback to a Local Agent Installer using a Local/Disconnected Registry. See xref:22_disconnected.adoc[Disconnected Environments] for more details on this type of deployment method.
+
+
+== Operators
 
 During installation, you have the option to include various Operators as part of the deployment process.  Deployment of Operators is something that is second nature for those familiar with Openshift, however, for many of the customers coming from other Virtualization Platforms this concept is new.  Due to this reason, many times we choose not to install the Operators at Deployment Time.
 
 For your lab environment, these will be pre-installed in an effort to save time, however, this section will cover the Operators that we typically install and configure as part of the Proof of Concept delivery and how they are typically configured.
 
 [[storage_operator]]
-== Openshift Storage
+=== Openshift Storage
 
 [[virtualization_operator]]
-== Openshift Virtualization
+=== Openshift Virtualization
 
 [[nmstate_operator]]
-== NMState Operator
+=== NMState Operator
 
 [[mtv_operator]]
-== Openshift Migration Toolkit for Virtualization
+=== Openshift Migration Toolkit for Virtualization
