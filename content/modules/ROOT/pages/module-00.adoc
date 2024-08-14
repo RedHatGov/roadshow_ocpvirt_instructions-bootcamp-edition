@@ -41,7 +41,7 @@ image::module-00/02_VM_List.png[link=self, window=blank, width=100%]
 
 . Before creating a VM we need to create a new project. Virtual machines are deployed to a specific project, or namespace, where by default, users without permission to the namespace cannot access, manage, or control them. Administrators can access all projects, and therefore view all virtual machines, however regular users must be given access to projects as needed.
 +
-.. Click *Project: All Projects* at the lop left of the window and then click *Create Project*.
+.. Click *Project: All Projects* at the top left of the window and then click *Create Project*.
 +
 image::module-00/02_All_Projects.png[link=self, window=blank, width=100%]
 
@@ -105,7 +105,7 @@ image::module-00/12_Configuration_Tab.png[link=self, window=blank, width=100%]
 +
 * *Details*: This tab presents all of the physical features of the VM in a single panel. From here you can make edits to various descriptors and basic hardware configurations including modifying the cpu or memory, changing the hostname, attaching passthrough devices, and modifying the boot order.
 * *Storage*: This tab lists the disks attached to the system and allows you to add new disks to the system. If the guest is configured with the agent, it lists the filesystems and the utilization. Here it is possible to attach _ConfigMaps_, _Secrets_, and _Service Accounts_ as extra disks. This is useful when passing configuration data to the application(s) running in the virtual machine.
-* *Network*: This Tab shows the current network interfaces configured for the VM and allows for you to add new ones.
+* *Network*: This tab shows the current network interfaces configured for the VM and allows for you to add new ones.
 * *Scheduling*: This tab includes advanced configuration options indicating where the VM should run and the strategy to follow for eviction. This tab is used to configure (anti)affinity rules, configure node selectors and tolerations, and other behaviors that affect which cluster nodes the VM can be scheduled to.
 * *SSH*: This tab allows you to configure remote access to the machine by creating an SSH service on a configured load-balancer, or by injecting public SSH keys if the feature is enabled.
 * *Initial run*: This tab allows us to configure _cloud-init_ for Linux or _sys-prep_ for Microsoft Windows, including setting the commands to be executed on the first boot, such as the injection of SSH keys, installation of applications, network configuration, and more.
