@@ -6,7 +6,7 @@ This workshop segment will explore Persistent Volume Claims (PVCs), which are us
 
 Notably, there are no restrictions on storage protocol (e.g. NFS, iSCSI, FC, etc.) specific to OpenShift Virtualization. The only requirement is that the RWX access mode is available to support live migration of VMs within the cluster. Otherwise, the storage that best meets the needs of your VMs and applications is always the right choice.
 
-image::module-02/00_disk_concepts.png[link=self, window=blank, width=100%]
+image::module-03/00_disk_concepts.png[link=self, window=blank, width=100%]
 
 [[examine_pvc]]
 
@@ -27,7 +27,7 @@ In this lab, we are going to take a closer look at the storage behind the virtua
 .. The Volume mode of the PVC is Block
 .. The volume is using the *ocs-storagecluster-ceph-rbd-virtualization* storage class. 
 +
-image::module-02/02_Fedora01_PVC_Details.png[link=self, window=blank, width=100%]
+image::module-03/02_Fedora01_PVC_Details.png[link=self, window=blank, width=100%]
 
 [[managing_snapshots]]
 == Managing Snapshots
@@ -54,34 +54,34 @@ With the VM snapshots feature, cluster administrators and application developers
 
 . Navigate back to *Virtualization* -> *VirtualMachines* and select the virtual machine, *fedora01* in the project *vmexamples*.
 +
-image::module-02/03_VM_Overview.png[link=self, window=blank, width=100%]
+image::module-03/03_VM_Overview.png[link=self, window=blank, width=100%]
 +
 . Notice there are currently no snapshots of this VM listed on the overview page. 
 +
-image::module-02/04_Snapshots_Overview.png[link=self, window=blank, width=100%]
+image::module-03/04_Snapshots_Overview.png[link=self, window=blank, width=100%]
 +
 . Navigate to the *Snapshots* tab.
 +
-image::module-02/05_Snapshot_Menu.png[link=self, window=blank, width=100%]
+image::module-03/05_Snapshot_Menu.png[link=self, window=blank, width=100%]
 
 . Press *Take snapshot* and a dialog will open
 +
 [NOTE]
 There is a warning about the *cloudinitdisk* not being included in the snapshot. This is expected and happens because it is an ephemeral disk.
 +
-image::module-02/06_VM_Snapshot_Dialog.png[link=self, window=blank, width=100%]
+image::module-03/06_VM_Snapshot_Dialog.png[link=self, window=blank, width=100%]
 
 . Press *Save* and wait till the _Snapshot_ has been created and the *status* shows as *Succeeded*.
 +
-image::module-02/07_VM_Snapshot_Taken.png[link=self, window=blank, width=100%]
+image::module-03/07_VM_Snapshot_Taken.png[link=self, window=blank, width=100%]
 
 . Press the three-dot menu, and see that the *Restore* option is greyed out because the VM is currently running.
 +
-image::module-02/08_VM_Restore_Disabled.png[link=self, window=blank, width=100%]
+image::module-03/08_VM_Restore_Disabled.png[link=self, window=blank, width=100%]
 
 . Next, switch to the *Console* tab. We are going to login and perform a modification that prevents the VM from being able to boot. 
 +
-image::module-02/09_Console_Login.png[link=self, window=blank, width=100%]
+image::module-03/09_Console_Login.png[link=self, window=blank, width=100%]
 +
 . Click on the *Guest login credentials* dropdown to gather the username and password to log into your console.
 +
@@ -96,7 +96,7 @@ sudo rm -rf /boot/grub2; sudo shutdown -r now
 +
 . The virtual machine will no longer be able to boot. 
 +
-image::module-02/10_Bootloader_Broken.png[link=self, window=blank, width=100%]
+image::module-03/10_Bootloader_Broken.png[link=self, window=blank, width=100%]
 +
 IMPORTANT: In the previous step, the operating system was shutdown from within the guest. However, OpenShift Virtualization will restart it automatically by default. This behavior can be changed globally or on a per-VM basis.
 +
@@ -104,27 +104,27 @@ IMPORTANT: In the previous step, the operating system was shutdown from within t
 +
 . You can click on the *Overview* tab to confirm that the VM has stopped. You can also see the snapshot we recently took listed in the *Snapshots* tile. (You may need to Force Stop the VM via the dropdown. This is fine as we are about to restore the snapshot.)
 +
-image::module-02/11_VM_Stopped_Snapshot.png[link=self, window=blank, width=100%] 
+image::module-03/11_VM_Stopped_Snapshot.png[link=self, window=blank, width=100%] 
 +
 . Navigate back to the *Snapshots* tab, click the three-dot menu, and with the VM stopped, you will find *Restore* is no longer greyed out. Click it.
 +
-image::module-02/12_VM_Restore.png[link=self, window=blank, width=100%]
+image::module-03/12_VM_Restore.png[link=self, window=blank, width=100%]
 +
 . In the dialog shown, press *Restore*.
 +
-image::module-02/13_VM_Restore_Dialog.png[link=self, window=blank, width=100%]
+image::module-03/13_VM_Restore_Dialog.png[link=self, window=blank, width=100%]
 
 . Wait until the VM is restored, the process should be fairly quick.
 +
-image::module-02/14_VM_Restored.png[link=self, window=blank, width=100%]
+image::module-03/14_VM_Restored.png[link=self, window=blank, width=100%]
 +
 . Return to *Overview* tab, and start the VM.
 +
-image::module-02/15_VM_Start.png[link=self, window=blank, width=100%]
+image::module-03/15_VM_Start.png[link=self, window=blank, width=100%]
 +
 . Click on the console tab to confirm that the VM has now restarted successfully. 
 +
-image::module-02/16_VM_Running.png[link=self, window=blank, width=100%]
+image::module-03/16_VM_Running.png[link=self, window=blank, width=100%]
 
 [[clone_vm]]
 == Clone a Virtual Machine
@@ -133,14 +133,14 @@ Cloning creates a new VM that uses it's own disk image for storage, but most of 
 
 . Return to the *Overview* screen, and click the *Actions* dropdown menu to see the option to clone the VM.
 +
-image::module-02/17_Overview_Actions_Clone.png[link=self, window=blank, width=100%]
+image::module-03/17_Overview_Actions_Clone.png[link=self, window=blank, width=100%]
 . Press *Clone* from the *Actions* menu, and a dialog will open. Name the cloned VM *fedora02*, and select the check box to *Start VirtualMachine on clone*.
 +
-image::module-02/18_VM_Clone_Dialog.png[link=self, window=blank, width=100%]
+image::module-03/18_VM_Clone_Dialog.png[link=self, window=blank, width=100%]
 +
 . A new VM is created, the disks are cloned and automatically the portal will redirect you to the new VM, and you can see the *Created* time as very recently.
 +
-image::module-02/19_VM_Cloned.png[link=self, window=blank, width=100%]
+image::module-03/19_VM_Cloned.png[link=self, window=blank, width=100%]
 +
 [IMPORTANT]
 The cloned VM will have the same identity as the source VM, which may cause conflicts with applications and other clients interacting with the VM. Use caution when cloning a VM connected to an external network or in the same project.
