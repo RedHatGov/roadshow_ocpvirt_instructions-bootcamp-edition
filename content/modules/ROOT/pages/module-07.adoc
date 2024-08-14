@@ -7,7 +7,27 @@ For this section of the lab, we will be covering common issues that occur when p
 [[boot_source_na]]
 == Boot Source Not Available
 
-We have run into issues in the past where the downloaded Boot Sources from Red Hat existed one day and then seemed to have gone missing the next day.  The confusing part happens when you look and see the PVC for the disk image, but it still says the Boot Source is missing.  To troubleshoot this, we need to walk through how the volume is associated with the templated.  Start by looking at the DataSource that is associated with one of the Templates that has gone missing.  By default, the Template definition has the following for the location of the DataSource:
+When you install and configure the Openshift Virtualization Operator, it will automatically download some of the most common image sources (CentOS, Fedora, RHEL).  First, ensure that you have set a default StorageClass, otherwise the download process will never get the PVCs it requires to download the images.
+
+In this lab, browse to *Storage* -> *StorageClasses* and you will see that `ocs-storagecluster-ceph-rbd` is the default StorageClass for the lab:
+
+```
+ocs-storagecluster-ceph-rbd – Default
+```
+
+If you don't have a StorageClass with the _Default_ designation, edit the StorageClass and add the following annotation:
+
+[%header,cols="1,1"]
+|===
+| Key | Value
+|storageclass.kubernetes.io/is-default-class | True
+|===
+
+Another issue we have run into in the past was the downloaded Boot Sources from Red Hat existed one day and then seemed to have gone missing the next day.  The confusing part happens when you look and see the PVC for the disk image, but it still says the Boot Source is missing.  
+
+This may be a fringe case, however, the useful aspect of this is understanding how the elements tie together and understanding how things work which may help in other scenarios.
+
+To troubleshoot this, we need to walk through how the volume is associated with the templated.  Start by looking at the DataSource that is associated with one of the Templates that has gone missing.  By default, the Template definition has the following for the location of the DataSource:
 
 ```
     spec:
@@ -40,7 +60,7 @@ parameters:
 ...
 ```
 
-We see here we need to look at the `centos7` DataSource name in the `opnshift-virtualization-os-images` namespace. Navigate to `Administration->CustomResourceDefinitions` and search for `DataSource` and select that Custom Resource Definition (CRD).  Click `Instances` and find the associated DataVolume for the Template and click on it to open the DataSource. Switch to the `YAML` view and look at the spec section:
+We see here we need to look at the `centos7` DataSource name in the `opnshift-virtualization-os-images` namespace. Browse to *Administration* -> *CustomResourceDefinitions* and search for `DataSource` and select that Custom Resource Definition (CRD).  Click `Instances` and find the associated DataVolume for the Template and click on it to open the DataSource. Switch to the `YAML` view and look at the spec section:
 
 ```
 spec:
@@ -52,7 +72,7 @@ spec:
 
 Here we can see the DataSource is actually a `snapshot` and not a `pvc`.  Next, see if that `snapshot` exists by navigating to `Storage->VolumeSnapshots` and looking for the associated snapshot.  Ensure that you are looking in the `openshift-virtualization-os-images` namespace.  If you do not see this here, however, you do see a `pvc` with the same name, then the issue is that something changed in the environment (Operator update?) that caused a disassociation of the DataSource to the Template.
 
-To fix this, note the StorageClass that the `pvc` exists on and navigated to `Administration->CustomResourceDefinitions` and search for `StorageProfile`.  You may see more than one, select the one in the `cdi.kubervirt.io` Group. Click `Instances` and then select the StorageProfile with the same name as the StorageClass for that `pvc.` In the spec section, change or add `dataImportCronSourceFormat` to match how the images are actually stored in your environment, either `pvc` or `snapshot`.
+To fix this, note the StorageClass that the `pvc` exists on and  browse to *Administration* -> *CustomResourceDefinitions* and search for `StorageProfile`.  You may see more than one, select the one in the `cdi.kubervirt.io` Group. Click `Instances` and then select the StorageProfile with the same name as the StorageClass for that `pvc.` In the spec section, change or add `dataImportCronSourceFormat` to match how the images are actually stored in your environment, either `pvc` or `snapshot`.
 
 ```
 spec:
@@ -64,32 +84,19 @@ Once this is corrected, then all of the Boot Sources should now once again show 
 [[network_connectivity]]
 == Network Connectivity
 
-Troubleshooting network connectivity issues from your Virtual Machine could sometimes be difficult.  This module will cover some common troubleshooting techniques we have used, however, is far from a complete knowledgebase for debugging connectivity issues.  If you are having issues and suspect that they are network related, here's several things you can look at:
+Troubleshooting network connectivity issues from your Virtual Machine could sometimes be difficult.  This module will cover some common troubleshooting techniques we have used, however, is far from a complete knowledgebase for debugging connectivity issues.  If you are having issues and suspect that they are network related, here's several things you can look at. Also, don't forget that Proof of Concept deployments that use Evaluation Entitlements include Full Support for the product.  Having the customer open a Support Case for tracking purposes can sometimes also help move the needle on issue resolution.
 
-=== General Network Connection Issues Post-Deployment
+=== Lab Network
 
-In the lab, login to the bastion host:
+The lab environment is a single hypervisor running multiple Virtual Machines to make this demo as cost effective as possible.  This does limit our ability to do _real world_ networking, however, we can still illustrate some techniques.
 
-`sudo ssh root@192.168.123.100`
-
-In a real world deployment, you might try to open a debug container on one of the nodes:
-
-```
-[root@ocp4-bastion ~]# oc debug node/ocp4-worker1.aio.example.com
-Temporary namespace openshift-debug-4cr4f is created for debugging node...
-Starting pod/ocp4-worker1aioexamplecom-debug-8k9qr ...
-To use host binaries, run `chroot /host`
-Pod IP: 192.168.123.104
-If you don't see a command prompt, try pressing enter.
-sh-4.4# chroot /host
-sh-5.1# 
-```
-
-However, sometimes you may have issues on your node preventing containers from being created. For these issues, you can try to SSH to the node using the public key you injected at deployment time.  This key gets added to the `core` user on each node.  In the real world, you would know the IP addresses of the deployed hosts, for this lab, your OCP Cluster is deployed with the following IP Addresses:
+For this section, understanding the lab environment network will be helpful in understanding what is going on:
 
 [%header,cols="1,1"]
 |===
-| NODE | IP
+| NODE | LAB Network IP  (192.168.123.0/24)
+|hypervisor | 192.168.123.1
+|ocp4-bastion.aio.example.com | 192.168.123.100
 |ocp4-master1.aio.example.com | 192.168.123.101
 |ocp4-master2.aio.example.com | 192.168.123.102
 |ocp4-master3.aio.example.com | 192.168.123.103
@@ -98,39 +105,18 @@ However, sometimes you may have issues on your node preventing containers from b
 |ocp4-worker3.aio.example.com | 192.168.123.106
 |===
 
-From the bastion host, go ahead and try to ssh to one of the nodes as the `core`` user.
+The lab was provisioned with a single Node Network Configuration Policy.
 
-```
-[root@ocp4-bastion ~]# ssh core@192.168.123.104
-Red Hat Enterprise Linux CoreOS 415.92.202407231021-0
-  Part of OpenShift 4.15, RHCOS is a Kubernetes native operating system
-  managed by the Machine Config Operator (`clusteroperator/machine-config`).
-
-WARNING: Direct SSH access to machines is not recommended; instead,
-make configuration changes via `machineconfig` objects:
-  https://docs.openshift.com/container-platform/4.15/architecture/architecture-rhcos.html
-
----
-Last login: Tue Aug 13 17:43:12 2024 from 192.168.123.100
-[core@ocp4-worker1 ~]$ 
-```
-At this point, it's Linux troubleshooting skills you're going to rely on first.  Check the basics:
-
-* NetworkManager is enabled, start there
-* You should have a `br-ex` `ovs-bridge` interface that is used by Openshift Container Platform
-* Confirm all of your MTU sizes are correct.  They should be the same for the interface, any bond/vlan and the bridges.
-* Check the routes, ensure you have a default route and can ping it
-
-RHCOS is a very minimal image and lacks troubleshooting tools such as  `tcpdump`.  You can gain access to this by executing the command `toolbox` at the command prompt on any node.  This will launch a `toolbox` container and connect you to it which has some useful troubleshooting tools, `tcpdump` among them.
-
-=== Virtual Machine Network Connection Issues
-
-Your Virtual Machines are attached to a Network Attachment Devices (NAD).  These Network Attachment Devices are then associated with a Node Network Configuration Policy (NNCP).  The Node Network Configuration Policy defines the connection from the Openshift Software Defined Network (OVN) to the physical interfaces on the hardware nodes. Network Attachment Definitions and Node Network Configuration Policies created in the `default` project are accessible by all other projects.
 [NOTE]
 ====
-Currently, only users with `Cluster Admin` rights may create Node Network Configuration Policies.
+Currently, only users with `Cluster Admin` rights may create Node Network Configuration Policies in Openshift Container Platform.
 ====
-In the lab, a Node Network Configuration Policy named `ovs-br-flat` is already created in the `default` project. Examining this object shows the following spec:
+
+Browse to *Networking* -> *NodeNetworkConfigurationPolicy* using the left navigation menu:
++
+image::module-07/01_TS_NNCP.png[link=self, window=blank, width=100%]
+
+Here we can see a single NNCP named `ovs-br-flat` exists. Click on the name, switch to the YAML view and scroll down and example the spec:
 
 ```
 spec:
@@ -155,7 +141,111 @@ spec:
 ```
 
 Here we see that a bridge named `ovs-br` is created off of physical interface `enp3s0`.  Within OVN, there is a mapping from that bridge to a localnet named `vm-network`.
+
 The things to note here are:
 
-* Interface names
-* Bridge Name
+* Interface names (enp3s0)
+* Bridge Name (ovs-br)
+
+=== General Network Connection Issues Post-Deployment
+
+In the lab, login to the bastion host:
+
+[source,sh,role=execute,subs="attributes"]
+----
+sudo ssh root@192.168.123.100
+----
+
+Display the Openshift Cluster Nodes:
+
+[source,sh,role=execute,subs="attributes"]
+----
+oc get nodes
+----
+
+In a real world deployment, you might try to open a debug container on one of the nodes:
+
+[source,sh,role=execute,subs="attributes"]
+----
+oc debug node/ocp4-worker1.aio.example.com
+----
+
+_Example:_
+```
+[root@ocp4-bastion ~]# oc debug node/ocp4-worker1.aio.example.com
+Temporary namespace openshift-debug-4cr4f is created for debugging node...
+Starting pod/ocp4-worker1aioexamplecom-debug-8k9qr ...
+To use host binaries, run `chroot /host`
+Pod IP: 192.168.123.104
+If you don't see a command prompt, try pressing enter.
+sh-4.4# chroot /host
+sh-5.1# 
+```
+
+However, sometimes you may have issues on your node preventing containers from being created. For these issues, you can try to SSH to the node using the public key you injected at deployment time.  This key gets added to the `core` user on each node.
+
+From the bastion host, go ahead and try to ssh to one of the nodes as the `core` user.
+
+[source,sh,role=execute,subs="attributes"]
+----
+ssh core@192.168.123.104
+----
+
+_Example:_
+```
+[root@ocp4-bastion ~]# ssh core@192.168.123.104
+Red Hat Enterprise Linux CoreOS 415.92.202407231021-0
+  Part of OpenShift 4.15, RHCOS is a Kubernetes native operating system
+  managed by the Machine Config Operator (`clusteroperator/machine-config`).
+
+WARNING: Direct SSH access to machines is not recommended; instead,
+make configuration changes via `machineconfig` objects:
+  https://docs.openshift.com/container-platform/4.15/architecture/architecture-rhcos.html
+
+---
+Last login: Tue Aug 13 17:43:12 2024 from 192.168.123.100
+[core@ocp4-worker1 ~]$ 
+```
+
+At this point, it's Linux troubleshooting skills you're going to rely on first.  Check the basics:
+
+* NetworkManager is enabled and used in RHCOS
+* You should have a `br-ex` interface of type `ovs-bridge` that is used by Openshift Container Platform
+* Confirm all of your MTU sizes are correct.  They should be the same for the interface, any bond/vlan and the bridges.
+* Check the routes, ensure you have a default route and can ping it
+
+RHCOS is a very minimal image and lacks troubleshooting tools such as  `tcpdump`.  You can gain access to this by executing the command `toolbox` at the command prompt on any node.  Go ahead and try this on one of your Openshift Cluster Nodes:
+
+ This will launch a `toolbox` container and connect you to it which has some useful troubleshooting tools, `tcpdump` among them.
+
+=== Virtual Machine Network Connection Issues
+
+**NEED TO INVESTIGATE THIS MORE TO SEE IF THIS IS DOABLE IN THE LAB**
+
+**CURRENT ISSUE IS THIS IS A NESTED VIRTUALIZATION ENVIRONMENT**
+**AND WE ONLY HAVE A SINGLE NETWORK TO WORK WITH**
+
+Virtual Machines are attached to a Network Attachment Devices (NAD).  These Network Attachment Devices are then associated with a Node Network Configuration Policy (NNCP).  The Node Network Configuration Policy defines the connection from the Openshift Software Defined Network (OVN) to the physical interfaces on the hardware nodes. Network Attachment Definitions and Node Network Configuration Policies that are created in the `default` project are accessible by all other projects.
+
+Let's create a Network Attachment Device for our Virtual Machine we created in xref:module-01.adoc#create_vm[Module 01].
+
+Browse to *Networking* -> *NetworkAttachmentDefinitions*.  Ensure that you are either in the `default` Project, or the project you created your virtual machine in. 
+
+
+
+Next, lets remove the Pod Network from the Virtual Machine and add our new Network Attachment Definition. Browse to *Virtualization* -> *VirtualMachines*. Ensure that you are in the Project where you created the Virtual Machine in xref:module-01.adoc#create_vm[Module 01].
+
+Click on the *fedora* Virtual Machine, navigate to the *Configuration* tab and then select *Network* from the left side of the pane below that.
++
+image::module-07/02_TS_VM_Configuration_Network.png[link=self, window=blank, width=100%]
+
+You will see a single NIC that is connected to the `Pod networking`. Click the 3 dots to the right of this and select Delete. Select Delete in the Confirmation Tab as well.
+
+[NOTE]
+====
+Hot adding/removing NICs is not supported (yet) with Openshift Virtualization.  For the NIC to be removed, you must stop the Virtual Machine by clicking the square button at the top right to stop your Virtual Machine.  The NIC list does not auto-refresh, so click off of this page to somewhere else and come back and the NIC should no longer be there.
+====
+
+
+
+

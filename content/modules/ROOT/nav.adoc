@@ -38,6 +38,7 @@
 ** xref:module-06.adoc#migrating_vms[Migrating Virtual Machines from VMware]
 
 * xref:module-07.adoc[7. Troubleshooting]
+* xref:module-07.adoc#boot_source_na[Boot Source Not Available]
 
 * Additional Boot Camp Content
 ** xref:22_disconnected.adoc[Disconnected Environments]
