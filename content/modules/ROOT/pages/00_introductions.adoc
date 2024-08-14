@@ -3,7 +3,7 @@
 == Agenda: Wednesday, August 28 9AM through Thrusday August 29 5:00PM
 
 * Wednesday 9AM - 6PM EDT
-* Thursday 9AM - 6PM EDT
+* Thursday 8AM - 5PM EDT
 
 
 == Wednesday, August 28th
@@ -25,13 +25,13 @@
 * Advanced Use Cases
 
 == Thursday, August 29th
-* 9AM - 9:30AM
+* 8AM - 8:30AM
 *** Lab Overview
-* 9:30AM - 12:15
+* 8:30AM - 12:15
 *** Executing on the POC - Lab Tasks
 * 12:15 - 1:15PM
 *** Lunch
-* 1:15 - 6:00PM
+* 1:15 - 5:00PM
 *** Completing Lab Use Cases
 
 == Instructors
