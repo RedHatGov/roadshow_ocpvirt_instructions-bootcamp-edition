@@ -1,21 +1,31 @@
-= Virtual Machine Management
+= Installation & Operators
+
+== Installation
+
+For the lab portion of this training, the Openshift environment is already pre-provisioned, which unfortunately skips a major hurdle which is encountered as part of these Proof of Concept deliveries.  As many of you are aware, there's several different ways to deploy Openshift at a customer site.  The two methods that we have found the most success with both utilizae the Assisted Installer:
+
+* Interactive Assisted Installer
+* Local Agent Installer
+
+We estimate 99% of the deployments we do for a Proof of Concept utilize the Interactive Assisted Installer where the customer is walked through the process of configuring the cluster, booting the bare-metal machines and deploying the cluster. When this method is not feasible due to connectivity, we fallback to a Local Agent Installer using a Local/Disconnected Registry. See xref:22_disconnected.adoc[Disconnected Environments] for more details on this type of deployment method.
 
 
-== Introduction
+== Operators
 
-The beginning section of this lab will introduce you to the basics of creating and managing VMs in OpenShift Virtualization. You will see how the web console guides you through the whole process of creating a virtual machine from a pre-defined template. We will then review the properties of that VM, do some basic customizations, and perform actions like live migration, that are often expected of virtual machine administrators. 
+During installation, you have the option to include various Operators as part of the deployment process.  Deployment of Operators is something that is second nature for those familiar with Openshift, however, for many of the customers coming from other Virtualization Platforms this concept is new.  Due to this reason, many times we choose not to install the Operators at Deployment Time.
 
-.Goals
+For your lab environment, these will be pre-installed in an effort to save time, however, this section will cover the Operators that we typically install and configure as part of the Proof of Concept delivery and how they are typically configured.
 
-* Create a new virtual machine
-* Review and modify resources for virtual machines
-* Understand how VM power states are managed using the OpenShift console
-* Live migrate a VM between two hosts
+[[storage_operator]]
+=== Openshift Storage
 
-As a reminder, here are your credentials for the OpenShift Console:
+[[virtualization_operator]]
+=== Openshift Virtualization
 
-Your OpenShift cluster console is available {openshift_web_console}[here^].
+[[nmstate_operator]]
+=== NMState Operator
 
+<<<<<<< HEAD
 Administrator login is available with:
 
 * *User:* {openshift_admin_user} 
@@ -177,3 +187,7 @@ image::module-00/22_Migrated.png[link=self, window=blank, width=100%]
 == Summary
 
 In this lab, we reviewed virtual machine state management tasks, and executed a live migration of a VM. Both of these are common and necessary tasks as platform administrators and a great way to familiarize yourself with some basic features available when working with VMs in OpenShift Virtualization.
+=======
+[[mtv_operator]]
+=== Openshift Migration Toolkit for Virtualization
+>>>>>>> fb6a8e6461527ffb4a67dc5760130a992f077476

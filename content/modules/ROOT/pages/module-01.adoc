@@ -1,186 +1,182 @@
-= Bare Metal Machine Management
+= Virtual Machine Management
+
 
 == Introduction
 
-In this lab, you will review the physical environment used during this workshop, including an overview of OpenShift deployed to bare metal hosts. This environment runs on bare metal hosts in the Equinix cloud. This review will help provide you with an understanding of how the nodes are configured in the cluster, and what their current hardware capabilities are. You will then be tasked with adding an additional machine and scaling the number of cluster nodes using the Red Hat OpenShift web console.
+The beginning section of this lab will introduce you to the basics of creating and managing VMs in OpenShift Virtualization. You will see how the web console guides you through the whole process of creating a virtual machine from a pre-defined template. We will then review the properties of that VM, do some basic customizations, and perform actions like live migration, that are often expected of virtual machine administrators. 
 
 .Goals
-* Explore the nodes and machines in your *Red Hat OpenShift Container Platform* cluster
-* Scale the baremetal cluster using the web console
 
-=== Supported Platforms
+* Create a new virtual machine
+* Review and modify resources for virtual machines
+* Understand how VM power states are managed using the OpenShift console
+* Live migrate a VM between two hosts
 
-Today, OpenShift virtualization is fully supported in the following environments that provide bare metal resources:
+As a reminder, here are your credentials for the OpenShift Console:
 
-* Self-managed _bare metal servers_ on-premises or at a hosted site that provides bare metal resources. The lab you're using today is an OpenShift cluster deployed to an Equinix colocation facility.
+Your OpenShift cluster console is available {openshift_web_console}[here^].
 
-* Amazon Web Services (AWS) bare metal instances, as well as ROSA (Red Hat OpenShift Services on AWS) with bare metal instances, are fully supported. See link:https://www.redhat.com/en/blog/managing-virtual-machines-and-containers-as-code-with-openshift-virtualization-on-red-hat-openshift-service-on-aws[OpenShift Virtualization on ROSA^]. 
+Administrator login is available with:
 
-* IBM Cloud Bare Metal Servers are currently _tech preview_. See link:https://access.redhat.com/articles/6738731[Deploy OpenShift Virtualization on IBM Cloud Bare Metal Nodes^] for details.
+* *User:* {openshift_admin_user} 
+* *Password:* {openshift_admin_password}
 
+[[create_project]]
+== Create a New Project
+
+Like other objects in OpenShift, Projects (which are an abstraction for Kubnernetes namespaces), are the boundaries for permissions and other aspects of using and manaing the resources. Creating a Project is an important first step for any deployment.
+
+. Browse to *Virtualization* -> *VirtualMachines* using the left navigation menu:
++
+image::module-01/01_Left_Menu.png[link=self, window=blank, width=100%]
++
 [NOTE]
-Installing OpenShift Virtualization on IBM Cloud Bare Metal Servers is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. Technology previews provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+====
+The *Virtualization* tab is available only when Red Hat OpenShift Virtualization is installed and properly configured. In this lab environment the installation and configuration has already been performed for us.
+====
 
-=== Requirements for OpenShift Virtualization
+. Examine the *VirtualMachines* dashboard that appears. There are currently several VMs listed, but they are not turned on:
++
+image::module-01/02_VM_List.png[link=self, window=blank, width=100%]
 
-Before you install OpenShift Virtualization for Red Hat OpenShift Container Platform, make sure that your Red Hat OpenShift Container Platform cluster meets the following requirements.
+. Before creating a VM we need to create a new project. Virtual machines are deployed to a specific project, or namespace, where by default, users without permission to the namespace cannot access, manage, or control them. Administrators can access all projects, and therefore view all virtual machines, however regular users must be given access to projects as needed.
++
+.. Click *Project: All Projects* at the lop left of the window and then click *Create Project*.
++
+image::module-01/02_All_Projects.png[link=self, window=blank, width=100%]
 
-* CPU requirements:
-** Supported by Red Hat Enterprise Linux (RHEL) 8/9
-** Support for Intel 64 or AMD64 CPU extensions
-** Intel VT or AMD-V hardware virtualization extensions enabled
-** NX (no execute) flag enabled
+.. In the *Name* field, type *vmexamples* to name the project, then click *Create*.
++
+image::module-01/03_Create_Project.png[link=self, window=blank, width=100%]
 
-* Storage requirements:
-** Supported by OpenShift
-** A CSI provisioner is strongly encouraged
-** *ReadWriteMany* (RWX) PVCs are required for live migration
-** A CSI provisioner that supports accelerated volume creation via CSI clones or snapshots makes creating VMs from templates much faster. If one is not available, OpenShift Virtualization will fallback to using a host copy
+[[create_vm]]
+== Create a Linux Virtual Machine
 
-* OpenShift cluster node requirements:
-** Red Hat Enterprise Linux CoreOS (RHCOS) installed on worker nodes
-** CPU, memory, and network capacity sufficient to host your virtual machine workload
+. From the Virtual Machines inventory, click on the *Create VirtualMachine* button and select *From template* from the drop-down menu. 
++
+NOTE: VMs can also be created from an InstanceType wizard as well as created by entering a custom YAML definition, but for this current lab scenario we are going to stick with creating VMs based on existing templates.
++
+image::module-01/04_Create_VM_Button.png[link=self, window=blank, width=100%]
 
-Review the documentation https://docs.openshift.com/container-platform/4.15/virt/install/preparing-cluster-for-virt.html[here^] for specific requirements and guidance on hardware for use with OpenShift Virtualization.
+. The wizard will appear showing the available pre-defined VM templates. 
++
+Reviewing the list of available templates you’ll notice that some have a blue badge which indicates "Source available". These are templates which are using automatically downloaded and stored template source disks. If you were deploying in your own environment, you have the option of preventing these from being created and/or removing those source disks, followed by creating and uploading custom disks for your organization.
++
+image::module-01/05_Create_VM_Templates.png[link=self, window=blank, width=100%]
 
-NOTE: If your cluster uses worker nodes with different CPUs, e.g. Intel and AMD, live migration failures can occur because different CPUs have different capabilities. 
+. Select the *Fedora VM* tile, and a dialog opens.
++
+image::module-01/06_Create_VM_Quick.png[link=self, window=blank, width=100%]
 
-=== Review Red Hat OpenShift Cluster
+. Change the name to *fedora01*:
++
+image::module-01/07_Create_VM_Quick_Name.png[link=self, window=blank, width=100%]
 
-When deployed using the installer provisioned infrastructure (IPI) method, OpenShift uses https://metal3.io/[Metal3^] to manage the hardware using the out-of-band management controller. This results in the hardware being represented in three different ways in the cluster:
+. In the top section on the right, you will see a collapsed area called *Optional parameters*. Expand that section and you will see where you can set the *CLOUD_USER_PASSWORD*.  Feel free to set this to something easy to remember/type so later in the course, you can easily login as the *fedora* user.
++
+image::module-01/23_VM_Optional_Parameters.png[link=self, window=blank, width=100%]
 
-. https://docs.openshift.com/container-platform/4.15/nodes/index.html[Node^] - The node is viewed and used by the Kubernetes scheduler. This is the object which represents the usable resources in the cluster.
-. https://docs.openshift.com/container-platform/4.15/machine_management/index.html[Machine^] - An object managed by an infrastructure provider. In this lab, and when using OpenShift Virtualization, this is a physical server that is abstracted by the Metal3 Operator. These are grouped and managed as a set via the https://docs.openshift.com/container-platform/4.15/machine_management/creating_machinesets/creating-machineset-bare-metal.html[MachineSet^] paradigm.
-. https://docs.openshift.com/container-platform/4.15/scalability_and_performance/managing-bare-metal-hosts.html[BareMetalHost^] - This is the lowest level and direct interaction with the management of the physical server.
+. After a few seconds, expect to see the VM is *Running*. During this time, the storage provider has cloned the template disk so that it can be used by the newly created virtual machine. The amount of time this takes can vary based on the storage provider being used to create the boot disk.
++
+image::module-01/08_Fedora_Running.png[link=self, window=blank, width=100%]
 
-[[review_nodes]]
-== Review Nodes and Machines
+. After the VM is created, examine the *Events* tab to see some details of the process. If there are any issues with the creation of the VM, they will show up on this tab as well.
++
+image::module-01/09_Fedora_Events.png[link=self, window=blank, width=100%]
++
+* A _DataVolume_ is created. _DataVolumes_ are used to manage the creation of a VM disk, abstracting the clone or import process onto OpenShift native storage during the virtual machine's creation flow.
+* The _VM_ is started.
 
-. From the navigation menu on the left, select *Compute* -> *Nodes*:
+. Click the *Overview* tab to return to the primary screen detailing information related to the VM. Note that for this template, the default is 1 CPU and 2 GiB of memory. As the administrator, you can create templates that customize the default configuration of virtual machines. Later in this lab we will have the opportunity to explore the creation of custom templates.
 +
-image::module-01/01_Compute_Nodes.png[link=self, window=blank, width=100%]
+The IP address of the virtual machine on the software-defined network (SDN) is also displayed on this page, along with information about the storage devices, system utilization, the cluster node hosting the virtual machine, and more. By default VMs are attached to the default pod network. Later in this lab we will explore advanced networking options, and how to customize connectivity for VMs.
 +
-There are three control plane nodes and three worker nodes in the OpenShift 4 Cluster. In addition, *ipmi* (Intelligent Platform Management Interface) is being used to manage the bare metal nodes.
-+
-A node is a virtual or bare metal machine in an OpenShift cluster. Worker nodes host virtual machines and other workloads. The control plane nodes run services that are required to control and manage the OpenShift cluster.
+image::module-01/10_Fedora_Details.png[link=self, window=blank, width=100%]
 
-. Click on one of the worker nodes to obtain resource information about the node:
-+
-image::module-01/02_Worker0_Information.png[link=self, window=blank, width=100%]
-+
-The *Overview* tab is showing useful information about the utilization of the resources, such as CPU and memory. It also shows all the applications (*Pods*) that are running inside on this node.
+[[admin_vms]]
+== Administering Virtual Machines
 
-NOTE: At least one physical node is required for OpenShift Virtualization, "nesting" and emulation are not supported. However, other nodes in the cluster can be virtual machines, for example control plane and infrastructure nodes.
+Administering and using virtual machines is more than simply creating and customizing their configuration. As the platform administrator, we also need to be able to control the VM states and trigger live migrations so that we can balance resources, perform maintenance tasks, and reconfigure nodes.
 
-. Navigate to the tab *Details* to obtain more information about the operating system.
+. Click the *Configuration* tab, this is the entry point to obtain information about the resources of the Virtual Machine. 
 +
-image::module-01/03_Worker0_Details.png[link=self, window=blank, width=100%]
+image::module-01/11_Configuration_Tab_Nav.png[link=self, window=blank, width=100%]
++
+It includes seven subtabs:
++
+image::module-01/12_Configuration_Tab.png[link=self, window=blank, width=100%]
++
+* *Details*: This tab presents all of the physical features of the VM in a single panel. From here you can make edits to various descriptors and basic hardware configurations including modifying the cpu or memory, changing the hostname, attaching passthrough devices, and modifying the boot order.
+* *Storage*: This tab lists the disks attached to the system and allows you to add new disks to the system. If the guest is configured with the agent, it lists the filesystems and the utilization. Here it is possible to attach _ConfigMaps_, _Secrets_, and _Service Accounts_ as extra disks. This is useful when passing configuration data to the application(s) running in the virtual machine.
+* *Network*: This Tab shows the current network interfaces configured for the VM and allows for you to add new ones.
+* *Scheduling*: This tab includes advanced configuration options indicating where the VM should run and the strategy to follow for eviction. This tab is used to configure (anti)affinity rules, configure node selectors and tolerations, and other behaviors that affect which cluster nodes the VM can be scheduled to.
+* *SSH*: This tab allows you to configure remote access to the machine by creating an SSH service on a configured load-balancer, or by injecting public SSH keys if the feature is enabled.
+* *Initial run*: This tab allows us to configure _cloud-init_ for Linux or _sys-prep_ for Microsoft Windows, including setting the commands to be executed on the first boot, such as the injection of SSH keys, installation of applications, network configuration, and more.
+* *Metadata*: This tab shows current Labels and Annotations applied to the virtual machine. Modifying these values can help us tag our machines for specific purposes, or help us enable automated workflows by uniquely identifying machines. 
 
-[[review_hosts]]
-== Review Bare Metal Hosts
+. List the disks associated with the VM by clicking on the *Storage* tab:
++
+image::module-01/13_Storage_Tab.png[link=self, window=blank, width=100%]
++
+In this environment, the default StorageClass, which defines the source and type of storage used for the disk, is called *ocs-storagecluster-ceph-rbd-virtualization*. This storage is the default type provided by OpenShift Data Foundation (ODF) for running virtual machines. Each storage provider has different storage classes that define the characteristics of the storage backing the VM disk.
 
-When using *Baseboard Management Controller (BMC)* it is possible to manage the nodes using the *Red Hat OpenShift* console. If you are still in the *vmexamples* project you will not be able to see the nodes, you will need to change your project to *openshift-machine-api* or to *All Projects* to view the nodes currently available in the cluster.
+. Examine the network interfaces attached to the VM by clicking on the *Network interfaces* subtab:
++
+image::module-01/14_Network_Tab.png[link=self, window=blank, width=100%]
++
+When a VM is created, an interface on the *PodNetworking* network of type *masquerade* is created by default. This connects the VM to the SDN and provides access from the VM to outside the OpenShift cluster. Other VMs, and Pods, in the cluster can access the virtual machine using this interface. Furthermore, a VM connected to the SDN can be accessed externally using a Route, or Service with type load balancer, or even have a Network Attachment Definition configured to allow direct access to external networks.
 
-. Select *Compute* -> *Bare Metal Hosts*:
-+
-image::module-01/04_BMHosts.png[link=self, window=blank, width=100%]
-+
-During installation, the *Control Plane* nodes are provisioned by the OpenShift Container Platform installation program (that is why the status is *Externally provisioned*) and when the control plane is ready, the *Worker* nodes are provisioned by cluster itself (hence the status *Provisioned*) and joined to the cluster.
+[[vm_state]]
+== Controlling Virtual Machine State
 
-. Click on any of the worker nodes to obtain information about the physical (bare metal) node:
-+
-image::module-01/05_Worker0_BMHost.png[link=self, window=blank, width=100%]
-+
-The information shown is similar to the *Nodes* one, with the exception is providing information related to the hardware and the physical status of the bare metal node. Using the *Actions* menu, it is possible to manage aspects of the bare metal host, such as restarting or stopping the system using *BMC*.
+As a user with permission to access Virtualization, you can stop, start, restart, pause, and unpause virtual machines from the web console.
 
-. Explore the other tabs in the interface to see more details about the hosts, including the network interfaces and disks. Additionally, the host can be *Deprovisioned*, which will result in it being removed from the cluster, RHCOS removed, and the machine marked as ready to configure.
+. Click the *Overview* tab to return to the summary screen.
 
-[[scaling_cluster]]
-== Scaling the Cluster with a New Bare Metal Host
+. In the top right corner you will notice shortcut buttons for running state: stop, restart, and pause. As well as a dropdown menu title *Actions*.
++
+image::module-01/15_VM_State_Actions.png[link=self, window=blank, width=100%]
++
+.. *Stop*: Starts a graceful shutdown of the Virtual Machine.
+.. *Restart*: This will send a signal to the operating system to reboot the Virtual Machine. Guest integrations are needed for this to work properly.
+.. *Pause*: The process is frozen without further access to CPU resources and I/O, but the memory used by the VM at the hypervisor level will stay allocated.
 
-IMPORTANT: Before you begin this section of the lab, you need to switch to the *openshift-machine-api* project or you will not be able to see the machines, and  machine discovery will not work. You may need to toggle the *Show default projects* switch to see the project in the drop-down list.
+. You can also access these options and more by clicking on the *Actions* menu and seeing the options available in the drop down list.
++
+image::module-01/16_VM_Actions_Menu.png[link=self, window=blank, width=100%]
++
+. Press the *Stop* button and wait until the Virtual Machine is in state *Stopped*.
++
+image::module-01/17_VM_Stopped.png[link=self, window=blank, width=100%]
+. Clicking on *Actions*, the option *Start* appears, and the options *Restart* and *Pause* are greyed out. 
++
+image::module-01/18_VM_Actions_List_Stopped.png[link=self, window=blank, width=100%]
 
-In many cases it becomes necessary to add additonal physical nodes to a cluster to meet workload demands. In a virtual deployment of OpenShift, this is as simple as clicking on the appropriate machine set and choosing the scale the number of nodes available, and the hypervisor responds by cloning a VM template and spinning up new workers. In a bare metal environment there are a few more steps involved, but it's still a fairly simple process if you have the hardware available and access to the servers through a BMC that supports the IPMI protocol.
+. Click *Start*, and wait for the *Running* status.
 
-To begin this process we are going to return to the bare metal hosts screen we reviewed earlier:
+. Using the *Actions* menu, or the shortcut button, press the *Pause* option. The Virtual Machine state will change to *Paused*.
++
+image::module-01/19_VM_Actions_Paused.png[link=self, window=blank, width=100%]
 
-. Select *Compute* -> *Bare Metal Hosts*:
+. Unpause the Virtual Machine using the *Actions* menu and the option *Unpause*, or by using the shortcut button.
+
+[[live_migrate]]
+== Live Migrate a Virtual Machine
+
+In this section, we will migrate the VM from one OpenShift node to another without shutting down the VM. Live migration requires *ReadWriteMany* (RWX) storage so that the VM disks can be mounted on both the source and destination nodes at the same time. OpenShift Virtualization, unlike other virtualization solutions, does not use monolithic datastores mounted to each cluster member that hold many VM disks for many different VMs. Instead, each VM disk is stored in its own volume that is only mounted when and where it's needed. 
+
+. Navigate to the *Overview* tab to see where the worker node is running:
 +
-image::module-01/04_BMHosts.png[link=self, window=blank, width=100%]
+image::module-01/20_VM_Info_Node.png[link=self, window=blank, width=100%]
+
+. Using the *Actions* menu, select the option to *Migrate*.
 +
-. Click on the *Add Host* button in the upper right corner, and select the *New with Dialog* option.
+image::module-01/21_VM_Dialog_Migrate.png[link=self, window=blank, width=100%]
+
+. After a few seconds, the VM will change the status to *Migrating*. A few seconds later, it will return to the *Running* status, but on a new node. The VM has been successfully live migrated!
 +
-image::module-01/06_Add_Host_Red.png[link=self, window=blank, width=100%]
-+
-. The dialog menu to add a bare metal host will ask you for the following information:
-+
-* Host Name: *worker4*
-* Boot MAC Address: *de:ad:be:ef:00:07*
-* BMC Address: *ipmi://192.168.123.1:6237*
-* BMC Username: *admin*
-* BMC Password: *redhat* 
-+
-. With this information filled out, click the *Create* button at the bottom of the dialog page.
-+
-image::module-01/07_Create_Host_Red.png[link=self, window=blank, width=100%]
-+
-. You will then be presented with the summary screen for *worker4*, and you will see the status update as it attempts to contact the machine and make it available as a host.
-+
-image::module-01/08_Worker4_Summary_1.png[link=self, window=blank, width=100%]
-+
-NOTE: This step may take several minutes to update as it powers up the host, and collects hardware information.
-+
-. When host discovery and hardware inspection is complete you will see that it shows it's status as *Available*.
-+
-image::module-01/09_Worker4_Summary_2.png[link=self, window=blank, width=100%]
-+
-. Because this lab is being hosted in a virtualized environment we need to make a small configuration change before continuing. Click on the *YAML* tab at the top, and add the following two lines to the end of the *spec:* section to modify the type of hard disk present on the machine. Click the *Save* button.
-+
-[source,yaml,role=execute]
-----
-  rootDeviceHints:
-    deviceName: /dev/vda
-----
-+
-image::module-01/09a_Worker4_Yaml_Edit.png[link=self, window=blank, width=100%]
-+
-. Once a host has been physically discovered the next step is to add it as a machine to be used by OpenShift. Click on the menu for *MachineSets* on the left under *Compute*.
-+
-image::module-01/10_Machinesets.png[link=self, window=blank, width=100%]
-+
-. Click on the *three-dot* menu on the top-right side, and select *Edit Machine count* from the dropdown menu.
-+
-image::module-01/11_Edit_Machine_Count.png[link=self, window=blank, width=100%]
-+
-. A new menu will appear showing the current machine count of *3*, click the plus (+) sign to increase the machine count to *4*.
-+
-image::module-01/12_Edit_Machine_Count_4.png[link=self, window=blank, width=100%]
-+
-. You will be returned to the MachineSets page, and you can now see that the count of machines is 3/4 machines.
-+
-image::module-01/13_Machine_Count_3_4.png[link=self, window=blank, width=100%]
-+
-. Next, click on the *Machines* button on the left under *Compute* to see a list of all the machines, and you should see worker4 in the *Provisioning* state. 
-+
-NOTE: This step can take a few minutes to complete, as the node reboots several times during the installation process. Please be patient.
-+
-image::module-01/14_Worker_4_Provisioning.png[link=self, window=blank, width=100%]
-+
-. Once provisioning is complete you will see the node listed with it's Phase set to *Provisioned as node*.
-+
-image::module-01/15_Provisioned_As_Node.png[link=self, window=blank, width=100%]
-+
-. Since our new host has now been added to the machineset and provisioned as a node, we can now see it available if we click on the *Nodes* menu on the left.
-+
-image::module-01/16_All_Nodes.png[link=self, window=blank, width=100%]
-+
-. We can also click directly on *worker4* under the *Name* column to see it's current status.
-+
-image::module-01/17_Worker_4_Details.png[link=self, window=blank, width=100%]
-+
-. The details screen for worker4 is now populated with hardware information including CPU and Memory utilization, as well as the number of Pods assigned to our new worker node.
+image::module-01/22_Migrated.png[link=self, window=blank, width=100%]
 
 == Summary
 
-In this lab, you became familiar with your Red Hat OpenShift cluster and the hardware that makes up the environment. You also used the web console to expand your cluster by discovering an additional bare metal node, and adding it to the cluster machineset used to scale the number of worker nodes that are available.
-
+In this lab, we reviewed virtual machine state management tasks, and executed a live migration of a VM. Both of these are common and necessary tasks as platform administrators and a great way to familiarize yourself with some basic features available when working with VMs in OpenShift Virtualization.

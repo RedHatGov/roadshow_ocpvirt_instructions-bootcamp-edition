@@ -1,241 +1,320 @@
-= Migrating Virtual Machines
+= Template Management
 
 == Introduction
 
-This portion of our lab uses the https://access.redhat.com/documentation/en-us/migration_toolkit_for_virtualization/[Migration Toolkit for Virtualization^] (MTV) to import virtual machines from VMware vSphere to OpenShift. The migration toolkit supports two "modes" of import:
+Pre-configured Red Hat virtual machine templates are listed in the *Virtualization* -> *Templates* page. These templates are available for different versions of Red Hat Enterprise Linux, Fedora, CentOS, Microsoft Windows Desktop, and Microsoft Windows Server editions. Each Red Hat virtual machine template is preconfigured with an operating system image, the default settings for the operating system, the flavor (CPU and memory), and the workload type (server).
 
-* Cold migration turns off the source virtual machine before starting the migration. This is the default migration type.
-* Warm migration copies data while the source virtual machine continues to run. Once the bulk of data has been migrated, the VM is shutdown and the final data is copied to the destination. The new VM can then be started, resulting in a much shorter period of downtime for the VM-hosted application.
+The *Templates* page displays four types of virtual machine templates:
 
-NOTE: The migration toolkit has already been deployed to your cluster using the Operator available in OperatorHub. 
+* *Red Hat Supported* templates are fully supported by Red Hat.
+* *User Supported* templates are *Red Hat Supported* templates that were cloned and created by users.
+* *Red Hat Provided* templates have limited support from Red Hat.
+* *User Provided* templates are *Red Hat Provided* templates that were cloned and created by users.
 
-Documentation for how to install and configure the Operator can be found https://access.redhat.com/documentation/en-us/migration_toolkit_for_virtualization/2.6/html/installing_and_using_the_migration_toolkit_for_virtualization/installing-the-operator_mtv[here^].
+[[clone_customize_template]]
+== Clone and Customize a Template
 
-If you would like to learn more about how to configure the Migration Toolkit for Virtualization for your own needs, please see the documentation at the following links for:
+By default pre-configured templates provided by Red Hat OpenShift Virtualization cannot be customized. However you can clone a template and make adjustments to it for your particular workload in order to make it easier to request specific types of virtual machines for specific workloads. In this section of the lab we are going to do just this, by creating a template that will provide a database server on demand for our end users.
 
-* https://access.redhat.com/documentation/en-us/migration_toolkit_for_virtualization/2.6/html/installing_and_using_the_migration_toolkit_for_virtualization/prerequisites_mtv#openstack-prerequisites_mtv[OpenStack^]
-* https://access.redhat.com/documentation/en-us/migration_toolkit_for_virtualization/2.6/html/installing_and_using_the_migration_toolkit_for_virtualization/prerequisites_mtv#rhv-prerequisites_mtv[Red Hat Virtualization^]
-* https://access.redhat.com/documentation/en-us/migration_toolkit_for_virtualization/2.6/html/installing_and_using_the_migration_toolkit_for_virtualization/prerequisites_mtv#vmware-prerequisites_mtv[VMware vSphere^]
-
-[[prerequisites]]
-== Prerequisites for Migrations
-
-The following prerequisites apply to all migrations:
-
-* ISO/CD-ROM disks must be unmounted.
-* Each NIC must contain one IPv4 and/or one IPv6 address.
-* The VM operating system must be certified and supported for use as a guest operating system for https://access.redhat.com/articles/973163#ocpvirt[OpenShift Virtualization^].
-* VM names must contain only lowercase letters (a-z), numbers (0-9), or hyphens (-), up to a maximum of 253 characters. The first and last characters must be alphanumeric. The name must not contain uppercase letters, spaces, periods (.), or special characters.
-* VM names must not duplicate the name of an existing VM in the OpenShift Virtualization environment.
-
-NOTE: The *Migration Toolkit for Virtualization* will automatically assign a new name to a VM that does not comply with the rules, doing so allows the migration to proceed smoothly.
-
-[[migrating_vms]]
-== Migrating Virtual Machines from VMware
-
-A three-tier application has been deployed on VMware for you to migrate to OpenShift.
-
-The application is accessible from the following link: http://webapp.vc.opentlc.com/[WebApp^]. It will display a visitor counter, and the hostname of the webserver that returned your request.
-
-The application consists of the following four virtual machines:
-
-* One HAproxy system that redirects traffic to the web servers
-* One Linux system running a MariaDB database
-* Two Microsoft Windows servers with IIS hosting a PHP application connecting to the database
-
-For this lab, you will be tasked with migrating three of the four virtual machines using cold migration.
-
-NOTE: You will not need to migrate the HAproxy (load balancer) VM because OpenShift handles network traffic and load balancing natively for VMs connected to the SDN using a *Service*.
-
-=== Review the VMware environment
-
-To help understand the process of mapping resources, such as datastores and port groups, from vSphere into OpenShift's equivalents, storage classes and network attachment definitions, let's begin by reviewing the source environment for the migrations.
-
-. Navigate to VMware vCenter: https://{vcenter_console}[vCenter Console^]
-
-. Login with the following credentials:
-- *User:* {vcenter_user}
-- *Password:* {vcenter_password}
-
-. By default you'll land in the *Inventory* view at the top of the navigation tree. Click the *Workloads* icon and expand the navigation tree until you see the folder that matches your username, and the 4 VMs under it. Click the *VMs* tab at the top of the screen to view the VM details.
+. To begin, navigate to *Virtualization* -> *Templates* and select *All projects*
 +
-image::module-05/00_Workload_VM_List.png[link=self, window=blank, width=100%]
+image::module-05/01_Template_List.png[link=self, window=blank, width=100%]
 +
-. Change to the *Networks* view, then expand the tree to view the port group used by the virtual machines. Note that the name is *segment-migrating-to-ocpvirt*.
+. In the search bar type in *centos9* and in the list of templates that appear find the template for *centos-stream9-server-large*. 
 +
-image::module-05/01_vSphere_Network.png[link=self, window=blank, width=100%]
+image::module-05/02_Search_Centos9.png[link=self, window=blank, width=100%]
++
+. Select the three-dot menu to the far right, and click on the option to *Clone* from the menu that pops out.
++
+image::module-05/03_Clone_Template.png[link=self, window=blank, width=100%]
++
+. A new menu called *Clone template* will appear, fill in the the following values, and when finished click on the *Clone* button.
++
+* *Template name:* centos-stream9-server-db-xl
+* *Template project:* vmexamples
+* *Template display name:* CentOS Stream 9 VM - Database XL Template
++
+image::module-05/04_Clone_Template_Options.png[link=self, window=blank, width=100%]
++
+. This will take you to the *Details* page for the template where we will be able to customize some options. Start by finding the CPU and Memory near the bottom of the page, and click on the pencil icon to edit it.
++
+image::module-05/05_Clone_Details.png[link=self, window=blank, width=100%]
++
+. A new window will pop out where you can edit the amount of CPU and Memory. For our XL template set the value of CPUs to 4, and Memory to 16 GiB, and click the *Save* button.
++
+image::module-05/06_Edit_CPU_Mem.png[link=self, window=blank, width=100%]
++
+. Navigate to the *Network Interfaces* tab, to the right of the *default* interface, select the three-dot menu and the edit option.
++
+image::module-05/07_Edit_Network.png[link=self, window=blank, width=100%]
++
+. When the *Edit network interface* menu appears, set the *Network* value to the *vmexamples/vlan0* network, and click the *Save* button.
++
+image::module-05/08_Edit_Net_Int.png[link=self, window=blank, width=100%]
++
+. Next click on the *Scripts* tab at the top, and in the section called *Cloud-init* click the *Edit* button.
++
+image::module-05/09_Scripts_CloudInit.png[link=self, window=blank, width=100%]
++
+. When the *Cloud-init* dialog opens, click the radio button to *Configure via: Script* then add the following YAML snippet to the end of the script.
++
+[source,yaml,role=execute]
+----
+  packages:
+    - mariadb-server
+  runcmd:
+    - systemctl enable mariadb
+    - systemctl start mariadb
+----
++
+image::module-05/10_Cloud_Init_Script.png[link=self, window=blank, width=100%]
++
+. Click the *Save* button, followed by the *Apply* button.
+. Now click on the *Virtualization -> Catalog* menu on the left, select the *Template catalog* option and click on *User templates*. You should see our created template available as a tile.
++
+image::module-05/11_User_Templates.png[link=self, window=blank, width=100%]
++
+. Click on the tile and you will be prompted with the VM startup screen. Click the *Quick create VirtualMachine* button.
++
+image::module-05/12_Quick_Create_Template.png[link=self, window=blank, width=100%]
++
+. When the virtual machine boots you can see on the *Overview* page that it was created from our template, and has the system resources we defined, and is already attached to the *vmexamples/vlan0* network with an assigned IP address.
++
+image::module-05/13_VM_From_Template.png[link=self, window=blank, width=100%]
++
+. Click on the *Console* tab at the top and use the *Guest login credentials* option to login to the console of the virtual machine.
++
+image::module-05/14_VM_Console.png[link=self, window=blank, width=100%]
++
+. Once you are logged into the virtual machine, run the following command to test the install of MariaDB.
++
+[source,sh,role=execute]
+----
+sudo mysql -u root
+----
++
+image::module-05/15_MariaDB_Login.png[link=self, window=blank, width=100%]
 
-. Finally, review the datastores in use by browsing to the *Datastores* view. Expand the tree to see the datastores that are attached to the *SDDC-Datacenter*, and optionally browse to the *VMs* sub-tab to view the capacity used by each virtual machine.
-+
-image::module-05/02_vSphere_Datastore.png[link=self, window=blank, width=100%]
+[[create_win]]
+== Create a Windows VM Template
 
-=== Review the VMware provider to the migration toolkit
+In this segment of our lab, we will install Microsoft Windows Server 2019 using an ISO hosted on a web server. This represents one way to install an operating system to a virtual machine that takes advantage of the ability to source disks from many locations, including a web server, object storage, or other persistent volumes in the cluster.
 
-The *Migration Toolkit for Virtualization* (*MTV*) uses the VMware Virtual Disk Development Kit (*VDDK*) SDK to transfer virtual disks from VMware vSphere. The VDDK has already been configured for you in this environment.
+This process can be streamlined after the initial operating system installation by creating a template from the virtual machine. The specific process for preparing the guest operating system to be used as a template will vary, be sure to follow your organization's guidelines and requirements when preparing a template OS.
 
-. Navigate in the left menu to *Migration* -> *Providers for virtualization*
-. Select project *openshift-mtv*
+. From the left menu, navigate to *Virtualization* -> *Catalog*, and click on the *Template catalog* tab near the top..
 +
-image::module-05/03_MTV_Providers.png[link=self, window=blank, width=100%]
+image::module-05/16_Template_Catalog.png[link=self, window=blank, width=100%]
 +
-[TIP]
-MTV 2.4 and later are project/namespace aware and do not require administrator privileges. You can delegate VM imports to application teams and VM users so that they can self-serve and migrate at their own pace!
-
-. By default, there is a provider called *host* which represents *OpenShift Virtualization* as a target platform.
+. Scroll down until you find the *Microsoft Windows Server 2019 VM* tile.
 +
-image::module-05/04_MTV_Provider_List.png[link=self, window=blank, width=100%]
+image::module-05/17_Windows_2k19_Tile.png[link=self, window=blank, width=100%]
 +
-. The lab is already configured with the VMWare provider named *vmware* and it is marked as a migration source.
-
-////
-However, you will need to register the source vCenter system to the Migration Toolkit for Virtualization as a new provider.
-
-. By default, there is a provider called *host* which represents *OpenShift Virtualization* as a target platform
+. A dialog will appear showing the default configuration related to the template.
 +
-image::module-05/04_MTV_Provider_list.png[link=self, window=blank, width=100%]
-
-. Press *Create Provider* button in the top right. A dialog it will appear.
+NOTE: Notice that there is intially no option to quick create this VM, and we must customize the VM to fit our needs.
 +
-image::module-05/05_MTV_Create_Provider.png[link=self, window=blank, width=100%]
+image::module-05/18_Windows_2k19_Dialog.png[link=self, window=blank, width=100%]
 +
-. Select *VMware* on the *Provider type* dropdown and fill the following data:
-.. *Name*: *vmware*
-.. *vCenter host name or IP address*: *portal.vc.opentlc.com*
-.. *vCenter user name*: {vcenter_user}
-.. *vCenter password*: {vcenter_password}
-.. *VDDK init image*: *image-registry.openshift-image-registry.svc:5000/openshift/vddk:latest*
-.. *SHA-1 fingerprint*: *70:2D:52:D2:D1:A5:A2:75:58:8F:3D:07:D5:7E:E9:73:81:BC:88:A2*
+. In this dialog:
+.. Specify the name *windows*
+.. Enable the checkbox *Boot from CD*
+.. Choose URL *(creates PVC)* from the drop-down menu
+.. Specify the url: http://192.168.123.100:81/Windows2019.iso
+.. Reduce the CD disk size to *5 GiB*
+.. Keep the *Disk source* size disk to the default value *60 GiB*
+.. Ensure the *Mount Windows drivers disk* checkbox is enabled. **This is required to install Windows systems, which will provide the drivers for VirtIO.**
 +
-image::module-05/06_MTV_Fill_Dialog.png[link=self, window=blank, width=100%]
-.  Press *Create* and wait till the *Status* column is changed to *Ready*
+image::module-05/19_Windows_2k19_Parameters.png[link=self, window=blank, width=100%]
 +
-image::module-05/07_MTV_Provider_Added.png[link=self, window=blank, width=100%]
-
-Now MTV knows about your VMware vSphere environment and can connect to it.
-////
-
-////
-
-2.6 MADE THIS YAML ONLY, SKIPPING IN LAB FOR NOW, CONTENT STILL HERE IF NEEDED LATER.
-
-=== Create storage and network mappings
-
-Storage and networking resources are managed differently in VMware vSphere and Red Hat OpenShift Virtualization. Therefore it is necessary to create mappings from the source datastores and networks in VMware vSphere to the equivalent resources in OpenShift so that the migration toolkit understands how to connect and place virtual machines after they are imported.
-
-These only need to be configured once and are then reused in subsequent VM Migration Plans.
-
-. Navigate in the left menu to *Migration* -> *NetworkMaps for virtualization* and click on the *Create NetworkMap* button.
+. With the options filled out, we want to click on the *Customize VirtualMachine* button at the bottom to continue configuring our Template.
 +
-image::module-05/08_MTV_NetworkMaps.png[link=self, window=blank, width=100%]
-
-. Fill in the following information in the appeared dialog. Press *Create*.
-.. *Name*: *mapping-segment*
-.. *Source provider*: *vmware*
-.. *Target provider*: *host*
-.. Click *Add*
-.. *Source networks*: *segment-migrating-to-ocpvirt*
-.. *Target network*: *Pod network (default)*
+. On the *Customize and create VirtualMachine screen, click on the *Scripts* tab, and then scroll down to the *Sysprep* section and click on the *Edit* button.
 +
-image::module-05/09_Add_VMWARE_Mapping_Network.png[link=self, window=blank, width=100%]
-
-. Ensure the created mapping has the *Status* *Ready*.
+image::module-05/20_Customize_Scripts.png[link=self, window=blank, width=100%]
 +
-image::module-05/10_List_VMWARE_Mapping_Network.png[link=self, window=blank, width=100%]
-
-. Navigate in the left menu to *Migration* -> *StorageMaps for virtualization* and click on the *Create StorageMap* button.
+. A new window will pop up for you to create *Sysprep* actions for your new template.
 +
-image::module-05/11_MTV_StorageMaps.png[link=self, window=blank, width=100%]
-
-. Fill in the following information. Press *Create*.
-.. *Name*: *mapping-datastore*
-.. *Source provider*: *vmware*
-.. *Target provider*: *host*
-.. Click *Add*
-.. *Source storage*: *WorkloadDatastore*
-.. *Target storage classs*: *ocs-storagecluster-ceph-rbd-virtualization*
+image::module-05/21_Sysprep.png[link=self, window=blank, width=100%]
 +
-image::module-05/12_Add_VMWARE_Mapping_Storage.png[link=self, window=blank, width=100%]
-
-. Ensure the created mapping has the *Status* *Ready*.
+. Copy and paste the following code block into the *autounattend.xml* section:
 +
-image::module-05/13_List_VMWARE_Mapping_Storage.png[link=self, window=blank, width=100%]
-////
-
-=== Create a Migration Plan
-
-Now that we have reviewed our environment, and have our providers created, it is time for us to create a Migration Plan. This plan selects which VMs to migrate from VMware vSphere to Red Hat OpenShift Virtualization and specifics about how to execute the migration.
-
-. Navigate in the left menu to *Migration* -> *Plans for virtualization* and press *Create plan*.
+[source,xml,role=execute]
+----
+<?xml version="1.0" encoding="utf-8"?>
+<unattend xmlns="urn:schemas-microsoft-com:unattend" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:schemas-microsoft-com:unattend">
+  <settings pass="windowsPE">
+    <component name="Microsoft-Windows-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+      <DiskConfiguration>
+        <Disk wcm:action="add">
+          <CreatePartitions>
+            <CreatePartition wcm:action="add">
+              <Order>1</Order>
+              <Extend>true</Extend>
+              <Type>Primary</Type>
+            </CreatePartition>
+          </CreatePartitions>
+          <ModifyPartitions>
+            <ModifyPartition wcm:action="add">
+              <Active>true</Active>
+              <Format>NTFS</Format>
+              <Label>System</Label>
+              <Order>1</Order>
+              <PartitionID>1</PartitionID>
+            </ModifyPartition>
+          </ModifyPartitions>
+          <DiskID>0</DiskID>
+          <WillWipeDisk>true</WillWipeDisk>
+        </Disk>
+      </DiskConfiguration>
+      <ImageInstall>
+        <OSImage>
+          <InstallFrom>
+            <MetaData wcm:action="add">
+              <Key>/IMAGE/NAME</Key>
+              <Value>Windows Server 2019 SERVERSTANDARD</Value>
+            </MetaData>
+          </InstallFrom>
+          <InstallTo>
+            <DiskID>0</DiskID>
+            <PartitionID>1</PartitionID>
+          </InstallTo>
+        </OSImage>
+      </ImageInstall>
+      <UserData>
+        <AcceptEula>true</AcceptEula>
+        <FullName>Administrator</FullName>
+        <Organization>My Organization</Organization>
+      </UserData>
+      <EnableFirewall>false</EnableFirewall>
+    </component>
+    <component name="Microsoft-Windows-International-Core-WinPE" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+      <SetupUILanguage>
+        <UILanguage>en-US</UILanguage>
+      </SetupUILanguage>
+      <InputLocale>en-US</InputLocale>
+      <SystemLocale>en-US</SystemLocale>
+      <UILanguage>en-US</UILanguage>
+      <UserLocale>en-US</UserLocale>
+    </component>
+  </settings>
+  <settings pass="offlineServicing">
+    <component name="Microsoft-Windows-LUA-Settings" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+      <EnableLUA>false</EnableLUA>
+    </component>
+  </settings>
+  <settings pass="specialize">
+    <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+      <AutoLogon>
+        <Password>
+          <Value>R3dh4t1!</Value>
+          <PlainText>true</PlainText>
+        </Password>
+        <Enabled>true</Enabled>
+        <LogonCount>999</LogonCount>
+        <Username>Administrator</Username>
+      </AutoLogon>
+      <OOBE>
+        <HideEULAPage>true</HideEULAPage>
+        <HideLocalAccountScreen>true</HideLocalAccountScreen>
+        <HideOnlineAccountScreens>true</HideOnlineAccountScreens>
+        <HideWirelessSetupInOOBE>true</HideWirelessSetupInOOBE>
+        <NetworkLocation>Work</NetworkLocation>
+        <ProtectYourPC>3</ProtectYourPC>
+        <SkipMachineOOBE>true</SkipMachineOOBE>
+      </OOBE>
+      <UserAccounts>
+        <LocalAccounts>
+          <LocalAccount wcm:action="add">
+            <Description>Local Administrator Account</Description>
+            <DisplayName>Administrator</DisplayName>
+            <Group>Administrators</Group>
+            <Name>Administrator</Name>
+          </LocalAccount>
+        </LocalAccounts>
+      </UserAccounts>
+      <TimeZone>Eastern Standard Time</TimeZone>
+    </component>
+  </settings>
+  <settings pass="oobeSystem">
+    <component name="Microsoft-Windows-International-Core" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+      <InputLocale>en-US</InputLocale>
+      <SystemLocale>en-US</SystemLocale>
+      <UILanguage>en-US</UILanguage>
+      <UserLocale>en-US</UserLocale>
+    </component>
+    <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+      <AutoLogon>
+        <Password>
+          <Value>R3dh4t1!</Value>
+          <PlainText>true</PlainText>
+        </Password>
+        <Enabled>true</Enabled>
+        <LogonCount>999</LogonCount>
+        <Username>Administrator</Username>
+      </AutoLogon>
+      <OOBE>
+        <HideEULAPage>true</HideEULAPage>
+        <HideLocalAccountScreen>true</HideLocalAccountScreen>
+        <HideOnlineAccountScreens>true</HideOnlineAccountScreens>
+        <HideWirelessSetupInOOBE>true</HideWirelessSetupInOOBE>
+        <NetworkLocation>Work</NetworkLocation>
+        <ProtectYourPC>3</ProtectYourPC>
+        <SkipMachineOOBE>true</SkipMachineOOBE>
+      </OOBE>
+      <UserAccounts>
+        <LocalAccounts>
+          <LocalAccount wcm:action="add">
+            <Description>Local Administrator Account</Description>
+            <DisplayName>Administrator</DisplayName>
+            <Group>Administrators</Group>
+            <Name>Administrator</Name>
+          </LocalAccount>
+        </LocalAccounts>
+      </UserAccounts>
+      <TimeZone>Eastern Standard Time</TimeZone>
+    </component>
+  </settings>
+</unattend>
+----
 +
-image::module-05/14_Create_VMWARE_Plan.png[link=self, window=blank, width=100%]
+. Once the code is pasted, click the *Save* button on the dialog.
 +
-. You will be asked to select the source provider that you intend to migrate from. Click on the *VMware* tile.
+image::module-05/22_Windows_2k19_Sysprep.png[link=self, window=blank, width=100%]
 +
-image::module-05/16_VMware_Source_Provider.png[link=self, window=blank, width=100%]
+. You will be returned to the *Customize and create Virtual Machine* screen, Click on the *Disks* tab, and locate the line for the *installation-CDROM*, click the three-dot menu on the right, and select *Edit*.
 +
-. On the next page select the three VMs you would like to move:
-
-* database
-* winweb01
-* winweb02
-
-. Click *Next*.
+image::module-05/23_Edit_Boot_Media.png[link=self, window=blank, width=100%]
 +
-image::module-05/17_VM_Select_VMWARE_Plan.png[link=self, window=blank, width=100%]
+. Select the option for *Use this disk as a boot source*, and click on the *Save* button at the bottom.
 +
-. On the next screen you will be tasked with providing details for your migration plan. Several details will already be filled in for you, but you will have to make a few minor modifications to ensure that the VMs land in the correct namespace, and that the networks and storage options map correctly. 
+image::module-05/24_Boot_Source.png[link=self, window=blank, width=100%]
 +
-Please fill in your migration plan with the following values:
-
-* Plan name: *move-webapp-vmware*
-* Target namespace: *vmexamples*
-* Network map: *Pod Networking*
-* Storage map: *ocs-storagecluster-ceph-rbd-virtualization*
+. When you return to the *Disks* tab, click on the *Create VirtualMachine* button at the bottom.
+. The Virtual Machine will start the provisioning process by downloading the ISO image, configuring, and starting the instance.
 +
-NOTE: Both the Network and Storage map will automatically detect the Network and Datastore that the discovered virtual machines currently make use of on the source provider. You will just need to make sure that their respective values are set correctly on the OpenShift side. 
+image::module-05/25_Windows_2k19_Provisioning.png[link=self, window=blank, width=100%]
 +
-. Click *Create migration plan*.
+. After a few minutes, the Virtual VM will be in *Running* status. Switch to the *Console* tab:
 +
-image::module-05/18_Create_Migration_Plan.png[link=self, window=blank, width=100%]
+image::module-05/26_Windows_2k19_Console.png[link=self, window=blank, width=100%]
 +
-. You will be taken to a new screen where you will see that the plan for migration is being made ready.
+IMPORTANT: The VM is marked as "Not migratable" because a CD-ROM disk is attached. 
 +
-image::module-05/19_Migration_Plan_Unready.png[link=self, window=blank, width=100%]
+. Once the VM installation process is complete, go ahead and power it off with the stop button. We can now take a snapshot of the root disk, and use that to create a bootable volume template that we can use to boot other Windows 2k19 machines.
 +
-. After a few moments the plan will become *Ready*, click on the green "Play" button in the center of the window to start the migration process.
+. Click on *Storage* -> *PersistentVolumeClaims* to see a list of PVCs available in the vmexamples namespace.
 +
-image::module-05/20_Migration_Plan_Ready.png[link=self, window=blank, width=100%]
+image::module-05/27_Windows_PVC.png[link=self, window=blank, width=100%]
 +
-. You will be presented with a confirmation box to begin the migration, click on the *Start* button.
+. Find the *windows* PVC that is listed and using the three-dot menu on the right select *Clone PVC*. On the menu that pops up, name the new PVC *windows-2k19-template*.
 +
-image::module-05/21_Confirm_Migrate_Start.png[link=self, window=blank, width=100%]
+image::module-05/28_Clone_Windows_PVC.png[link=self, window=blank, width=100%]
 +
-. A progress bar will appear in the center of the screen along with the status of *0 of 3 VMs migrated*.
+. Once this is saved, you can return to the *Virtualization -> Catalog* menu, and use this cloned PVC as a future boot source for creating new Virtual Machines by selecting the option for *PVC (clone PVC)* as the *Disk source*, and selecting the *Windows-2k19-Template* PVC as the *PVC name* to clone.
 +
-image::module-05/22_VMs_Migrating.png[link=self, window=blank, width=100%]
-+
-. Click on the *0 of 3 VMs migrated* link and you will be presented with a page with more details about the migration process.
-+
-image::module-05/23_VMs_Migrating_Details.png[link=self, window=blank, width=100%]
-+
-. You can click the drop-down arrow next to the name of each VM being migrated to get additional details about the stages of the migration process.
-+
-image::module-05/24_VM_Migration_Stages.png[link=self, window=blank, width=100%]
-+
-IMPORTANT: Having many participants performing the same task in parallel can cause this task to perform slower than in a real environment. For the Red Hat Summit Lab instance we have limited the number of in-flight VMs to 1 at a time. Please be patient with this process.
-+
-. After several minutes the migration has completed.
-+
-image::module-05/25_Completed_VMWARE_Plan.png[link=self, window=blank, width=100%]
-+
-. The selected VMs have now been migrated and can be started on OpenShift Virtualization. 
+image::module-05/29_Windows_Template.png[link=self, window=blank, width=100%]
 
 == Summary
 
-In this section we explored the Migration Toolkit for Virtualization, and used it to assist with the migration of existing virtual machines from a VMware vSphere environment to OpenShift Virtualization. In addition to the Migration Toolkit for Virtualization, there are three other migration toolkits. The combination of these can be used to move many types of workloads into and within OpenShift clusters depending on your organization's needs. 
-
-* https://developers.redhat.com/products/mtr/overview[Migration Toolkit for Runtimes^] - Assist and accelerate Java application modernization and migration.
-* https://access.redhat.com/documentation/en-us/migration_toolkit_for_applications/[Migration Toolkit for Applications^] - Accelerate large-scale application modernization efforts to containers and Kubernetes.
-* https://docs.openshift.com/container-platform/4.15/migration_toolkit_for_containers/about-mtc.html[Migration Toolkit for Containers^] - Migrate stateful application workloads between OpenShift clusters.
-
-For more information about these other migration toolkits, please reach out to your Red Hat account team.
+In this section we learned how to clone and customize and existing template to create one that can be used for specific workloads like databases. We also learned how to configure one of the existing Windows templates that exists without a boot source, and automate it's installation process, so we can create future templates by cloning the installation PVC that is created with that VM.
