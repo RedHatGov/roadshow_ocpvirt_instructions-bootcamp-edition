@@ -1,10 +1,10 @@
 = Storage Management
 
-Red Hat OpenShift supports multiple types of storage, both for on-premises and cloud providers. OpenShift Virtualization can use any supported container storage interface (CSI) provisioner in the environment you're running on. For example, OpenShift Data Foundation, NetApp, Dell/EMC, Fujitsu, Hitachi, Pure Storage, Portworx, and many others support on-premises, CSI provisioned, ReadWriteMany (RWX) volumes with OpenShift Virtualization.
+Red Hat OpenShift supports multiple types of storage, both for on-premises and cloud providers. OpenShift Virtualization can use any supported container storage interface (CSI) provisioner in the environment you're running on. For example, OpenShift Data Foundation, IBM Spectrum Family,NetApp, Dell/EMC, Pure Storage/Portworx, and many others support on-premises, CSI provisioned, ReadWriteMany (RWX) volumes with OpenShift Virtualization.
 
-This workshop segment will explore Persistent Volume Claims (PVCs), which are used to request storage from the provider and store a VM disk. Many storage providers also support snapshots and clones of their devices, be sure to check with your vendor to verify the features supported by the CSI driver and storage device.
+This workshop segment will explore Persistent Volume Claims (PVCs), which are used to request storage from the provider and store a VM boot disk as well as additional attached disks to VMs or containers. Many storage providers also support snapshots and clones of their devices, be sure to check with the CSI vendor to verify the features supported by the driver and storage device.
 
-Notably, there are no restrictions on storage protocol (e.g. NFS, iSCSI, FC, etc.) specific to OpenShift Virtualization. The only requirement is that the RWX access mode is available to support live migration of VMs within the cluster. Otherwise, the storage that best meets the needs of your VMs and applications is always the right choice.
+Notably, there are no restrictions on storage protocol (e.g. NFS, iSCSI, NVMe/TCP, FC, etc.) specific to OpenShift Virtualization. The only requirement is that the RWX access mode is available to support live migrations of VMs within the cluster. Otherwise, the storage that best meets the needs of your VMs and applications is always the right choice.
 
 image::module-03/00_disk_concepts.png[link=self, window=blank, width=100%]
 
@@ -16,7 +16,7 @@ In this lab, we are going to take a closer look at the storage behind the virtua
 
 . Start by clicking on the left menu for *Storage* -> *Persistent Volume Claims*. Make sure you are in the *vmexamples* namespace, you should see the *fedora01* VM from the previous section listed.
 +
-//add image
+image::module-03/01_vmexamples_PVC.png[link=self, window=blank, width=100%]
 +
 . Click on the *fedora01* VM and you will be presented with a screen that shows additional details about the storage volume backing the VM. 
 +
@@ -32,15 +32,15 @@ image::module-03/02_Fedora01_PVC_Details.png[link=self, window=blank, width=100%
 [[managing_snapshots]]
 == Managing Snapshots
 
-OpenShift Virtualization relies on the CSI storage provider's snapshot capability to create disk snapshots for the virtual machine, which can be taken "online" while the VM is running or "offline" while the VM is powered off. If the KVM integrations are installed on the VM, you will also have the option of quiescing the guest operating system (quiescing ensures that the snapshot of the disk represents a consistent state of the guest file systems, e.g., buffers are flushed and the journal is consistent).
+OpenShift Virtualization relies on the CSI storage provider's snapshot capability to create disk snapshots for the virtual machine, which can be taken "online" while the VM is running or "offline" while the VM is powered off. If the KVM integrations are installed (guest-agent) on the VM, you will also have the option of quiescing the guest operating system (quiescing ensures that the snapshot of the disk represents a consistent state of the guest file systems, e.g., buffers are flushed and the journal is consistent).
 
-Since disk snapshots are dependent on the storage implementation, abstracted by the CSI, performance impact and capacity used will depend on the storage provider. Work with your storage vendor to determine how the system will manage PVC snapshots and the impact they may or may not have.
+Since disk snapshots are dependent on the storage implementation, abstracted by the CSI, performance impact and capacity used will depend on the storage provider. Work with the storage vendor to determine how the system will manage PVC snapshots and the impact they may or may not have.
 
 [IMPORTANT]
 ====
 Snapshots, by themselves, are not a backup or disaster recovery capability. The data needs to be protected in other ways, such as one or more copies stored in a different location, to recover from the storage system failing.
 
-In addition to the OpenShift API for Data Protection (OADP), partners such as Kasten by Veeam, Trilio, and Storware support the ability to backup and restore virtual machines to the same cluster or other clusters as needed.
+In addition to the OpenShift API for Data Protection (OADP), partners such as Kasten by Veeam, Trilio, and Storware support the ability to backup and restore virtual machines to the same cluster or other clusters as needed. See lab section 8. Data Protection with OADP for more information and hands on lab.
 ====
 
 With the VM snapshots feature, cluster administrators and application developers can:
@@ -70,6 +70,11 @@ image::module-03/05_Snapshot_Menu.png[link=self, window=blank, width=100%]
 There is a warning about the *cloudinitdisk* not being included in the snapshot. This is expected and happens because it is an ephemeral disk.
 +
 image::module-03/06_VM_Snapshot_Dialog.png[link=self, window=blank, width=100%]
+
+[NOTE]
+===
+The Deadline field is to indicate how long to wait for the KVM guest-agent to queiese the filesystems before giving up.
+===
 
 . Press *Save* and wait till the _Snapshot_ has been created and the *status* shows as *Succeeded*.
 +
