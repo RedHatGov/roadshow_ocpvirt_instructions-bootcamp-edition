@@ -64,12 +64,29 @@ When the DPA is reconciled, a _BackupStorageLocation_ will have been created and
 image::module-08/08_bsl.png[link=self, window=blank, width=100%]
 +
 
+[[snapshot_class]]
+=== Modifying the Volume Snapshot Class
+
+Setting a _DeletionPolicy_ of `Retain` on the _VolumeSnapShotClass_ will preserve the volume snapshot in the storage system for the lifetime of the backup and will prevent the deletion of the volume snapshot in the storage system  The CSI plugin for OADP, will choose the _VolumeSnapshotClass_ in the clsuter that has the same driver name and also has the `velero.io/csi-volumesnapshot-class: true` label set.  This is needed, especially if the snapshot data is not moved to the S3 bucket using the Kopia Data Mover.
+
+. To verify the _DeletionPolicy_, expand Storage in the left navigation pane, select *VolumeSnaphotClasses*
++
+image::module-08/11_volumesnapshotclass.png[link=self, window=blank, width=100%]
++
+. Select the _ocs-storagecluster-rbdplugin-snapclass_ snapshot class. Click the YAML option from the top horizontal menu. Update the YAML configuration to set *DeletionPolicy* to *Retain*.  Click *Save*
++
+image::module-08/12_rbdplugin-yaml.png[link=self, window=blank, width=100%]
++
+[NOTE]
+If the snapshots are not retained on the storage system and will be copied to the S3 bucket, this parameter becomes less important.  But to ensure  snapshots that are taken by OADP are retained for the lifecycle of the backup, this parameter should be set to *Retain*.
+
 
 [[backups]]
 === Creating Backups  
 
-After verifying the state of the object bucket claim, the OADP DPA, and BSL, we can create a backup.
+After verifying the state of the object bucket claim, the OADP DPA, the BSL, and the deletion policy, we can create a backup.
 
+. Expand *Operators* in the left navigation pane, select *Installed Operators*.  From the list of operators, select *OADP Operator*.
 . Select *Backup* from the horizontal menu.
 +
 image::module-08/09_backup.png[link=self, window=blank, width=100%]
@@ -104,10 +121,19 @@ The *ttl* is the retention period of the backup.  If the snapshot data is not mo
 [TIP]
 Use the *generateName:* feature to append random characters to the end of the given name to ensure the name is unique.
 
+When the backup of all resources in the vmexamples namespace is complete the *Status* of the backup will be _Completed_.
++
+image::module-08/13_backupcomplete.png[link=self, window=blank, width=100%]
++
+
+
+
 [[restore]]
 == Restoring the Virtual Machine
 
+Oh no! A disaster is about to strike.  
 
+. Navigate to Virtualization in the left navigation pane, expand and select Virutal Machines.
 
 
 
@@ -127,5 +153,5 @@ velero get backups
 Get details of a specific backup:
 [source,sh,role=execute]
 ----
-velero describe backup <backupName>
+velero describe backup < backupName >
 ----
