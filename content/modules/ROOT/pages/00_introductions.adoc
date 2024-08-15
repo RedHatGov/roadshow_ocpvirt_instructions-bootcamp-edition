@@ -1,6 +1,8 @@
 = Openshift Virtualization Field Enablement Introduction and Overview
 
-== Agenda, Tuesday, August 27th 9AM through Friday June 28 12:30PM
+= Agenda
+
+==Tuesday, August 27th 9AM through Friday June 28 12:30PM
 
 * Tuesday 9AM - 6PM  EDT
 * Wednesday 9AM - 6PM EDT
