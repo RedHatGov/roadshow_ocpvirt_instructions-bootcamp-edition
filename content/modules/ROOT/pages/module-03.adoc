@@ -1,6 +1,6 @@
 = Storage Management
 
-Red Hat OpenShift supports multiple types of storage, both for on-premises and cloud providers. OpenShift Virtualization can use any supported container storage interface (CSI) provisioner in the environment you're running on. For example, OpenShift Data Foundation, IBM Spectrum Family,NetApp, Dell/EMC, Pure Storage/Portworx, and many others support on-premises, CSI provisioned, ReadWriteMany (RWX) volumes with OpenShift Virtualization.
+Red Hat OpenShift supports multiple types of storage, both for on-premises and cloud providers. OpenShift Virtualization can use any supported container storage interface (CSI) provisioner in the environment you're running on. For example, OpenShift Data Foundation, IBM Spectrum Family, NetApp, Dell/EMC, Pure Storage/Portworx, and many others support on-premises, CSI provisioned, ReadWriteMany (RWX) volumes with OpenShift Virtualization.
 
 This workshop segment will explore Persistent Volume Claims (PVCs), which are used to request storage from the provider and store a VM boot disk as well as additional attached disks to VMs or containers. Many storage providers also support snapshots and clones of their devices, be sure to check with the CSI vendor to verify the features supported by the driver and storage device.
 
@@ -70,12 +70,10 @@ image::module-03/05_Snapshot_Menu.png[link=self, window=blank, width=100%]
 There is a warning about the *cloudinitdisk* not being included in the snapshot. This is expected and happens because it is an ephemeral disk.
 +
 image::module-03/06_VM_Snapshot_Dialog.png[link=self, window=blank, width=100%]
-
++
 [NOTE]
-===
-The Deadline field is to indicate how long to wait for the KVM guest-agent to queiese the filesystems before giving up.
-===
-
+The _Deadline_ field is to indicate how long to wait for the KVM guest-agent to queiese the filesystems before giving up.
++
 . Press *Save* and wait till the _Snapshot_ has been created and the *status* shows as *Succeeded*.
 +
 image::module-03/07_VM_Snapshot_Taken.png[link=self, window=blank, width=100%]
@@ -134,12 +132,12 @@ image::module-03/16_VM_Running.png[link=self, window=blank, width=100%]
 [[clone_vm]]
 == Clone a Virtual Machine
 
-Cloning creates a new VM that uses it's own disk image for storage, but most of the clone's configuration and stored data is identical to the source VM.
+Cloning creates a new VM that uses its own disk image for storage, but most of the clone's configuration and stored data is identical to the source VM.
 
 . Return to the *Overview* screen, and click the *Actions* dropdown menu to see the option to clone the VM.
 +
 image::module-03/17_Overview_Actions_Clone.png[link=self, window=blank, width=100%]
-. Press *Clone* from the *Actions* menu, and a dialog will open. Name the cloned VM *fedora02*, and select the check box to *Start VirtualMachine on clone*.
+. Press *Clone* from the *Actions* menu, and a dialog will open. Name the cloned VM *fedora02*, and select the check box to *Start VirtualMachine on clone*.  Click the *Clone* icon in the lower left.
 +
 image::module-03/18_VM_Clone_Dialog.png[link=self, window=blank, width=100%]
 +
@@ -150,6 +148,40 @@ image::module-03/19_VM_Cloned.png[link=self, window=blank, width=100%]
 [IMPORTANT]
 The cloned VM will have the same identity as the source VM, which may cause conflicts with applications and other clients interacting with the VM. Use caution when cloning a VM connected to an external network or in the same project.
 
+== Attach an additional disk to a virtual machine
+
+An additional disk may be required for an application that runs on the virtual machine to keep data separate from the root filesystem.  You can easily attach disks to a virtual machine while it is running.
+
+. For the fedora02 VM, click the *Configuration* horizontal menu option.  Select *Storage* from the left vertical menu.
++
+image::module-03/20_VM_addDisk.png[link=self, window=blank,width=100%]
++
+. Click the *Add Disk* icon.  In the _Add Disk_ dialog window, update the name to *appdisk*, and enter 5 GiB for the _PersistentVolumeDisk size_.  Click the *Save* icon.  The PVC and underlying PV will be created and attached to the VM as /dev/sda in this case.  
++
+image::module-03/21_VM_addDiskpopup.png[link=self, window=blank,width=100%]
++
+. Click the *Console* option from the top menu.  Login to the console and run the _lsblk_ command.  You'll see the 5 GiB disk as sda.
++
+image::module-03/22_VM_consolesda.png[link=self, window=blank,width=100%]
++
+[NOTE]
+You will also the console output from the disk discovery in the console.  You may have to hit the *Enter* key to get the login prompt.
+
+The disk was created as standard block device. You can create a filesystem on the device and update the /etc/fstab to persistently mount the filesystem when the VM boots.
+
+[source,sh,role=execute]
+----
+sudo mkfs.ext4 /dev/sda
+sudo mkdir /app
+sudo echo /dev/sda /app ext4 defaults 0 0 >> /etc/fstab
+sudo systemctl daemon-reload
+sudo mount /app
+cd /app; df -h .
+----
+
+
+
+
 == Summary
 
-In this section of our lab we explored the storage options that are available to us when managing virtual machines. We also performed several VM management functions that are dependant on the storage provisioned for the virtual machine, including taking snapshots of VMs and cloning VMs to be used in another project or to help streamline development.
+In this section of our lab we explored the storage options that are available to us when managing virtual machines. We also performed several VM management functions that are dependant on the storage provisioned for the virtual machine, including taking snapshots of VMs and cloning VMs to be used in another project or to help streamline development.  We also added an additional disk device to a running virtual machine.
