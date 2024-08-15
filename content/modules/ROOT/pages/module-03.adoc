@@ -148,9 +148,9 @@ image::module-03/19_VM_Cloned.png[link=self, window=blank, width=100%]
 [IMPORTANT]
 The cloned VM will have the same identity as the source VM, which may cause conflicts with applications and other clients interacting with the VM. Use caution when cloning a VM connected to an external network or in the same project.
 
-== Attach an additional disk to a virtual machine
+== Attaching Additional Disks
 
-An additional disk may be required for an application that runs on the virtual machine to keep data separate from the root filesystem.  You can easily attach disks to a virtual machine while it is running.
+Additional disks may be required for an application that runs on the virtual machine to keep data separate from the root device.  You can easily attach disks to a virtual machine while it is running.
 
 . For the fedora02 VM, click the *Configuration* horizontal menu option.  Select *Storage* from the left vertical menu.
 +
@@ -160,12 +160,14 @@ image::module-03/20_VM_addDisk.png[link=self, window=blank,width=100%]
 +
 image::module-03/21_VM_addDiskpopup.png[link=self, window=blank,width=100%]
 +
+image::module-03/22_VM_diskadded.png[link=self, window=blank,width=100%]
++
 . Click the *Console* option from the top menu.  Login to the console and run the _lsblk_ command.  You'll see the 5 GiB disk as sda.
 +
-image::module-03/22_VM_consolesda.png[link=self, window=blank,width=100%]
+image::module-03/23_VM_consolesda.png[link=self, window=blank,width=100%]
 +
 [NOTE]
-You will also the console output from the disk discovery in the console.  You may have to hit the *Enter* key to get the login prompt.
+You will also see the output from the disk discovery in the console.  You may have to hit the *Enter* key to get the login prompt.
 
 The disk was created as standard block device. You can create a filesystem on the device and update the /etc/fstab to persistently mount the filesystem when the VM boots.
 
