@@ -23,6 +23,7 @@
 ** xref:module-03.adoc#examine_pvc[Examine the PVC for a VM]
 ** xref:module-03.adoc#managing_snapshots[Managing Snapshots]
 ** xref:module-03.adoc#clone_vm[Clone a Virtual Machine]
+** xref:module-03.adoc#attach_disk[Attaching Additional Disks]
 
 * xref:module-04.adoc[4. Network Management]
 ** xref:module-04.adoc#create_netattach[Create a Network Attachment Definition]
@@ -39,6 +40,14 @@
 
 * xref:module-07.adoc[7. Troubleshooting]
 * xref:module-07.adoc#boot_source_na[Boot Source Not Available]
+
+* xref:module-08.adoc[8. Data Protection with OADP]
+* xref:module-08.adoc#objectbucketclaim[Object Bucket Claim]
+* xref:module-08.adoc#oadp-dpa[OADP Data Protection Application]
+* xref:module-08.adoc#backups[Creating Backups]
+* xref:module-08.adoc#restore[Restoring a Virtual Machine]
+* xref:module-08.adoc#CLI_commands[CLI Commands for Troubleshooting]
+
 
 * Additional Boot Camp Content
 ** xref:22_disconnected.adoc[Disconnected Environments]

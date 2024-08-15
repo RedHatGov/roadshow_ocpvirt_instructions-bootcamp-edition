@@ -148,6 +148,7 @@ image::module-03/19_VM_Cloned.png[link=self, window=blank, width=100%]
 [IMPORTANT]
 The cloned VM will have the same identity as the source VM, which may cause conflicts with applications and other clients interacting with the VM. Use caution when cloning a VM connected to an external network or in the same project.
 
+[[attach_disk]]
 == Attaching Additional Disks
 
 Additional disks may be required for an application that runs on the virtual machine to keep data separate from the root device.  You can easily attach disks to a virtual machine while it is running.

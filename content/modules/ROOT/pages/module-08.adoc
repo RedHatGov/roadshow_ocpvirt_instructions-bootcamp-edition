@@ -7,7 +7,6 @@ However, OADP does not serve as a disaster recovery solution for `etcd` or OpenS
 This workshop segment will explore configurating an OBC for OADP to store the backups, configure OADP Data Protection Application and completing a backup and restore of a virtual machine.
 
 [[objectbucketclaim]]
-
 == Object Bucket Claim
 
 OADP stores the backups in an S3 bucket.  For this lab we are going to use internal storage but for production environments the recommendation is to use an external S3 destination.  This can be through the MultiCloud Gateway to a cloud provider or to an on-premise S3 instance. 
