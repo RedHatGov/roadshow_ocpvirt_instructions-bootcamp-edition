@@ -1,0 +1,132 @@
+= OpenShift API for Data Protection
+
+The OpenShift API for Data Protection (OADP) product safeguards customer applications on OpenShift Container Platform. It offers comprehensive disaster recovery protection, covering OpenShift Container Platform applications, application-related cluster resources, persistent volumes, and internal images. OADP is also capable of backing up both containerized applications and virtual machines (VMs).
+
+However, OADP does not serve as a disaster recovery solution for `etcd` or OpenShift Operators.
+
+This workshop segment will explore configurating an OBC for OADP to store the backups, configure OADP Data Protection Application and completing a backup and restore of a virtual machine.
+
+[[objectbucketclaim]]
+
+== Object Bucket Claim
+
+OADP stores the backups in an S3 bucket.  For this lab we are going to use internal storage but for production environments the recommendation is to use an external S3 destination.  This can be through the MultiCloud Gateway to a cloud provider or to an on-premise S3 instance. 
+
+. To view the bucket, expand *Storage* in the left navigation pane.  Click *Object Storage*.  From the horizontal menu, click *Object Bucket Claim*.  Ensure that _Project_ is set to All Projects.
++
+image::module-08/01_obc.png[link=self, window=blank, width=100%]
++
+. Select the obc-backups bucket claim.  Scroll to the bottom of the screen and click the _Reveal Values_ link The AWS Access Key and AWS Secret Access Key are used to create a secret in the openshift-adp namespace called cloud-credentials 
++
+image::module-08/02_revealobc.png[link=self, window=blank, width=100%]
++
+. To veiw the cloud secret, in the left navigation pane, expand *Workloads*  and select *Secrets*.  Ensure you are in the *openshift-adp* project.  Click the cloud-credentials secret from the list.
++
+image::module-08/03_cloudcreds.png[link=self, window=blank, width=100%]
++
+. At the bottom, the cloud key data can be seen by clicking the Reveal values link.  The cloud data contains the bucket's AWS Access Key and Secret Access Key.
++
+image::module-08/04_cloudsecret.png[link=self, window=blank, width=100%]
++
+[NOTE]
+The cloud-credentials with the cloud key are required for the OADP Data Protection Application.
+
+[[oadp-dpa]]
+=== OADP Data Protection Application
+
+The Data Protection Application represents the configuration to safely backup and restore, perform disaster recovery and migrate Kubernetes cluster resources and persistent volumes.
+
+. To view the data protection application, expand *Operators* in the left navigation pane.  Select *Installed Operators* and from the list operators presented, select *OADP Operator*.
++
+image::module-08/05_oadpoperator.png[link=self, window=blank, width=100%]
++
+. Scroll through the top horizontal menu bar to the far right to select *DataProtectionApplication*.  This will list the DPA that has already been defined.
++
+image::module-08/06_oadp-dpa.png[link=self, window=blank, width=100%]
++
+. Select the *oadp-dpa* DPA.  Click the *YAML* view from the top menu to view the configuration of the Data Protection Application.
++
+Note the following configuration items:
++
+* .spec.backupLocations[].velero.config.s3URL: 'http://s3.openshift-storage.svc'  This is the service for the MCG endpoint.  This can be updated as necessary when using an external S3 endpoint.  
+* .spec.backupLocations[].velero.credential.key: cloud  This is the cloud credentials that were viewed in the previous section of the lab.  
+* .spec.backupLocations[].velero.objectStorage.bucket: backups-04511414-67b4-48bb-91f5-b02f2303ead2  This is the .spec.bucketName of the OBC resource, again viewed in the previous section.  
+* .spec.configuration.velero.defaultPlugins: kubebvirt  This is needed to be able to complete the snapshots of the virtual machines.  
++
+image::module-08/07_dpa-yaml.png[link=self, window=blank, width=100%]
++
+[NOTE] 
+The state of the DPA should be _Reconciled_.  If the DPA is not reconciled, backups cannot completed.  
++
+When the DPA is reconciled, a _BackupStorageLocation_ will have been created and should be in an available state.
+
+. Scroll back to the left on the horizontal menu bar to select *BackupStorageLocation*.  Note the name is the same as the DPA with -1 appended to the end and is in an available state.
++
+image::module-08/08_bsl.png[link=self, window=blank, width=100%]
++
+
+
+[[backups]]
+=== Creating Backups  
+
+After verifying the state of the object bucket claim, the OADP DPA, and BSL, we can create a backup.
+
+. Select *Backup* from the horizontal menu.
++
+image::module-08/09_backup.png[link=self, window=blank, width=100%]
++
+. Click the *CreateBackup*.  Select the YAML view option.  
+
++
+image::module-08/10_oadpbackup.png[link=self, window=blank, width=100%]
++
+. You can copy and paste the yaml configuration below.  This example will backup the vmexamples namespace, including all metadata and resources defined, using snapshots for the PVCs and offload the snapshot to the S3 bucket using the built-in data mover. 
+
+[source,sh,role=execute]
+----
+apiVersion: velero.io/v1
+kind: Backup
+metadata:
+  generateName: vmexamples-
+  namespace: openshift-adp
+spec:
+  includedNamespaces:
+    - vmexamples
+  snapshotVolumes: true
+  defaultVolumesToFsBackup: false
+  includeClusterResources: false
+  storageLocation: oadp-dpa-1
+  snapshotMoveData: true
+  ttl: 24h0m0s
+----
+
+[NOTE]
+The *ttl* is the retention period of the backup.  If the snapshot data is not moved to the S3 bucket, the snapshots will be retained for the same retention period.
+[TIP]
+Use the *generateName:* feature to append random characters to the end of the given name to ensure the name is unique.
+
+[[restore]]
+== Restoring the Virtual Machine
+
+
+
+
+
+[[CLI_commands]]
+== CLI Commands for Troubleshooting
+
+Alias the velero command:
+[source,sh,role=execute]
+----
+alias velero='oc -n openshift-adp exec deployment/velero -c velero -it -- ./velero'
+----
+Get listing of backups:
+[source,sh,role=execute]
+----
+velero get backups
+----
+Get details of a specific backup:
+[source,sh,role=execute]
+----
+velero describe backup <backupName>
+----
