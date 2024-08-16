@@ -31,11 +31,11 @@ image::module-08/04_cloudsecret.png[link=self, window=blank, width=100%]
 The cloud-credentials with the cloud key are required for the OADP Data Protection Application.
 
 [[oadp-dpa]]
-=== OADP Data Protection Application
+== OADP Data Protection Application
 
 The Data Protection Application represents the configuration to safely backup and restore, perform disaster recovery and migrate Kubernetes cluster resources and persistent volumes.
 
-. To view the data protection application, expand *Operators* in the left navigation pane.  Select *Installed Operators* and from the list operators presented, select *OADP Operator*.
+. To view the data protection application, expand *Operators* in the left navigation pane, select *Installed Operators* and from the list operators presented, select *OADP Operator*.
 +
 image::module-08/05_oadpoperator.png[link=self, window=blank, width=100%]
 +
@@ -65,7 +65,7 @@ image::module-08/08_bsl.png[link=self, window=blank, width=100%]
 +
 
 [[snapshot_class]]
-=== Modifying the Volume Snapshot Class
+== Modifying the Volume Snapshot Class
 
 Setting a _DeletionPolicy_ of `Retain` on the _VolumeSnapShotClass_ will preserve the volume snapshot in the storage system for the lifetime of the backup and will prevent the deletion of the volume snapshot in the storage system  The CSI plugin for OADP, will choose the _VolumeSnapshotClass_ in the clsuter that has the same driver name and also has the `velero.io/csi-volumesnapshot-class: true` label set.  This is needed, especially if the snapshot data is not moved to the S3 bucket using the Kopia Data Mover.
 
@@ -82,7 +82,7 @@ If the snapshots are not retained on the storage system and will be copied to th
 
 
 [[backups]]
-=== Creating Backups  
+== Creating Backups  
 
 After verifying the state of the object bucket claim, the OADP DPA, the BSL, and the deletion policy, we can create a backup.
 
@@ -92,7 +92,6 @@ After verifying the state of the object bucket claim, the OADP DPA, the BSL, and
 image::module-08/09_backup.png[link=self, window=blank, width=100%]
 +
 . Click the *CreateBackup*.  Select the YAML view option.  
-
 +
 image::module-08/10_oadpbackup.png[link=self, window=blank, width=100%]
 +
@@ -115,16 +114,14 @@ spec:
   snapshotMoveData: true
   ttl: 24h0m0s
 ----
-
 [NOTE]
 The *ttl* is the retention period of the backup.  If the snapshot data is not moved to the S3 bucket, the snapshots will be retained for the same retention period.
 [TIP]
 Use the *generateName:* feature to append random characters to the end of the given name to ensure the name is unique.
 
 When the backup of all resources in the vmexamples namespace is complete the *Status* of the backup will be _Completed_.
-+
+
 image::module-08/13_backupcomplete.png[link=self, window=blank, width=100%]
-+
 
 
 
@@ -133,7 +130,62 @@ image::module-08/13_backupcomplete.png[link=self, window=blank, width=100%]
 
 Oh no! A disaster is about to strike.  
 
-. Navigate to Virtualization in the left navigation pane, expand and select Virutal Machines.
+. Navigate to *Virtualization* in the left navigation pane, expand and select *Virutal Machines*.  Ensure you are in the *vmexamples* project.  Click on the three dots to the far right of the *fedora01* virtual machine, click *Delete* to stop the VM and delete it.
++
+image::module-08/14_deleteVM.png[link=self, window=blank, width=100%]
++
+. In the Delete VirtualMachine pop-up, confirm the correct VM name is displayed and the _Delete Disks_ checkbox is selected.  Click *Delete*.
++
+image::module-08/15_deleteconfirm.png[link=self, window=blank, width=100%]
++
+. You've realized you didn't mean to delete the VM, so let's restore it.  From the left navigation pane, expand *Operators*, select *Installed Operators*.  From the list of operators, select *OADP Operator*.  Ensure you are viewing _All Projects_ or the _openshift_adp_ project.
++
+image::module-08/05_oadpoperator.png[link=self, window=blank, width=100%]
++
+. Select *Backup* from the top horizontal menu bar.  Make note of the backup name you want to use for the restore.
++
+image::module-08/16_backupname.png[link=self, window=blank, width=100%]
++
+. Scroll to the right on the top horizontal menu bar, click *Restore*, *Create Restore*.
++
+image::module-08/17_restore.png[link=self, window=blank, width=100%]
++
+. Click on the YAML view option.  You can copy and paste the yaml configuration below. Be sure to update the .spec.backupName to the backupName noted in the previous step.  
++
+image::module-08/18_restoreyaml.png[link=self, window=blank, width=100%]
++
+This example will restore the _vmexamples_ namespace resources, including all metadata and resources that were included in the backup but *currently do not exist*.  New PVC/PVs will be created and the snapshot data will be downloaded from the S3 bucket and written to the new PVs.  
+
+[IMPORTANT]
+Any CR that already exists is not modified or restored from the backup.  OADP manages this by attempting to create the resource and if the create fails, it moves on to the next resource.
+
+[source,sh,role=execute]
+----
+apiVersion: velero.io/v1
+kind: Restore
+metadata:
+  generateName: restore-vmexamples-
+  namespace: openshift-adp
+spec:
+  includedNamespaces:
+    - vmexamples
+  excludedResources:
+    - nodes
+    - events
+    - events.events.k8s.io
+    - backups.velero.io
+    - restores.velero.io
+    - resticrepositories.velero.io
+  backupName: 'vmexamples-r6h2v'
+  restorePVs: true
+----
+
+When the backup of all resources in the vmexamples namespace is complete the *Status* of the backup will be _Completed_.  
+
+
+image::module-08/19_restorecomplete.png[link=self, window=blank, width=100%]
+
+
 
 
 
