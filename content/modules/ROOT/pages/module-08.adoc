@@ -4,18 +4,18 @@ The OpenShift API for Data Protection (OADP) product safeguards customer applica
 
 However, OADP does not serve as a disaster recovery solution for `etcd` or OpenShift Operators.
 
-This workshop segment will explore configurating an OBC for OADP to store the backups, configure OADP Data Protection Application and completing a backup and restore of a virtual machine.
+This workshop segment will explore the configuration of OADP to store the backups in an S3 bucket, the OADP Data Protection Application and completing a backup and restore of a virtual machine.
 
 [[objectbucketclaim]]
 == Object Bucket Claim
 
-OADP stores the backups in an S3 bucket.  For this lab we are going to use internal storage but for production environments the recommendation is to use an external S3 destination.  This can be through the MultiCloud Gateway to a cloud provider or to an on-premise S3 instance. 
+OADP stores the backups in an S3 bucket.  For this lab we are going to use internal storage but for production environments the recommendation is to use an external S3 destination.  This can be through the MultiCloud Gateway or a direct connection to a cloud provider or to an on-premise S3 instance. This section reviews the S3 object bucket claim that already exists and has been configured in the OADP Data Protection Application.
 
 . To view the bucket, expand *Storage* in the left navigation pane.  Click *Object Storage*.  From the horizontal menu, click *Object Bucket Claim*.  Ensure that _Project_ is set to All Projects.
 +
 image::module-08/01_obc.png[link=self, window=blank, width=100%]
 +
-. Select the obc-backups bucket claim.  Scroll to the bottom of the screen and click the _Reveal Values_ link The AWS Access Key and AWS Secret Access Key are used to create a secret in the openshift-adp namespace called cloud-credentials 
+. Select the *obc-backups* bucket claim.  Scroll to the bottom of the screen and click the _Reveal Values_ link. The AWS Access Key and AWS Secret Access Key are used to create an additional secret in the _openshift-adp_ namespace called _cloud-credentials_. 
 +
 image::module-08/02_revealobc.png[link=self, window=blank, width=100%]
 +
@@ -23,7 +23,7 @@ image::module-08/02_revealobc.png[link=self, window=blank, width=100%]
 +
 image::module-08/03_cloudcreds.png[link=self, window=blank, width=100%]
 +
-. At the bottom, the cloud key data can be seen by clicking the Reveal values link.  The cloud data contains the bucket's AWS Access Key and Secret Access Key.
+. At the bottom, the cloud key data can be seen by clicking the _Reveal values_ link.  The cloud data contains the bucket's AWS Access Key and Secret Access Key as seen in the OBC.
 +
 image::module-08/04_cloudsecret.png[link=self, window=blank, width=100%]
 +
@@ -47,10 +47,10 @@ image::module-08/06_oadp-dpa.png[link=self, window=blank, width=100%]
 +
 Note the following configuration items:
 +
-* .spec.backupLocations[].velero.config.s3URL: 'http://s3.openshift-storage.svc'  This is the service for the MCG endpoint.  This can be updated as necessary when using an external S3 endpoint.  
-* .spec.backupLocations[].velero.credential.key: cloud  This is the cloud credentials that were viewed in the previous section of the lab.  
-* .spec.backupLocations[].velero.objectStorage.bucket: backups-04511414-67b4-48bb-91f5-b02f2303ead2  This is the .spec.bucketName of the OBC resource, again viewed in the previous section.  
-* .spec.configuration.velero.defaultPlugins: kubebvirt  This is needed to be able to complete the snapshots of the virtual machines.  
+* s3URL: 'http://s3.openshift-storage.svc';  This is the service for the MCG endpoint.  This can be updated as necessary when using an external S3 endpoint.  
+* credentials key and name: cloud;  This is the cloud credentials that were viewed in the previous section of the lab.  
+* bucket: backups-04511414-67b4-48bb-91f5-b02f2303ead2;   This is the .spec.bucketName of the OBC resource, again viewed in the previous section.  
+* defaultPlugins: kubebvirt;   This plugin is needed to be able to complete the snapshots of the virtual machines.  
 +
 image::module-08/07_dpa-yaml.png[link=self, window=blank, width=100%]
 +
@@ -59,10 +59,10 @@ The state of the DPA should be _Reconciled_.  If the DPA is not reconciled, back
 +
 When the DPA is reconciled, a _BackupStorageLocation_ will have been created and should be in an available state.
 
-. Scroll back to the left on the horizontal menu bar to select *BackupStorageLocation*.  Note the name is the same as the DPA with -1 appended to the end and is in an available state.
+. Scroll back to the left on the horizontal menu bar to select *BackupStorageLocation*.  Note the name is the same as the DPA with _-1_ appended to the end and is in an available state.
 +
 image::module-08/08_bsl.png[link=self, window=blank, width=100%]
-+
+
 
 [[snapshot_class]]
 == Modifying the Volume Snapshot Class
@@ -126,7 +126,7 @@ image::module-08/13_backupcomplete.png[link=self, window=blank, width=100%]
 
 
 [[restore]]
-== Restoring the Virtual Machine
+== Restoring a Virtual Machine
 
 Oh no! A disaster is about to strike.  
 
