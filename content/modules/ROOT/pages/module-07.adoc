@@ -114,7 +114,7 @@ Currently, only users with `Cluster Admin` rights may create Node Network Config
 ====
 
 Browse to *Networking* -> *NodeNetworkConfigurationPolicy* using the left navigation menu:
-+
+
 image::module-07/01_TS_NNCP.png[link=self, window=blank, width=100%]
 
 Here we can see a single NNCP named `ovs-br-flat` exists. Click on the name, switch to the YAML view and scroll down and example the spec:
@@ -421,9 +421,15 @@ Once we know we are on the correct node, dump the OVN Bridge Mappings with this 
 
 image::module-07/03_TS_Network_Shell_OVN_Bridge.png[link=self, window=blank, width=100%]
 
-Notice, the *module07-br* is not listed there.  This is because when we defined our NNCP, we missed a section that tells OVN to actually create the bridge mapping.
+We are specifically looking at the section *ovn-bridge-mappings* which will map Network Attachment Definitions to OVN Bridges.  These mappings are created by the NNCP definition.  You will notice, the *module07-br* is not listed there.  This is because when we defined our NNCP, we missed a section that tells OVN to actually create the bridge mapping.
 
-Switch back to the Openshift Console and browse to *Networking* -> *NodeNetworkConfigurationPolicy* and click on our *module07-br* NNCP. Switch to the YAML view, scroll to the spec section and edit it, adding the OVN section below:
+Switch back to the Openshift Console and browse to *Networking* -> *NodeNetworkConfigurationPolicy* and take a look at the *ovs-br-flat* NNCP that was created as part of the lab:
+
+image::module-07/07_NNCP_OVS_br_flat.png[link=self, window=blank, width=100%]
+
+Note the *ovn* section part of the NNCP.  This is what creates the bridge mappings in OVN.  Let's fix the NNCP we created earlier. 
+
+browse to *Networking* -> *NodeNetworkConfigurationPolicy* and click on our *module07-br* NNCP. Switch to the YAML view, scroll to the spec section and edit it, adding the OVN section below:
 
 ```
 spec:
@@ -449,13 +455,15 @@ spec:
 
 The *localnet* is the name of our *Network Attachment Defintion*.
 
-If we now check our SSH session again, we will see this bridge mapping:
+If we now check our SSH session again, we will see the bridge mapping for *module07-net* < - > *module07-br*:
 
+```
 [core@ocp4-worker1 ~]$ sudo ovs-vsctl list open . | egrep ovn-bridge-mappings
 external_ids        : {hostname=ocp4-worker1.aio.example.com, ovn-bridge-mappings="module07-net:module07-br,physnet:br-ex,vm-network:ovs-br", ovn-enable-lflow-cache="true", ovn-encap-ip="192.168.123.104", ovn-encap-type=geneve, ovn-is-interconn="true", ovn-memlimit-lflow-cache-kb="1048576", ovn-monitor-all="true", ovn-ofctrl-wait-before-clear="0", ovn-openflow-probe-interval="180", ovn-remote="unix:/var/run/ovn/ovnsb_db.sock", ovn-remote-probe-interval="180000", rundir="/var/run/openvswitch", system-id="a125bab8-d1c6-4d5c-9e38-4f384050ab5a"}
 [core@ocp4-worker1 ~]$
+```
 
-We can then confirm that module07-br does indeed bridge off of `enp11s0`:
+We can then confirm that the bridge *module07-br* is a bridge off of interface `enp11s0`:
 
 image::module-07/04_TS_Network_Shell_OVN_Show_Bridge.png[link=self, window=blank, width=100%]
 
