@@ -417,15 +417,19 @@ Once we know we are on the correct node, dump the OVN Bridge Mappings with this 
 
 image::module-07/03_TS_Network_Shell_OVN_Bridge.png[link=self, window=blank, width=100%]
 
-We are specifically looking at the section *ovn-bridge-mappings* which will map Network Attachment Definitions to OVN Bridges.  These mappings are created by the NNCP definition.  You will notice, the *module07-br* is not listed there.  This is because when we defined our NNCP, we missed a section that tells OVN to actually create the bridge mapping.
+We are specifically looking at the section *ovn-bridge-mappings* which will map *Network Attachment Definitions* to OVN Bridges.  These mappings are created by the NNCP definition.  You will notice, the *module07-br* is not listed there.  This is because when we defined our NNCP, we missed a section that tells OVN to actually create the bridge mapping.
 
 Switch back to the Openshift Console and browse to *Networking* -> *NodeNetworkConfigurationPolicy* and take a look at the *ovs-br-flat* NNCP that was created as part of the lab:
 
 image::module-07/07_NNCP_OVS_br_flat.png[link=self, window=blank, width=100%]
 
-Note the *ovn* section part of the NNCP.  This is what creates the bridge mappings in OVN.  Let's fix the NNCP we created earlier. 
+Note the *ovn* section part of the NNCP.  This is what creates the bridge mappings in OVN.  
 
-browse to *Networking* -> *NodeNetworkConfigurationPolicy* and click on our *module07-br* NNCP. Switch to the YAML view, scroll to the spec section and edit it, adding the OVN section below:
+image::module-07/10_TS_Lab_NNCP_Map.png[link=self, window=blank, width=100%]
+
+Let's fix the NNCP we created earlier. 
+
+Browse to *Networking* -> *NodeNetworkConfigurationPolicy* and click on our *module07-br* NNCP. Switch to the YAML view, scroll to the spec section and edit it, adding the OVN section below:
 
 ```
 spec:
@@ -467,4 +471,4 @@ We can now switch back to the console of our Virtual Machine and try to ping onc
 
 image::module-07/06_TS_Network_Ping_Success.png[link=self, window=blank, width=100%]
 
-SUCCESS!
+*SUCCESS!*
