@@ -40,6 +40,10 @@
 
 * xref:module-07.adoc[7. Troubleshooting]
 ** xref:module-07.adoc#boot_source_na[Boot Source Not Available]
+** xref:module-07.adoc#network_connectivity[Network Connectivity]
+*** xref:module-07.adoc#ts_lab_network[Lab Network Overview]
+*** xref:module-07.adoc#ts_general_post_deployk[Post-Deployment Troubleshooting]
+*** xref:module-07.adoc#ts_vm_network_troubleshooting[VM Network Troubleshooting]
 
 * xref:module-08.adoc[8. Data Protection with OADP]
 ** xref:module-08.adoc#objectbucketclaim[Object Bucket Claim]

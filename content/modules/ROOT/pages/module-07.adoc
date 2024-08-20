@@ -86,6 +86,7 @@ Once this is corrected, then all of the Boot Sources should now once again show 
 
 Troubleshooting network connectivity issues from your Virtual Machine could sometimes be difficult.  This module will cover some common troubleshooting techniques we have used, however, is far from a complete knowledgebase for debugging connectivity issues.  If you are having issues and suspect that they are network related, here's several things you can look at. Also, don't forget that Proof of Concept deployments that use Evaluation Entitlements include Full Support for the product.  Having the customer open a Support Case for tracking purposes can sometimes also help move the needle on issue resolution.
 
+[[ts_lab_network]]
 === Lab Network
 
 The lab environment is a single hypervisor running multiple Virtual Machines to make this demo as cost effective as possible.  This does limit our ability to do _real world_ networking, however, we can still illustrate some techniques.
@@ -147,6 +148,7 @@ The things to note here are:
 * Interface names (enp3s0)
 * Bridge Name (ovs-br)
 
+[[ts_general_post_deploy]]
 === General Network Connection Issues Post-Deployment
 
 In the lab, login to the bastion host:
@@ -218,12 +220,8 @@ RHCOS is a very minimal image and lacks troubleshooting tools such as  `tcpdump`
 
  This will launch a `toolbox` container and connect you to it which has some useful troubleshooting tools, `tcpdump` among them.
 
+[[ts_vm_network_troubleshooting]]
 === Virtual Machine Network Connection Issues
-
-**NEED TO INVESTIGATE THIS MORE TO SEE IF THIS IS DOABLE IN THE LAB**
-
-**CURRENT ISSUE IS THIS IS A NESTED VIRTUALIZATION ENVIRONMENT**
-**AND WE ONLY HAVE A SINGLE NETWORK TO WORK WITH**
 
 Virtual Machine NICs are attached to a Network Attachment Devices (NAD).  These Network Attachment Devices are then associated with a Node Network Configuration Policy (NNCP).  The Node Network Configuration Policy defines the connection from the Openshift Software Defined Network (OVN) to the physical interfaces on the hardware nodes. Network Attachment Definitions and Node Network Configuration Policies that are created in the `default` project are accessible by all other projects.
 
