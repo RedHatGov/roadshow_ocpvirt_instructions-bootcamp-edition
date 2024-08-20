@@ -2,7 +2,7 @@
 
 == Introduction
 
-For this section of the lab, we will be covering common issues that occur when performing a Bare Metal Deployment and how to triage these issues.
+For this section of the lab, we will be covering common issues that occur when performing a Bare Metal Deployment and how to triage these issues. What we have found is that the most "common" solution for Openshift problems is "Delete the cluster and re-deploy it".  Unfortunately, with a bare metal deployment, that's not really a feasible answer.  We will cover some of the more common issues we have encountered here as well as mention some common troubleshooting techniques.
 
 [[boot_source_na]]
 == Boot Source Not Available
@@ -405,6 +405,15 @@ Once you SSH in, you can confirm you are on the correct node by looking for the 
 2cb2fb8bd61de       b38632e6139d97526639830d9baa51ad966e974e52927723ffb690bb583651b3                                                                                                   22 minutes ago      Running             compute                                 0                   cc0bff47bec8c       virt-launcher-fedora-9dv9l
 [core@ocp4-worker1 ~]$ 
 ```
+
+[NOTE]
+====
+If you are familiar with `virsh`, you can actually get into the container and execute virsh commands against your Virtual Machine by executing:
+
+`sudo crictl exec -it <container_id> /bin/exec`
+
+Unlike `podman` or `docker` the `crictl` command only appears to accept the container_id and not the name, so ensure you are using that when you execute this command.
+====
 
 Once we know we are on the correct node, dump the OVN Bridge Mappings with this command:
 
