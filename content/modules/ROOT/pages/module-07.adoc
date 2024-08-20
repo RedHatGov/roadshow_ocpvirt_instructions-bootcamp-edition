@@ -225,27 +225,235 @@ RHCOS is a very minimal image and lacks troubleshooting tools such as  `tcpdump`
 **CURRENT ISSUE IS THIS IS A NESTED VIRTUALIZATION ENVIRONMENT**
 **AND WE ONLY HAVE A SINGLE NETWORK TO WORK WITH**
 
-Virtual Machines are attached to a Network Attachment Devices (NAD).  These Network Attachment Devices are then associated with a Node Network Configuration Policy (NNCP).  The Node Network Configuration Policy defines the connection from the Openshift Software Defined Network (OVN) to the physical interfaces on the hardware nodes. Network Attachment Definitions and Node Network Configuration Policies that are created in the `default` project are accessible by all other projects.
+Virtual Machine NICs are attached to a Network Attachment Devices (NAD).  These Network Attachment Devices are then associated with a Node Network Configuration Policy (NNCP).  The Node Network Configuration Policy defines the connection from the Openshift Software Defined Network (OVN) to the physical interfaces on the hardware nodes. Network Attachment Definitions and Node Network Configuration Policies that are created in the `default` project are accessible by all other projects.
 
-Let's create a Network Attachment Device for our Virtual Machine we created in xref:module-01.adoc#create_vm[Module 01].
+Because this lab environment is not using real hardware, we are going to need to create a network on the hypervisor that we can use for this lab section.
 
-Browse to *Networking* -> *NetworkAttachmentDefinitions*.  Ensure that you are either in the `default` Project, or the project you created your virtual machine in. 
+==== Lab Setup
 
+SSH to your Lab Hypervisor server and execute the following to create a new KVM Virtual Network called `ocpvirt-net`:
 
+```
+cat <<EOF >/tmp/ocpvirt-net.xml
+<network connections='8'>
+  <name>ocpvirt-net</name>
+  <forward mode='nat'>
+    <nat>
+      <port start='1024' end='65535'/>
+    </nat>
+  </forward>
+  <bridge name='virbr-ocpvirt' stp='on' delay='0'/>
+  <mac address='52:54:00:11:22:33'/>
+  <ip address='192.168.100.1' netmask='255.255.255.0'>
+  </ip>
+</network>
+EOF
 
-Next, lets remove the Pod Network from the Virtual Machine and add our new Network Attachment Definition. Browse to *Virtualization* -> *VirtualMachines*. Ensure that you are in the Project where you created the Virtual Machine in xref:module-01.adoc#create_vm[Module 01].
+sudo virsh net-define /tmp/ocpvirt-net.xml
+sudo virsh net-start ocpvirt-net
+sudo virsh net-autostart ocpvirt-net
+```
 
-Click on the *fedora* Virtual Machine, navigate to the *Configuration* tab and then select *Network* from the left side of the pane below that.
-+
-image::module-07/02_TS_VM_Configuration_Network.png[link=self, window=blank, width=100%]
+Next we need to add the new interface to each of our Virtual Machines:
 
-You will see a single NIC that is connected to the `Pod networking`. Click the 3 dots to the right of this and select Delete. Select Delete in the Confirmation Tab as well.
+```
+for DOM in $(sudo virsh list | egrep 'running' | awk '{print $2}')
+do
+  sudo virsh attach-interface --type bridge --source virbr-ocpvirt --model virtio ${DOM}
+done
+```
+
+Logging into your Bastion host as well as your OCP Nodes, you should now see a new interface on each of them:
+
+[%header,cols="1,1"]
+|===
+| NODE | Device
+| bastion | eth2
+| Master Nodes | enp9s0
+| Worker Nodes | enp11s0
+|===
+
+Let's give your Bastion Host an IP address of `192.168.100.10` and we can use that to ping from our Virtual Machines to confirm connectivity.  Login to the bastion host as root and execute the following:
+
+```
+nmcli con mod "Wired connection 1" connection.id ocpvirt ipv4.method manual ipv4.addresses 192.168.100.10/24
+nmcli con up ocpvirt
+```
+
+=== Lab Content
+
+First create a Network Attachment Device for our Virtual Machine we created in xref:module-01.adoc#create_vm[Module 01]. 
+
+Network Attachment Definitions created in the `default` project can be used by any other project in the Openshift Cluster. Network Attachment Definitions created in a specific project are only accessible to Virtual Machines created in that specific project.  For this lab, we will create the Network Attachment Definition in the `default` project.
+
+Browse to *Networking* -> *NetworkAttachmentDefinitions* and ensure that `default` is selected at the top in the Project drop doan and click *Create Network Attachment Definition*.
+
+Switch to the YAML view because in the *Form View*, whenever you give it a name, it appends other random names to the end of it making consistency in performing a repeatable lab challenging.
+
+Copy and paste the following YAML for the NAD and click *Create*:
+
+```
+apiVersion: k8s.cni.cncf.io/v1
+kind: NetworkAttachmentDefinition
+metadata:
+  annotations:
+    description: Lab Network 192.168.100.0/24 connection
+  name: module07-net
+spec:
+  config: |-
+    {
+      "cniVersion": "0.3.1",
+      "name": "module07-net",
+      "type": "ovn-k8s-cni-overlay",
+      "topology": "localnet",
+      "netAttachDefName": "default/module07-net",
+      "ipam": {}
+    }
+```
 
 [NOTE]
 ====
-Hot adding/removing NICs is not supported (yet) with Openshift Virtualization.  For the NIC to be removed, you must stop the Virtual Machine by clicking the square button at the top right to stop your Virtual Machine.  The NIC list does not auto-refresh, so click off of this page to somewhere else and come back and the NIC should no longer be there.
+When creating this manually, `netAttachDefName` needs to be in the format of *namespace*/*name* for the Network Attachment Definition you are creating. For example if you were creating the above in the *jsmith* namespace, your `netAttachDefName` would be *jsmith*/*module07-net*.
 ====
 
+Let's add a new Network Interface to our Virtual Machine for the NAD that we just created. 
 
+Browse to *Virtualization* -> *VIrtualMachines* and you should see the Virtual Machine you created. If you do not, ensure the `Project` drop down is set to the Project where you created your Virtual Machine.
 
+[NOTE]
+====
+Hot adding/removing NICs is not supported (yet) with Openshift Virtualization.  For the NIC to be removed, you must stop the Virtual Machine by clicking the square button at the top right to stop your Virtual Machine.  The Virtual Machines section in Openshift does not auto-refresh, so click off of this page to somewhere else, like the Catalog and come back and the NIC should no longer be there.
+====
 
+When you see your Virtual Machine, click the name, *fedora*, and stop your virtual machine.  After the Virtual Machine is stopped, navigate to the *Configuration* tab along the top. Below the tabs, on the left side you will see various Configuration Sections for your Virtual Machine.  Select *Network* from the left side of the pane below that.
++
+image::module-07/02_TS_VM_Configuration_Network.png[link=self, window=blank, width=100%]
+
+You will see a single NIC that is connected to the `Pod networking`. Let's add a new Network Interface for the NAD that we just created. 
+
+Click *Add network interface* and fill in the dialog presented.  You can provide any name that you want here, the important part is dropping down the *Network* selection and selecting the Network Attachment Definition we created earlier.  Once complete, click *Save*.
+
+At the top of the page, click the blue triangle to start the Virtual Machine.
+
+Once the Virtual Machine is started, switch to the *Console* tab and login to the VM using *fedora* and the password you set for the user.  Once you login, look a the network configuration and you will see 2 NICs, one for the Pod Network and one for the new NIC we just added:
+
+Let's configure the NIC we just added and try pinging the bastion host:
+
+```
+sudo nmcli con mod "Wired connection 1" connection.id eth1 ipv4.method manual ipv4.addresses 192.168.100.120/24
+sudo nmcli con up eth1
+ping -c3 192.168.100.10
+```
+
+We failed.  Why?  Refer back to the first paragraph which discusses the traffic flow from a Virtual Machine:
+
+*VM NIC* -> *NAD* -> *NNCP* -> *Physical Interface*
+
+We never created our NNCP.  So let's do that now.
+
+Browse to *Networking* -> *NodeNetworkConfigurationPolicy* and click *Create* and select *From YAML*. We are going to create this with the following YAML because we want to create an OVS Bridge and not a Linux Bridge.
+
+Paste the following YAML and click *Create*:
+
+```
+apiVersion: nmstate.io/v1
+kind: NodeNetworkConfigurationPolicy
+metadata:
+  name: module07-br
+spec:
+  desiredState:
+    interfaces:
+      - bridge:
+          allow-extra-patch-ports: true
+          options:
+            stp: true
+          port:
+            - name: enp11s0
+        description: |-
+          A dedicated OVS bridge with enp11s0 as a port
+        name: module07-br
+        state: up
+        type: ovs-bridge
+  nodeSelector:
+    node-role.kubernetes.io/worker: ''
+```
+
+Once this is created, let's switch back over to our VM Console and try our ping again:
+
+`ping -c3 192.168.100.10`
+
+image::module-07/05_TS_Nework_Ping_Fail.png[link=self, window=blank, width=100%]
+
+We are still failing.  Let's take a closer look at what is going on from the OCP Node side.
+
+Browse to the *Overview* tab of the Virtual Machine and in the *General* section on the right, note the Node your virtual machine is running on.
+
+Go back to the SSH session where you are on the Bastion Host and SSH to the node your Virtual Machine is running on.
+
+[%header,cols="1,1"]
+|===
+| NODE | LAB Network IP  (192.168.123.0/24)
+|ocp4-worker1.aio.example.com | 192.168.123.104
+|ocp4-worker2.aio.example.com | 192.168.123.105
+|ocp4-worker3.aio.example.com | 192.168.123.106
+|===
+
+`ssh core@192.168.104 # Our VM is on ocp4-worker1. Change IP to whichever node your Virtual Machine is running on`
+
+Once you SSH in, you can confirm you are on the correct node by looking for the VM Pod:
+
+```
+[core@ocp4-worker1 ~]$ sudo crictl ps | egrep virt-launch
+2cb2fb8bd61de       b38632e6139d97526639830d9baa51ad966e974e52927723ffb690bb583651b3                                                                                                   22 minutes ago      Running             compute                                 0                   cc0bff47bec8c       virt-launcher-fedora-9dv9l
+[core@ocp4-worker1 ~]$ 
+```
+
+Once we know we are on the correct node, dump the OVN Bridge Mappings with this command:
+
+`sudo ovs-vsctl list open . | egrep ovn-bridge-mappings`
+
+image::module-07/03_TS_Network_Shell_OVN_Bridge.png[link=self, window=blank, width=100%]
+
+Notice, the *module07-br* is not listed there.  This is because when we defined our NNCP, we missed a section that tells OVN to actually create the bridge mapping.
+
+Switch back to the Openshift Console and browse to *Networking* -> *NodeNetworkConfigurationPolicy* and click on our *module07-br* NNCP. Switch to the YAML view, scroll to the spec section and edit it, adding the OVN section below:
+
+```
+spec:
+  desiredState:
+    interfaces:
+      - bridge:
+          allow-extra-patch-ports: true
+          options:
+            stp: true
+          port:
+            - name: enp11s0
+        description: |-
+          A dedicated OVS bridge with enp11s0 as a port
+        name: module07-br
+        state: up
+        type: ovs-bridge
+    ovn:
+      bridge-mappings:
+        - bridge: module07-br
+          localnet: module07-net
+          state: present
+```
+
+The *localnet* is the name of our *Network Attachment Defintion*.
+
+If we now check our SSH session again, we will see this bridge mapping:
+
+[core@ocp4-worker1 ~]$ sudo ovs-vsctl list open . | egrep ovn-bridge-mappings
+external_ids        : {hostname=ocp4-worker1.aio.example.com, ovn-bridge-mappings="module07-net:module07-br,physnet:br-ex,vm-network:ovs-br", ovn-enable-lflow-cache="true", ovn-encap-ip="192.168.123.104", ovn-encap-type=geneve, ovn-is-interconn="true", ovn-memlimit-lflow-cache-kb="1048576", ovn-monitor-all="true", ovn-ofctrl-wait-before-clear="0", ovn-openflow-probe-interval="180", ovn-remote="unix:/var/run/ovn/ovnsb_db.sock", ovn-remote-probe-interval="180000", rundir="/var/run/openvswitch", system-id="a125bab8-d1c6-4d5c-9e38-4f384050ab5a"}
+[core@ocp4-worker1 ~]$
+
+We can then confirm that module07-br does indeed bridge off of `enp11s0`:
+
+image::module-07/04_TS_Network_Shell_OVN_Show_Bridge.png[link=self, window=blank, width=100%]
+
+We can now switch back to the console of our Virtual Machine and try to ping once again....
+
+image::module-07/06_TS_Network_Ping_Success.png[link=self, window=blank, width=100%]
+
+SUCCESS!
