@@ -7,6 +7,8 @@ For this section of the lab, we will be covering common issues that occur when p
 [[boot_source_na]]
 == Boot Source Not Available
 
+This is not an actual issue in the lab, however, we will walk through the steps we typically take when addressing these issues to provide background techniques in troubleshooting the issue.
+
 When you install and configure the Openshift Virtualization Operator, it will automatically download some of the most common image sources (CentOS, Fedora, RHEL).  First, ensure that you have set a default StorageClass, otherwise the download process will never get the PVCs it requires to download the images.
 
 In this lab, browse to *Storage* -> *StorageClasses* and you will see that `ocs-storagecluster-ceph-rbd` is the default StorageClass for the lab:
