@@ -18,12 +18,31 @@ For your lab environment, these will be pre-installed in an effort to save time,
 
 [[storage_operator]]
 === Openshift Storage
+For Proof of Concept deployments, we try to position ODF backed by Ceph as the solution of choice as this has several advantages over other CSI Backed Storage Options thanks to Ceph's Copy on Write feature.
+
+* Virtual Machines start almost instantly
+* Storage space is saved for VM's using the same Image Base
+
+Additionally, this is "most like" VMWare environments where the customers are utilizing VSAN as the back-end storage.
+
+When we deploy this via the Operator, we use the default settings for the deployment.
 
 [[virtualization_operator]]
 === Openshift Virtualization
+Sometimes customers would like to utilize a dedicated migration network when live migrations are performed.  This can be configured when installing the Openshift Virtualization Operator, or it may also be configured after deployment.
+
+Ensure that you create the *Network Attachment Definition* prior to configuring this.
+
+Other than that, when we deploy this via the Operator, we use the default settings for the deployment.
 
 [[nmstate_operator]]
 === NMState Operator
+The NMState Operator
+
+This will give us the *NodeNetworkConfigurationPolicy* link in the Console UI.
+
+When we deploy this via the Operator, we use the default settings for the deployment.
 
 [[mtv_operator]]
 === Openshift Migration Toolkit for Virtualization
+When we deploy this via the Operator, we use the default settings for the deployment.
