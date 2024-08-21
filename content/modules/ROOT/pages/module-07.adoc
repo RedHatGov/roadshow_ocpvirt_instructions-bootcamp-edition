@@ -116,6 +116,7 @@ The lab network deployment topology looks like this:
 |ocp4-worker1.aio.example.com | 192.168.123.104
 |ocp4-worker2.aio.example.com | 192.168.123.105
 |ocp4-worker3.aio.example.com | 192.168.123.106
+|ocp4-worker4.aio.example.com | 192.168.123.61 (Might be a DHCP address)
 |===
 
 The lab was provisioned with a single Node Network Configuration Policy called `ovs-br-flat` which is connected to the OVS Bridge `ovs-br`.
