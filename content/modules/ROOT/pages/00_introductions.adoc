@@ -14,24 +14,24 @@
   **** VMWare
   **** Nutanix
   **** OpenStack
-* 10:30 - 10:45AM Break
-* 10:45 - 12:15AM
+* 10:30AM - 10:45AM Break
+* 10:45AM - 12:15PM
 ** The POC Process
 * 12:00PM Lunch
-* 1:15 - 4:00PM
+* 1:15PM - 4:00PM
 * Deploying on Bare Metal
-* 4:00 - 4:15 Break
-* 4:15 - 6:00
+* 4:00PM - 4:15PM Break
+* 4:15PM - 6:00PM
 * Advanced Use Cases
 
 == Thursday, August 29th
 * 8AM - 8:30AM
 *** Lab Overview
-* 8:30AM - 12:15
+* 8:30AM - 12:15PM
 *** Executing on the POC - Lab Tasks
-* 12:15 - 1:15PM
+* 12:15PM - 1:15PM
 *** Lunch
-* 1:15 - 5:00PM
+* 1:15PM - 5:00PM
 *** Completing Lab Use Cases
 
 == Instructors
@@ -60,11 +60,11 @@ image::introductions/ml.png[]
 
 * Maciej Lecki
 * Senior Specialist Solution Architect, NA HQ Virt Team
+
 image::introductions/dm.png[]
 
 * Dawn Marini
 * Specialist Solution Architect, NA HQ Virt Team
-
 
 == Class Introductions
 
