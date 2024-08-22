@@ -19,7 +19,7 @@ image::module-08/01_obc.png[link=self, window=blank, width=100%]
 +
 image::module-08/02_revealobc.png[link=self, window=blank, width=100%]
 +
-. To veiw the cloud secret, in the left navigation pane, expand *Workloads*  and select *Secrets*.  Ensure you are in the *openshift-adp* project.  Click the cloud-credentials secret from the list.
+. To view the cloud secret, in the left navigation pane, expand *Workloads*  and select *Secrets*.  Ensure you are in the *openshift-adp* project.  Click the cloud-credentials secret from the list.
 +
 image::module-08/03_cloudcreds.png[link=self, window=blank, width=100%]
 +
@@ -55,11 +55,9 @@ Note the following configuration items:
 image::module-08/07_dpa-yaml.png[link=self, window=blank, width=100%]
 +
 [NOTE] 
-The state of the DPA should be _Reconciled_.  If the DPA is not reconciled, backups cannot completed.  
-+
-When the DPA is reconciled, a _BackupStorageLocation_ will have been created and should be in an available state.
+The state of the DPA should be _Reconciled_.  If the DPA is not reconciled, backups cannot completed.  When the DPA is reconciled, a _BackupStorageLocation_ will have been created and should be in an available state.
 
-. Scroll back to the left on the horizontal menu bar to select *BackupStorageLocation*.  Note the name is the same as the DPA with _-1_ appended to the end and is in an available state.
+. Scroll to the left on the horizontal menu bar to select *BackupStorageLocation*.  Note the name is the same as the DPA with _-1_ appended to the end and is in an available state.
 +
 image::module-08/08_bsl.png[link=self, window=blank, width=100%]
 
@@ -67,35 +65,38 @@ image::module-08/08_bsl.png[link=self, window=blank, width=100%]
 [[snapshot_class]]
 == Modifying the Volume Snapshot Class
 
-Setting a _DeletionPolicy_ of `Retain` on the _VolumeSnapShotClass_ will preserve the volume snapshot in the storage system for the lifetime of the backup and will prevent the deletion of the volume snapshot in the storage system  The CSI plugin for OADP, will choose the _VolumeSnapshotClass_ in the clsuter that has the same driver name and also has the `velero.io/csi-volumesnapshot-class: true` label set.  This is needed, especially if the snapshot data is not moved to the S3 bucket using the Kopia Data Mover.
+Setting a _DeletionPolicy_ of `Retain` on the _VolumeSnapShotClass_ will preserve the volume snapshot in the storage system for the lifetime of the backup and will prevent the deletion of the volume snapshot in the storage system  The CSI plugin for OADP, will choose the _VolumeSnapshotClass_ in the cluster that has the same driver name and also has the `velero.io/csi-volumesnapshot-class: true` label set.  This is needed, especially if the snapshot data is not moved to the S3 bucket using the Kopia Data Mover.
 
-. To verify the _DeletionPolicy_, expand Storage in the left navigation pane, select *VolumeSnaphotClasses*
+. To verify the _DeletionPolicy_, expand *Storage* in the left navigation pane, select *VolumeSnaphotClasses*.  From the list of classes, select the _ocs-storagecluster-rbdplugin-snapclass_ snapshot class.
 +
 image::module-08/11_volumesnapshotclass.png[link=self, window=blank, width=100%]
 +
-. Select the _ocs-storagecluster-rbdplugin-snapclass_ snapshot class. Click the YAML option from the top horizontal menu. Update the YAML configuration to set *DeletionPolicy* to *Retain*.  Click *Save*
+. Click the *YAML* option from the top horizontal menu. Update the YAML configuration to set *DeletionPolicy* to *Retain*.  Click *Save*
 +
 image::module-08/12_rbdplugin-yaml.png[link=self, window=blank, width=100%]
 +
 [NOTE]
-If the snapshots are not retained on the storage system and will be copied to the S3 bucket, this parameter becomes less important.  But to ensure  snapshots that are taken by OADP are retained for the lifecycle of the backup, this parameter should be set to *Retain*.
+If the snapshots are moved to the S3 bucket using the Kopia Data Mover, this parameter becomes less important.  But to ensure snapshots that are taken by OADP are retained for the lifecycle of the backup, this parameter should be set to *Retain*.
 
 
 [[backups]]
 == Creating Backups  
 
-After verifying the state of the object bucket claim, the OADP DPA, the BSL, and the deletion policy, we can create a backup.
+After verifying the state of the OBC, the DPA, the BSL, and the deletion policy, we can create a backup.
 
 . Expand *Operators* in the left navigation pane, select *Installed Operators*.  From the list of operators, select *OADP Operator*.
-. Select *Backup* from the horizontal menu.
++
+image::module-08/05_oadpoperator.png[link=self, window=blank, width=100%]
++
+. Select *Backup* from the top horizontal menu.
 +
 image::module-08/09_backup.png[link=self, window=blank, width=100%]
 +
-. Click the *CreateBackup*.  Select the YAML view option.  
+. Click the *CreateBackup*.  Select the *YAML* view option.  
 +
 image::module-08/10_oadpbackup.png[link=self, window=blank, width=100%]
 +
-. You can copy and paste the yaml configuration below.  This example will backup the vmexamples namespace, including all metadata and resources defined, using snapshots for the PVCs and offload the snapshot to the S3 bucket using the built-in data mover. 
+. You can copy and paste the yaml configuration below.  This example will backup the _vmexamples_ namespace, including all metadata and resources defined, using snapshots for the PVCs and offload the snapshot to the S3 bucket using the built-in Kopia Data Mover. 
 
 [source,sh,role=execute]
 ----
@@ -134,11 +135,11 @@ Oh no! A disaster is about to strike.
 +
 image::module-08/14_deleteVM.png[link=self, window=blank, width=100%]
 +
-. In the Delete VirtualMachine pop-up, confirm the correct VM name is displayed and the _Delete Disks_ checkbox is selected.  Click *Delete*.
+. In the _Delete VirtualMachine_ pop-up window, confirm the correct VM name is displayed and the _Delete Disks_ checkbox is selected.  Click *Delete*.
 +
 image::module-08/15_deleteconfirm.png[link=self, window=blank, width=100%]
 +
-. You've realized you didn't mean to delete the VM, so let's restore it.  From the left navigation pane, expand *Operators*, select *Installed Operators*.  From the list of operators, select *OADP Operator*.  Ensure you are viewing _All Projects_ or the _openshift_adp_ project.
+. You've realized you didn't mean to delete the VM, so let's restore it!  From the left navigation pane, expand *Operators*, select *Installed Operators*.  From the list of operators, select *OADP Operator*.  Ensure you are viewing _All Projects_ or the _openshift_adp_ project.
 +
 image::module-08/05_oadpoperator.png[link=self, window=blank, width=100%]
 +
@@ -192,18 +193,123 @@ image::module-08/19_restorecomplete.png[link=self, window=blank, width=100%]
 [[CLI_commands]]
 == CLI Commands for Troubleshooting
 
-Alias the velero command:
+You can use a shell command to access the Velero binary in the Velero deployment in the cluster.
+
 [source,sh,role=execute]
 ----
 alias velero='oc -n openshift-adp exec deployment/velero -c velero -it -- ./velero'
 ----
-Get listing of backups:
+Once you have the alias defined, you can easily get information on the backup and restores resources as well as any of the OADP resources. 
+
 [source,sh,role=execute]
 ----
 velero get backups
 ----
-Get details of a specific backup:
+```
+NAME               STATUS      ERRORS   WARNINGS   CREATED                         EXPIRES   STORAGE LOCATION   SELECTOR
+vmexamples-l6ckl   Completed   0        2          2024-08-16 15:49:12 +0000 UTC   19h       oadp-dpa-1         <none>
+```
+
+Use the `velero describe`` command to retrieve a summary or warnings and errors associtaed with a backup or restore.
 [source,sh,role=execute]
 ----
-velero describe backup < backupName >
+velero describe backup vmexamples-l6ckl
 ----
+```
+Name:         vmexamples-l6ckl
+Namespace:    openshift-adp
+Labels:       velero.io/storage-location=oadp-dpa-1
+Annotations:  velero.io/source-cluster-k8s-gitversion=v1.28.11+add48d0
+              velero.io/source-cluster-k8s-major-version=1
+              velero.io/source-cluster-k8s-minor-version=28
+
+Phase:  Completed
+
+
+Warnings:
+  Velero:     <none>
+  Cluster:    <none>
+  Namespaces:
+    vmexamples:   resource: /virtualmachines.kubevirt.io name: /restore-c593efc2-810b-48d4-808d-0bdccb2f125e-rootdisk
+                  resource: /virtualmachineinstances.kubevirt.io name: /restore-c593efc2-810b-48d4-808d-0bdccb2f125e-rootdisk
+
+Namespaces:
+  Included:  vmexamples
+  Excluded:  <none>
+
+Resources:
+  Included:        *
+  Excluded:        <none>
+  Cluster-scoped:  excluded
+
+Label selector:  <none>
+
+Storage Location:  oadp-dpa-1
+
+Velero-Native Snapshot PVs:  true
+
+TTL:  24h0m0s
+
+CSISnapshotTimeout:    10m0s
+ItemOperationTimeout:  1h0m0s
+
+Hooks:  <none>
+
+Backup Format Version:  1.1.0
+
+Started:    2024-08-16 15:49:12 +0000 UTC
+Completed:  2024-08-16 15:49:47 +0000 UTC
+
+Expiration:  2024-08-17 15:49:12 +0000 UTC
+
+Total items to be backed up:  117
+Items backed up:              117
+
+Velero-Native Snapshots: <none included>
+```
+
+
+Use the `velero log`` command to retrieve the logs of a Backup or Restore CR.
+
+[source,sh,role=execute]
+----
+velero backup logs vmexamples-l6ckl
+----
+
+```
+... output truncated
+time="2024-08-16T15:49:46Z" level=info msg="handling DataVolume vmexamples/fedora02-fedora02-appdisk" backup=openshift-adp/vmexamples-l6ckl cmd=/plugins/kubevirt-velero-plugin logSource="/remote-source/app/pkg/plugin/dv_backup_item_action.go:130" pluginName=kubevirt-velero-plugin
+time="2024-08-16T15:49:46Z" level=info msg="Skipping item because it's already been backed up." backup=openshift-adp/vmexamples-l6ckl logSource="/remote-source/velero/app/pkg/backup/item_backupper.go:168" name=fedora02-fedora02-appdisk namespace=vmexamples resource=persistentvolumeclaims
+time="2024-08-16T15:49:46Z" level=info msg="Backed up 117 items out of an estimated total of 118 (estimate will change throughout the backup)" backup=openshift-adp/vmexamples-l6ckl logSource="/remote-source/velero/app/pkg/backup/backup.go:405" name=fedora02-fedora02-appdisk namespace=vmexamples progress= resource=datavolumes.cdi.kubevirt.io
+time="2024-08-16T15:49:46Z" level=info msg="Processing item" backup=openshift-adp/vmexamples-l6ckl logSource="/remote-source/velero/app/pkg/backup/backup.go:365" name=restore-c94ba27b-f11d-4364-b281-04140e29e9ee-rootdisk namespace=vmexamples progress= resource=datavolumes.cdi.kubevirt.io
+time="2024-08-16T15:49:46Z" level=info msg="Skipping item because it's already been backed up." backup=openshift-adp/vmexamples-l6ckl logSource="/remote-source/velero/app/pkg/backup/item_backupper.go:168" name=restore-c94ba27b-f11d-4364-b281-04140e29e9ee-rootdisk namespace=vmexamples resource=datavolumes.cdi.kubevirt.io
+time="2024-08-16T15:49:46Z" level=info msg="Backed up 117 items out of an estimated total of 117 (estimate will change throughout the backup)" backup=openshift-adp/vmexamples-l6ckl logSource="/remote-source/velero/app/pkg/backup/backup.go:405" name=restore-c94ba27b-f11d-4364-b281-04140e29e9ee-rootdisk namespace=vmexamples progress= resource=datavolumes.cdi.kubevirt.io
+time="2024-08-16T15:49:46Z" level=info msg="Backed up a total of 117 items" backup=openshift-adp/vmexamples-l6ckl logSource="/remote-source/velero/app/pkg/backup/backup.go:436" progress=
+```
+
+You can specify the Velero log level in the DataProtectionApplication resource.  This option is available starting from OADP 1.0.3.
+
+----
+apiVersion: oadp.openshift.io/v1alpha1
+kind: DataProtectionApplication
+metadata:
+  name: velero-sample
+spec:
+  configuration:
+    velero:
+      logLevel: warning
+----
+
+The following logLevel values are available:
+* trace
+* debug
+* info
+* warning
+* error
+* fatal
+* panic
+
+It is recommended to use `debug` for most logs.
+
+
+
