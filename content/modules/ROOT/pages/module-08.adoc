@@ -300,14 +300,15 @@ spec:
       logLevel: warning
 ----
 
-The following logLevel values are available:
-* trace
-* debug
-* info
-* warning
-* error
-* fatal
-* panic
+The following `logLevel` values are available:  
+
+* trace   
+* debug  
+* info 
+* warning  
+* error  
+* fatal  
+* panic  
 
 It is recommended to use `debug` for most logs.
 
