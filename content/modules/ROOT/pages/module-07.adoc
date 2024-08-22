@@ -2,18 +2,18 @@
 
 == Introduction
 
-For this section of the lab, we will be covering common issues that occur when performing a Bare Metal Deployment and how to triage these issues.
+For this section of the lab, we will be covering common issues that occur when performing a Bare Metal Deployment and how to triage these issues. What we have found is that the most "common" solution for Openshift problems is _Delete the cluster and re-deploy it_.  Unfortunately, with a bare metal deployment, that's not really a feasible answer.  We will cover some of the more common issues we have encountered here as well as mention some common troubleshooting techniques.
 
 [[boot_source_na]]
 == Boot Source Not Available
+
+This is not an actual issue in the lab, however, we will walk through the steps we typically take when addressing these issues to provide background techniques in troubleshooting the issue.
 
 When you install and configure the Openshift Virtualization Operator, it will automatically download some of the most common image sources (CentOS, Fedora, RHEL).  First, ensure that you have set a default StorageClass, otherwise the download process will never get the PVCs it requires to download the images.
 
 In this lab, browse to *Storage* -> *StorageClasses* and you will see that `ocs-storagecluster-ceph-rbd` is the default StorageClass for the lab:
 
-```
-ocs-storagecluster-ceph-rbd – Default
-```
+image::module-07/08_Default_Storage_Class.png[link=self, window=blank, width=100%]
 
 If you don't have a StorageClass with the _Default_ designation, edit the StorageClass and add the following annotation:
 
@@ -25,7 +25,7 @@ If you don't have a StorageClass with the _Default_ designation, edit the Storag
 
 Another issue we have run into in the past was the downloaded Boot Sources from Red Hat existed one day and then seemed to have gone missing the next day.  The confusing part happens when you look and see the PVC for the disk image, but it still says the Boot Source is missing.  
 
-This may be a fringe case, however, the useful aspect of this is understanding how the elements tie together and understanding how things work which may help in other scenarios.
+This may be a fringe case, however, the useful aspect of this is understanding how the elements tie together and understanding how things work which may help troubleshooting other scenarios.
 
 To troubleshoot this, we need to walk through how the volume is associated with the templated.  Start by looking at the DataSource that is associated with one of the Templates that has gone missing.  By default, the Template definition has the following for the location of the DataSource:
 
@@ -60,7 +60,11 @@ parameters:
 ...
 ```
 
-We see here we need to look at the `centos7` DataSource name in the `opnshift-virtualization-os-images` namespace. Browse to *Administration* -> *CustomResourceDefinitions* and search for `DataSource` and select that Custom Resource Definition (CRD).  Click `Instances` and find the associated DataVolume for the Template and click on it to open the DataSource. Switch to the `YAML` view and look at the spec section:
+We see here we need to look at the `centos7` DataSource name in the `opnshift-virtualization-os-images` namespace. Browse to *Administration* -> *CustomResourceDefinitions* and search for `DataSource` and select that Custom Resource Definition (CRD).  
+
+Click `Instances` and find the associated DataVolume for the Template and click on it to open the DataSource. 
+
+Switch to the `YAML` view and look at the `spec` section:
 
 ```
 spec:
@@ -70,27 +74,36 @@ spec:
       namespace: openshift-virtualization-os-images
 ```
 
-Here we can see the DataSource is actually a `snapshot` and not a `pvc`.  Next, see if that `snapshot` exists by navigating to `Storage->VolumeSnapshots` and looking for the associated snapshot.  Ensure that you are looking in the `openshift-virtualization-os-images` namespace.  If you do not see this here, however, you do see a `pvc` with the same name, then the issue is that something changed in the environment (Operator update?) that caused a disassociation of the DataSource to the Template.
+Here we can see the DataSource is actually a `snapshot` and not a `pvc`.
 
-To fix this, note the StorageClass that the `pvc` exists on and  browse to *Administration* -> *CustomResourceDefinitions* and search for `StorageProfile`.  You may see more than one, select the one in the `cdi.kubervirt.io` Group. Click `Instances` and then select the StorageProfile with the same name as the StorageClass for that `pvc.` In the spec section, change or add `dataImportCronSourceFormat` to match how the images are actually stored in your environment, either `pvc` or `snapshot`.
+Next, see if that `snapshot` exists by navigating to `Storage->VolumeSnapshots` and looking for the associated snapshot.  Ensure that you are looking in the `openshift-virtualization-os-images` namespace.  If you do not see this here, however, you do see a `pvc` with the same name, then the issue is that something changed in the environment (Operator update?) that caused a disassociation of the DataSource to the Template.
+
+To fix this, note the StorageClass that the `pvc` exists on and  browse to *Administration* -> *CustomResourceDefinitions* and search for `StorageProfile`.
+
+You may see more than one, select the one in the `cdi.kubervirt.io` Group. Click `Instances` and then select the StorageProfile with the same name as the StorageClass for that `pvc`.
+
+In the spec section, change or add `dataImportCronSourceFormat` to match how the images are actually stored in your environment, either `pvc` or `snapshot`.
 
 ```
 spec:
   dataImportCronSourceFormat: pvc
 ```
 
-Once this is corrected, then all of the Boot Sources should now once again show as Available.
+Once this is corrected, then all of the Boot Sources should now once again show as *Available*.
 
 [[network_connectivity]]
 == Network Connectivity
 
-Troubleshooting network connectivity issues from your Virtual Machine could sometimes be difficult.  This module will cover some common troubleshooting techniques we have used, however, is far from a complete knowledgebase for debugging connectivity issues.  If you are having issues and suspect that they are network related, here's several things you can look at. Also, don't forget that Proof of Concept deployments that use Evaluation Entitlements include Full Support for the product.  Having the customer open a Support Case for tracking purposes can sometimes also help move the needle on issue resolution.
+Troubleshooting network connectivity issues from your Virtual Machine could sometimes be difficult.  This module will cover some common troubleshooting techniques we have used, however, it is far from a complete knowledgebase for debugging connectivity issues.  If you are having issues and suspect that they are network related, here's several things you can look at. 
 
+Don't forget that Proof of Concept deployments that use Evaluation Entitlements include *Full Support* for the product.  Having the customer open a Support Case for tracking purposes can sometimes also help move the needle on issue resolution.
+
+[[ts_lab_network]]
 === Lab Network
 
-The lab environment is a single hypervisor running multiple Virtual Machines to make this demo as cost effective as possible.  This does limit our ability to do _real world_ networking, however, we can still illustrate some techniques.
+Before we begin, a quick overview of the lab environment could be helpful in understanding how things are working. The lab environment is a single bare metal machine acting as a hypervisor running multiple Virtual Machines (Bastion, OCP Nodes) to make this demo as cost effective as possible.  This does limit our ability to do _real world_ networking, however, we can still illustrate some techniques.
 
-For this section, understanding the lab environment network will be helpful in understanding what is going on:
+The lab network deployment topology looks like this:
 
 [%header,cols="1,1"]
 |===
@@ -103,50 +116,24 @@ For this section, understanding the lab environment network will be helpful in u
 |ocp4-worker1.aio.example.com | 192.168.123.104
 |ocp4-worker2.aio.example.com | 192.168.123.105
 |ocp4-worker3.aio.example.com | 192.168.123.106
+|ocp4-worker4.aio.example.com | 192.168.123.61
 |===
 
-The lab was provisioned with a single Node Network Configuration Policy.
-
-[NOTE]
-====
-Currently, only users with `Cluster Admin` rights may create Node Network Configuration Policies in Openshift Container Platform.
-====
+The lab was provisioned with a single Node Network Configuration Policy called `ovs-br-flat` which is connected to the OVS Bridge `ovs-br`.
 
 Browse to *Networking* -> *NodeNetworkConfigurationPolicy* using the left navigation menu:
-+
+
 image::module-07/01_TS_NNCP.png[link=self, window=blank, width=100%]
 
 Here we can see a single NNCP named `ovs-br-flat` exists. Click on the name, switch to the YAML view and scroll down and example the spec:
 
-```
-spec:
-  desiredState:
-    interfaces:
-      - bridge:
-          options:
-            stp: false
-          port:
-            - name: enp3s0
-        description: An OVS with enp3s0 uplink
-        name: ovs-br
-        state: up
-        type: ovs-bridge
-    ovn:
-      bridge-mappings:
-        - bridge: ovs-br
-          localnet: vm-network
-          state: present
-  nodeSelector:
-    node-role.kubernetes.io/worker: ''
-```
+image::module-07/07_NNCP_OVS_br_flat.png[link=self, window=blank, width=100%]
 
-Here we see that a bridge named `ovs-br` is created off of physical interface `enp3s0`.  Within OVN, there is a mapping from that bridge to a localnet named `vm-network`.
+Here we see that a bridge named `ovs-br` is created off of physical interface `enp3s0`.  Within OVN, there is a mapping from that bridge to a localnet named `vm-network`:
 
-The things to note here are:
+image::module-07/10_TS_Lab_NNCP_Map.png[link=self, window=blank, width=100%]
 
-* Interface names (enp3s0)
-* Bridge Name (ovs-br)
-
+[[ts_general_post_deploy]]
 === General Network Connection Issues Post-Deployment
 
 In the lab, login to the bastion host:
@@ -184,7 +171,7 @@ sh-5.1#
 
 However, sometimes you may have issues on your node preventing containers from being created. For these issues, you can try to SSH to the node using the public key you injected at deployment time.  This key gets added to the `core` user on each node.
 
-From the bastion host, go ahead and try to ssh to one of the nodes as the `core` user.
+From the bastion host, the root users SSH key was pushed to all of the nodes at deployment time, go ahead and try to ssh to one of the nodes as the `core` user.
 
 [source,sh,role=execute,subs="attributes"]
 ----
@@ -214,38 +201,368 @@ At this point, it's Linux troubleshooting skills you're going to rely on first. 
 * Confirm all of your MTU sizes are correct.  They should be the same for the interface, any bond/vlan and the bridges.
 * Check the routes, ensure you have a default route and can ping it
 
-RHCOS is a very minimal image and lacks troubleshooting tools such as  `tcpdump`.  You can gain access to this by executing the command `toolbox` at the command prompt on any node.  Go ahead and try this on one of your Openshift Cluster Nodes:
+RHCOS is a very minimal image and lacks troubleshooting tools such as  `tcpdump`.  You can gain access to this by executing the command `toolbox` at the command prompt on any node.  Go ahead and try this on one of your Openshift Cluster Nodes.
 
- This will launch a `toolbox` container and connect you to it which has some useful troubleshooting tools, `tcpdump` among them.
+image::module-07/11_TS_Toolbox.png[link=self, window=blank, width=100%]
 
+[[ts_vm_network_troubleshooting]]
 === Virtual Machine Network Connection Issues
 
-**NEED TO INVESTIGATE THIS MORE TO SEE IF THIS IS DOABLE IN THE LAB**
+Virtual Machine *NICs* are attached to a *Network Attachment Devices* (NAD).  These *Network Attachment Devices* are then associated with a *Node Network Configuration Policy* (NNCP).  The *Node Network Configuration Policy* also defines the connection from the Openshift Software Defined Network (*OVN*) to the physical interfaces on the hardware nodes. 
 
-**CURRENT ISSUE IS THIS IS A NESTED VIRTUALIZATION ENVIRONMENT**
-**AND WE ONLY HAVE A SINGLE NETWORK TO WORK WITH**
-
-Virtual Machines are attached to a Network Attachment Devices (NAD).  These Network Attachment Devices are then associated with a Node Network Configuration Policy (NNCP).  The Node Network Configuration Policy defines the connection from the Openshift Software Defined Network (OVN) to the physical interfaces on the hardware nodes. Network Attachment Definitions and Node Network Configuration Policies that are created in the `default` project are accessible by all other projects.
-
-Let's create a Network Attachment Device for our Virtual Machine we created in xref:module-01.adoc#create_vm[Module 01].
-
-Browse to *Networking* -> *NetworkAttachmentDefinitions*.  Ensure that you are either in the `default` Project, or the project you created your virtual machine in. 
-
-
-
-Next, lets remove the Pod Network from the Virtual Machine and add our new Network Attachment Definition. Browse to *Virtualization* -> *VirtualMachines*. Ensure that you are in the Project where you created the Virtual Machine in xref:module-01.adoc#create_vm[Module 01].
-
-Click on the *fedora* Virtual Machine, navigate to the *Configuration* tab and then select *Network* from the left side of the pane below that.
-+
-image::module-07/02_TS_VM_Configuration_Network.png[link=self, window=blank, width=100%]
-
-You will see a single NIC that is connected to the `Pod networking`. Click the 3 dots to the right of this and select Delete. Select Delete in the Confirmation Tab as well.
+*Network Attachment Definitions* and *Node Network Configuration Policies* that are created in the `default` project are accessible by all other projects.
 
 [NOTE]
 ====
-Hot adding/removing NICs is not supported (yet) with Openshift Virtualization.  For the NIC to be removed, you must stop the Virtual Machine by clicking the square button at the top right to stop your Virtual Machine.  The NIC list does not auto-refresh, so click off of this page to somewhere else and come back and the NIC should no longer be there.
+Currently, only users with `Cluster Admin` rights may create Node Network Configuration Policies in Openshift Container Platform.
 ====
 
+Because this lab environment is not using real hardware, we are going to need to create a network on the hypervisor that we can use for this lab section. This will be the equivalent of adding NIC Hardware to the Bare metal node and configuring Virtual Machines to use it.
 
+==== [.underline]#Lab Setup#
 
+SSH to your Lab Hypervisor server and execute the following to create a new KVM Virtual Network called `ocpvirt-net`:
 
+```
+cat <<EOF >/tmp/ocpvirt-net.xml
+<network connections='8'>
+  <name>ocpvirt-net</name>
+  <forward mode='nat'>
+    <nat>
+      <port start='1024' end='65535'/>
+    </nat>
+  </forward>
+  <bridge name='virbr-ocpvirt' stp='on' delay='0'/>
+  <mac address='52:54:00:11:22:33'/>
+  <ip address='192.168.100.1' netmask='255.255.255.0'>
+  </ip>
+</network>
+EOF
+
+sudo virsh net-define /tmp/ocpvirt-net.xml
+sudo virsh net-start ocpvirt-net
+sudo virsh net-autostart ocpvirt-net
+```
+
+We can confirm the Network was created and is started:
+
+image::module-07/12_virsh_net_list.png[link=self, window=blank, width=100%]
+
+Next we need to add the new interface to each of our Virtual Machines:
+
+```
+for DOM in $(sudo virsh list | egrep 'running' | awk '{print $2}')
+do
+  sudo virsh attach-interface --type bridge --source virbr-ocpvirt --model virtio ${DOM}
+done
+```
+
+Logging into your Bastion host as well as your OCP Nodes, you should now see a new interface on each of them:
+
+[%header,cols="1,1"]
+|===
+| NODE | Device
+| bastion | eth2
+| Master Nodes | enp9s0
+| Worker Nodes | enp11s0
+|===
+
+Let's give the Bastion Host an IP address of `192.168.100.10` that we can use to ping from our Virtual Machines to confirm connectivity.  Login to the bastion host as *root* and execute the following:
+
+```
+nmcli con mod "Wired connection 1" connection.id ocpvirt ipv4.method manual ipv4.addresses 192.168.100.10/24
+nmcli con up ocpvirt
+```
+
+=== [.underline]#Lab Content#
+
+First create a *Network Attachment Definition* for our Virtual Machine we created in xref:module-01.adoc#create_vm[Module 01]. 
+
+Any *Network Attachment Definition* created in the `default` project can be used by _any_ other project in the Openshift Cluster. A *Network Attachment Definition* created in a specific project is only accessible to Virtual Machines created in that specific project.  For this lab, we will create the *Network Attachment Definition* in the `default` project.
+
+Browse to *Networking* -> *NetworkAttachmentDefinitions* and ensure that `default` is selected at the top in the Project drop down and click *Create Network Attachment Definition*.
+
+Switch to the `YAML` view and paste the following YAML for the NAD and click *Create*:
+
+```
+apiVersion: k8s.cni.cncf.io/v1
+kind: NetworkAttachmentDefinition
+metadata:
+  annotations:
+    description: Lab Network 192.168.100.0/24 connection
+  name: module07-net
+spec:
+  config: |-
+    {
+      "cniVersion": "0.3.1",
+      "name": "module07-net",
+      "type": "ovn-k8s-cni-overlay",
+      "topology": "localnet",
+      "netAttachDefName": "default/module07-net",
+      "ipam": {}
+    }
+```
+** We use the YAML view because in the *Form View*, whenever you give your NAD a name, it appends other random names to the end of it making consistency in performing a repeatable lab challenging.
+
+[NOTE]
+====
+When creating this manually, `netAttachDefName` needs to be in the format of *namespace*/*name* for the Network Attachment Definition you are creating. For example if you were creating the above in the *jsmith* namespace, your `netAttachDefName` would be *jsmith*/*module07-net*.
+====
+
+Let's add a new Network Interface to our Virtual Machine for the NAD that we just created. 
+
+Browse to *Virtualization* -> *VirtualMachines* and you should see the Virtual Machine you created. If you do not, ensure the `Project` drop down is set to the Project where you created your Virtual Machine.
+
+[NOTE]
+====
+Hot adding/removing NICs is somehwat supported with Openshift Virtualization.  When adding a NIC, the new NIC can be attached by either live-migrating the Virtual Machine _or_ stopping and re-starting the Virtual Machine.  For this lab, we will just stop the Virtual Machine.
+====
+
+Select the *fedora* Virtual machine and stop it by clicking the square button at the top right of the page.  After the Virtual Machine is stopped, navigate to the *Configuration* tab at the top of the page. Below the tabs, on the left side you will see various Configuration Sections for your Virtual Machine.
+
+Select *Network* from the left side of the pane below that.
+
+image::module-07/02_TS_VM_Configuration_Network.png[link=self, window=blank, width=100%]
+
+You will see a single NIC that is connected to the `Pod networking`. We can add this for this exercise, however most POCs that we have done have had us remove this as they don't want their Virtual Machines to have unnecessary network connections. Let's add a new Network Interface for the NAD that we just created. 
+
+Click *Add network interface* and fill in the dialog presented.  You can provide any name that you want here, the important part is dropping down the *Network* selection and selecting the Network Attachment Definition we created earlier.  Once complete, click *Save*.
+
+At the top of the page, click the blue triangle to start the Virtual Machine.
+
+Once the Virtual Machine is started, switch to the *Console* tab and login to the VM using *fedora* and the password you set for the user back in Module 01.  Once you login, look a the network configuration and you will see 2 NICs, one for the Pod Network and one for the new NIC we just added.
+
+Let's configure the NIC we just added and try pinging the bastion host:
+
+```
+sudo nmcli con mod "Wired connection 1" connection.id eth1 ipv4.method manual ipv4.addresses 192.168.100.120/24
+sudo nmcli con up eth1
+ping -c3 192.168.100.10
+```
+
+We failed.  Why?  Refer back to the first paragraph which discusses the traffic flow from a Virtual Machine:
+
+*VM NIC* -> *NAD* -> *NNCP* -> *Physical Interface*
+
+We never created our NNCP.  So let's do that now.
+
+Browse to *Networking* -> *NodeNetworkConfigurationPolicy* and click *Create* and select *From YAML*. We are going to create this with the following YAML because we want to create an OVS Bridge and not a Linux Bridge.
+
+Paste the following YAML and click *Create*:
+
+```
+apiVersion: nmstate.io/v1
+kind: NodeNetworkConfigurationPolicy
+metadata:
+  name: module07-br
+spec:
+  desiredState:
+    interfaces:
+      - bridge:
+          allow-extra-patch-ports: true
+          options:
+            stp: true
+          port:
+            - name: enp11s0
+        description: |-
+          A dedicated OVS bridge with enp11s0 as a port
+        name: module07-br
+        state: up
+        type: ovs-bridge
+  nodeSelector:
+    node-role.kubernetes.io/worker: ''
+```
+
+Once this is created, let's switch back over to our VM Console and try our ping again:
+
+`ping -c3 192.168.100.10`
+
+image::module-07/05_TS_Nework_Ping_Fail.png[link=self, window=blank, width=100%]
+
+We are still failing.  Let's take a closer look at what is going on from the OCP Node side.
+
+Browse to the *Overview* tab of the Virtual Machine and in the *General* section on the right, note the Node your virtual machine is running on.
+
+Go back to the SSH session where you are on the Bastion Host and SSH to the node your Virtual Machine is running on.
+
+[%header,cols="1,1"]
+|===
+| NODE | LAB Network IP  (192.168.123.0/24)
+|ocp4-worker1.aio.example.com | 192.168.123.104
+|ocp4-worker2.aio.example.com | 192.168.123.105
+|ocp4-worker3.aio.example.com | 192.168.123.106
+|===
+
+`ssh core@192.168.104 # Our VM is on ocp4-worker1. Change IP to whichever node your Virtual Machine is running on`
+
+Once you SSH in, you can confirm you are on the correct node by looking for the VM Pod:
+
+```
+[core@ocp4-worker1 ~]$ sudo crictl ps | egrep virt-launch
+2cb2fb8bd61de       b38632e6139d97526639830d9baa51ad966e974e52927723ffb690bb583651b3                                                                                                   22 minutes ago      Running             compute                                 0                   cc0bff47bec8c       virt-launcher-fedora-9dv9l
+[core@ocp4-worker1 ~]$ 
+```
+
+[NOTE]
+====
+If you are familiar with `virsh`, you can actually get into the container and execute virsh commands against your Virtual Machine by executing:
+
+`sudo crictl exec -it <container_id> /bin/exec`
+
+Unlike `podman` or `docker` the `crictl` command only appears to accept the container_id and not the name, so ensure you are using that when you execute this command.
+====
+
+Once we know we are on the correct node, dump the OVN Bridge Mappings with this command:
+
+`sudo ovs-vsctl list open . | egrep ovn-bridge-mappings`
+
+image::module-07/03_TS_Network_Shell_OVN_Bridge.png[link=self, window=blank, width=100%]
+
+We are specifically looking at the section *ovn-bridge-mappings* which will map *Network Attachment Definitions* to OVN Bridges.  These mappings are created by the NNCP definition.  You will notice, the *module07-br* is not listed there.  This is because when we defined our NNCP, we missed a section that tells OVN to actually create the bridge mapping.
+
+Switch back to the Openshift Console and browse to *Networking* -> *NodeNetworkConfigurationPolicy* and take a look at the *ovs-br-flat* NNCP that was created as part of the lab:
+
+image::module-07/07_NNCP_OVS_br_flat.png[link=self, window=blank, width=100%]
+
+Note the *ovn* section part of the NNCP.  This is what creates the bridge mappings in OVN.  
+
+image::module-07/10_TS_Lab_NNCP_Map.png[link=self, window=blank, width=100%]
+
+Let's fix the NNCP we created earlier. 
+
+Browse to *Networking* -> *NodeNetworkConfigurationPolicy* and click on our *module07-br* NNCP. Switch to the YAML view, scroll to the spec section and edit it, adding the OVN section below:
+
+```
+spec:
+  desiredState:
+    interfaces:
+      - bridge:
+          allow-extra-patch-ports: true
+          options:
+            stp: true
+          port:
+            - name: enp11s0
+        description: |-
+          A dedicated OVS bridge with enp11s0 as a port
+        name: module07-br
+        state: up
+        type: ovs-bridge
+    ovn:
+      bridge-mappings:
+        - bridge: module07-br
+          localnet: module07-net
+          state: present
+```
+
+The *localnet* is the name of our *Network Attachment Defintion*.
+
+If we now check our SSH session again, we will see the bridge mapping for *module07-net* < - > *module07-br*:
+
+```
+[core@ocp4-worker1 ~]$ sudo ovs-vsctl list open . | egrep ovn-bridge-mappings
+external_ids        : {hostname=ocp4-worker1.aio.example.com, ovn-bridge-mappings="module07-net:module07-br,physnet:br-ex,vm-network:ovs-br", ovn-enable-lflow-cache="true", ovn-encap-ip="192.168.123.104", ovn-encap-type=geneve, ovn-is-interconn="true", ovn-memlimit-lflow-cache-kb="1048576", ovn-monitor-all="true", ovn-ofctrl-wait-before-clear="0", ovn-openflow-probe-interval="180", ovn-remote="unix:/var/run/ovn/ovnsb_db.sock", ovn-remote-probe-interval="180000", rundir="/var/run/openvswitch", system-id="a125bab8-d1c6-4d5c-9e38-4f384050ab5a"}
+[core@ocp4-worker1 ~]$
+```
+
+We can then confirm that the bridge *module07-br* is a bridge off of interface `enp11s0`:
+
+image::module-07/04_TS_Network_Shell_OVN_Show_Bridge.png[link=self, window=blank, width=100%]
+
+We can now switch back to the console of our Virtual Machine and try to ping once again....
+
+image::module-07/06_TS_Network_Ping_Success.png[link=self, window=blank, width=100%]
+
+*SUCCESS!*
+
+[[deployment_issues]]
+== Deployment Issues
+
+Unfortunately, this part of the lab is informational only as we can not simulate the following in a Virtualized Environment.
+
+Sometimes when you are trying to deploy on a baremetal system, you will boot the ISO and nothing happens.  It never registers into `console.redhat.com` and you log into the iDRAC/iLO/Management and access the console of the server only to see it sitting at the RHCOS screen and you feel like you can't do any sort of troubleshooting. This is what to do.
+
+First, we want to rule out network configuration, because 9 times out of 10, this is where the issue lies.  Download the latest  xref:https://fedoraproject.org/wiki/FedoraLiveCD[Fedora LiveCD]. Boot the LiveCD and try to manually configure the interface and see if you can ping the gateway, DNS or even out to the internet.  If you can not, next thing you should do is run:
+
+`tcpdump -nn -v -i <interface_name> ether proto 0x88cc`
+
+This should dump the LLDP data (assuming they have it enabled, most places do). When this packet comes in, you will see some useful information to confirm with their networking team:
+
+```
+root@gvs01:~# tcpdump -nn -v -i eno12409 ether proto 0x88cc
+dropped privs to tcpdump
+tcpdump: listening on eno12409, link-type EN10MB (Ethernet), capture size 262144 bytes
+14:28:26.256340 LLDP, length 388
+	Chassis ID TLV (1), length 7
+	  Subtype MAC address (4): b0:4f:13:6b:21:a0
+	Port ID TLV (2), length 16
+	  Subtype Interface Name (5): ethernet1/1/5:3          <--- !!!! SWITCH PORT CONNECTED TO !!!!
+	Time to Live TLV (3), length 2: TTL 120s
+	Port Description TLV (4), length 41: \0xe2\0x80\0x9cgvs01.sand2.auto_OCP_NIC_Right_Port\0xe2\0x80\0x9d
+	System Name TLV (5), length 10: tor-sw-604             <--- !!!! SWITCH NAME CONNECTED TO !!!!
+	System Description TLV (6), length 180
+	  Dell EMC Networking OS10 Enterprise.\0x0d\0x0aCopyright (c) 1999-2022 by Dell Inc. All Rights Reserved.\0x0d\0x0aSystem Description: OS10 Enterprise.\0x0d\0x0aOS Version: 10.5.2.9.\0x0d\0x0aSystem Type: S5232F-ON
+	System Capabilities TLV (7), length 4
+	  System  Capabilities [Repeater, Bridge, Router] (0x0016)
+	  Enabled Capabilities [Repeater, Bridge, Router] (0x0016)
+	Management Address TLV (8), length 12
+	  Management Address length 5, AFI IPv4 (1): 192.168.254.84
+	  Interface Index Interface Numbering (2): 9
+```
+
+You'd be surprised at how many times a customers networking team winds up looking on/working on the wrong switch/port.
+
+If the networking side of things looks good, the next thing you can do is to inject a password into the RHCOS ISO image, boot from that, login via the iDRAC/iLO/Management and access the console of the system.
+
+=== Password Injection
+You will not be able to boot any of the Virtual Machines from the created ISO, however, if you wanted to walk through the steps of injecting a password for the `core` user, you can login to `console.redhat.com`, navigate to Openshift Clusters, create a new cluster using the assisted installer.  Walk through inputting data until you get to the `Add Hosts` part and download the ISO for your newly created cluster.  You can pull that directly to the Bastion host using the provided `wget` command.  Once you have your ISO, feel free to follow along.
+
+. Set CLUSTER_NAME variable
++
+[source,sh,role=execute,subs="attributes"]
+----
+export CLUSTER_NAME=<< cluster_name >>
+----
+
+. Install `coreos-installer`
++
+[source,sh,role=execute,subs="attributes"]
+----
+dnf install coreos-installer -y
+----
+
+. Encrypt your password
++
+[source,sh,role=execute,subs="attributes"]
+----
+export PW=$(echo MyPassword | openssl passwd -6 --stdin)
+----
+
+. Add the password to the ignition file
++
+[source,sh,role=execute,subs="attributes"]
+----
+coreos-installer iso ignition show discovery_image_${CLUSTER_NAME}.iso  | jq --arg pass "${PW}" '.passwd.users[0].passwordHash = $pass' >ignition_with_password.json
+----
+
+. Create a new ISO with no ignition file
++
+[source,sh,role=execute,subs="attributes"]
+----
+coreos-installer iso ignition remove discovery_image_${CLUSTER_NAME}.iso -o discovery_image_${CLUSTER_NAME}_password.iso
+----
+
+. Add the new ignition file to the ISO
++
+[source,sh,role=execute,subs="attributes"]
+----
+coreos-installer iso ignition embed  discovery_image_${CLUSTER_NAME}_password.iso -i ./ignition_with_password.json
+----
+
+. Show the ignition file for the ISO and note `passwordHash` has been added to the user object in the ignition file
++
+[source,sh,role=execute,subs="attributes"]
+----
+coreos-installer iso ignition show discovery_image_${CLUSTER_NAME}_password.iso
+----
+
+You can now boot your bare metal node from this ISO and be able to login as the *core* user from the console to continue your troubleshooting session.

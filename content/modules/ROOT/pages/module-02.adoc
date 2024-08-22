@@ -76,6 +76,8 @@ NOTE: At least one physical node is required for OpenShift Virtualization, "nest
 +
 image::module-02/03_Worker0_Details.png[link=self, window=blank, width=100%]
 
+NOTE: On the *Details* page you will notice the *Model* of the server is _Red Hat, KVM (8.6.0)_ for each of the nodes.  This is because in order to reduce costs, this lab is 7 Virtual Machines deployed on a single bare metal host.  The breakdown of the actual deployment topology is described in the Networking section of the Troubleshooting Chapter.
+
 [[review_hosts]]
 == Review Bare Metal Hosts
 
@@ -123,6 +125,8 @@ image::module-02/06_Add_Host_Red.png[link=self, window=blank, width=100%]
 . With this information filled out, click the *Create* button at the bottom of the dialog page.
 +
 image::module-02/07_Create_Host_Red.png[link=self, window=blank, width=100%]
+NOTE: If your worker4 gets stuck in _Powering On_, ensure you are creating worker4 in the *openshift-machine-api* project.  If you have confirmed that, and it is still not working, on the hypervisor node, restart the Virtual BMC by executing:
+`sudo systemctl restart virtualbmc.service`
 +
 . You will then be presented with the summary screen for *worker4*, and you will see the status update as it attempts to contact the machine and make it available as a host.
 +

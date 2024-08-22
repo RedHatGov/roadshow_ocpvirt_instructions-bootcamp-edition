@@ -76,7 +76,7 @@ image::module-01/07_Create_VM_Quick_Name.png[link=self, window=blank, width=100%
 +
 image::module-01/23_VM_Optional_Parameters.png[link=self, window=blank, width=100%]
 
-. After a few seconds, expect to see the VM is *Running*. During this time, the storage provider has cloned the template disk so that it can be used by the newly created virtual machine. The amount of time this takes can vary based on the storage provider being used to create the boot disk.
+. After a few seconds, expect to see the VM is *Running*. During this time, the storage provider has cloned the template disk so that it can be used by the newly created virtual machine. The amount of time this takes can vary based on the storage provider being used to create the boot disk. This is where VM deployment can benefit from using Ceph as the back end storage provider.
 +
 image::module-01/08_Fedora_Running.png[link=self, window=blank, width=100%]
 
@@ -125,6 +125,8 @@ In this environment, the default StorageClass, which defines the source and type
 image::module-01/14_Network_Tab.png[link=self, window=blank, width=100%]
 +
 When a VM is created, an interface on the *PodNetworking* network of type *masquerade* is created by default. This connects the VM to the SDN and provides access from the VM to outside the OpenShift cluster. Other VMs, and Pods, in the cluster can access the virtual machine using this interface. Furthermore, a VM connected to the SDN can be accessed externally using a Route, or Service with type load balancer, or even have a Network Attachment Definition configured to allow direct access to external networks.
+
+This concept will be a new concept for those coming from other virtualization platforms.  Those administrators are used to Virtual Machines being directly connected to Data Center VLAN networks. Openshift Virtualization does have this capability as well, utilizing xref:https://docs.openshift.com/container-platform/4.16/networking/multiple_networks/understanding-multiple-networks.html[Multus].
 
 [[vm_state]]
 == Controlling Virtual Machine State
