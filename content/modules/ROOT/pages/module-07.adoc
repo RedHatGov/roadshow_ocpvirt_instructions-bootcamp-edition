@@ -116,7 +116,7 @@ The lab network deployment topology looks like this:
 |ocp4-worker1.aio.example.com | 192.168.123.104
 |ocp4-worker2.aio.example.com | 192.168.123.105
 |ocp4-worker3.aio.example.com | 192.168.123.106
-|ocp4-worker4.aio.example.com | 192.168.123.61 (Might be a DHCP address)
+|ocp4-worker4.aio.example.com | 192.168.123.61
 |===
 
 The lab was provisioned with a single Node Network Configuration Policy called `ovs-br-flat` which is connected to the OVS Bridge `ovs-br`.
@@ -473,3 +473,96 @@ We can now switch back to the console of our Virtual Machine and try to ping onc
 image::module-07/06_TS_Network_Ping_Success.png[link=self, window=blank, width=100%]
 
 *SUCCESS!*
+
+[[deployment_issues]]
+== Deployment Issues
+
+Unfortunately, this part of the lab is informational only as we can not simulate the following in a Virtualized Environment.
+
+Sometimes when you are trying to deploy on a baremetal system, you will boot the ISO and nothing happens.  It never registers into `console.redhat.com` and you log into the iDRAC/iLO/Management and access the console of the server only to see it sitting at the RHCOS screen and you feel like you can't do any sort of troubleshooting. This is what to do.
+
+First, we want to rule out network configuration, because 9 times out of 10, this is where the issue lies.  Download the latest  xref:https://fedoraproject.org/wiki/FedoraLiveCD[Fedora LiveCD]. Boot the LiveCD and try to manually configure the interface and see if you can ping the gateway, DNS or even out to the internet.  If you can not, next thing you should do is run:
+
+`tcpdump -nn -v -i <interface_name> ether proto 0x88cc`
+
+This should dump the LLDP data (assuming they have it enabled, most places do). When this packet comes in, you will see some useful information to confirm with their networking team:
+
+```
+root@gvs01:~# tcpdump -nn -v -i eno12409 ether proto 0x88cc
+dropped privs to tcpdump
+tcpdump: listening on eno12409, link-type EN10MB (Ethernet), capture size 262144 bytes
+14:28:26.256340 LLDP, length 388
+	Chassis ID TLV (1), length 7
+	  Subtype MAC address (4): b0:4f:13:6b:21:a0
+	Port ID TLV (2), length 16
+	  Subtype Interface Name (5): ethernet1/1/5:3          <--- !!!! SWITCH PORT CONNECTED TO !!!!
+	Time to Live TLV (3), length 2: TTL 120s
+	Port Description TLV (4), length 41: \0xe2\0x80\0x9cgvs01.sand2.auto_OCP_NIC_Right_Port\0xe2\0x80\0x9d
+	System Name TLV (5), length 10: tor-sw-604             <--- !!!! SWITCH NAME CONNECTED TO !!!!
+	System Description TLV (6), length 180
+	  Dell EMC Networking OS10 Enterprise.\0x0d\0x0aCopyright (c) 1999-2022 by Dell Inc. All Rights Reserved.\0x0d\0x0aSystem Description: OS10 Enterprise.\0x0d\0x0aOS Version: 10.5.2.9.\0x0d\0x0aSystem Type: S5232F-ON
+	System Capabilities TLV (7), length 4
+	  System  Capabilities [Repeater, Bridge, Router] (0x0016)
+	  Enabled Capabilities [Repeater, Bridge, Router] (0x0016)
+	Management Address TLV (8), length 12
+	  Management Address length 5, AFI IPv4 (1): 192.168.254.84
+	  Interface Index Interface Numbering (2): 9
+```
+
+You'd be surprised at how many times a customers networking team winds up looking on/working on the wrong switch/port.
+
+If the networking side of things looks good, the next thing you can do is to inject a password into the RHCOS ISO image, boot from that, login via the iDRAC/iLO/Management and access the console of the system.
+
+=== Password Injection
+You will not be able to boot any of the Virtual Machines from the created ISO, however, if you wanted to walk through the steps of injecting a password for the `core` user, you can login to `console.redhat.com`, navigate to Openshift Clusters, create a new cluster using the assisted installer.  Walk through inputting data until you get to the `Add Hosts` part and download the ISO for your newly created cluster.  You can pull that directly to the Bastion host using the provided `wget` command.  Once you have your ISO, feel free to follow along.
+
+. Set CLUSTER_NAME variable
++
+[source,sh,role=execute,subs="attributes"]
+----
+export CLUSTER_NAME=<< cluster_name >>
+----
+
+. Install `coreos-installer`
++
+[source,sh,role=execute,subs="attributes"]
+----
+dnf install coreos-installer -y
+----
+
+. Encrypt your password
++
+[source,sh,role=execute,subs="attributes"]
+----
+export PW=$(echo MyPassword | openssl passwd -6 --stdin)
+----
+
+. Add the password to the ignition file
++
+[source,sh,role=execute,subs="attributes"]
+----
+coreos-installer iso ignition show discovery_image_${CLUSTER_NAME}.iso  | jq --arg pass "${PW}" '.passwd.users[0].passwordHash = $pass' >ignition_with_password.json
+----
+
+. Create a new ISO with no ignition file
++
+[source,sh,role=execute,subs="attributes"]
+----
+coreos-installer iso ignition remove discovery_image_${CLUSTER_NAME}.iso -o discovery_image_${CLUSTER_NAME}_password.iso
+----
+
+. Add the new ignition file to the ISO
++
+[source,sh,role=execute,subs="attributes"]
+----
+coreos-installer iso ignition embed  discovery_image_${CLUSTER_NAME}_password.iso -i ./ignition_with_password.json
+----
+
+. Show the ignition file for the ISO and note `passwordHash` has been added to the user object in the ignition file
++
+[source,sh,role=execute,subs="attributes"]
+----
+coreos-installer iso ignition show discovery_image_${CLUSTER_NAME}_password.iso
+----
+
+You can now boot your bare metal node from this ISO and be able to login as the *core* user from the console to continue your troubleshooting session.
