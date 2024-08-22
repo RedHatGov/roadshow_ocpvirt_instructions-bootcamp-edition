@@ -566,3 +566,15 @@ coreos-installer iso ignition show discovery_image_${CLUSTER_NAME}_password.iso
 ----
 
 You can now boot your bare metal node from this ISO and be able to login as the *core* user from the console to continue your troubleshooting session.
+
+=== Cleaning Ceph between deployments
+
+If you need to re-deploy a bare metal hyperconverged environment that was using Ceph, sometimes Ceph won't deploy because it sees the disks as part of a different Ceph deployment so you may need to clean the disks prior to a re-deployment of Ceph.  If you are using Assisted Installer, you can ssh to the nodes as the *core* user and the injected SSH key and execute the following on the disks being used for Ceph:
+
+[source,sh,role=execute,subs="attributes"]
+----
+sudo sgdisk --zap-all /dev/sdX
+----
+Replace `sdX` with the appropriate device name.
+
+You can use `blkid` command to ensure the disks are wiped free of any Ceph configuration.
