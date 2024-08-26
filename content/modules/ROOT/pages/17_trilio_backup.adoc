@@ -39,26 +39,26 @@ image::Trilio/operator6.PNG[link=self, window=blank, width=100%]
 === Change the Ingresss  
 In this Lab the OCP cluster has a NAT forward for external access. This causes the apps deployed to default to the internal example.com domain.  This must be updated so they can be routed correctly to the internal pods running in your cluster. 
 
-. On the left navagation pane, expand *Networking*, select *Ingresses*.
+. On the left navagation pane, expand *Networking*, select *Ingresses*.  
 +
-image::Trilio/networkingIngresses.png[]
+image::Trilio/networkingIngresses.png[link=self, window=blank, width=100%]
 +
-. Select *k8s-triliovault* from the list and click on the *YAML* menu option in the top horizontal menu bar.
+. Select *k8s-triliovault* from the list and click on the *YAML* menu option in the top horizontal menu bar.  
 +
-image::Trilio/k8s-triliovault.png[]
+image::Trilio/k8s-triliovault.png[link=self, window=blank, width=100%]
 +
 . Modify the `spec.rules.host` parameter.  The host name should be trilio-system-apps._XXXX_.dynamic.redhatworkshops.io, where the _XXXX_ is your specific workshop instance name.  Click *Save*.  
 +
-image::Trilio/rules.host.png[]
+image::Trilio/rules.host.png[link=self, window=blank, width=100%]
 +
 [NOTE] 
 The notification this resource is managed by TVM triliovault-manager will be displayd.  Click *Save* again.  You can verify your changes by scrolling back down to the .spec.rules.host to verify your changes were saved.
 +
-image::Trilio/k8s-triliovaultIngress.png[]
+image::Trilio/k8s-triliovaultIngress.png[link=self, window=blank, width=100%]
 +
 . In the left navigation pane, expand *Networking* and select *Routes*. There will be four routes listed in the trilio-system project.   Click the route that ends with the backslash '/'.
 +
-image::Trilio/login.PNG[]
+image::Trilio/login.PNG[link=self, window=blank, width=100%]
 
 === Apply license
 
