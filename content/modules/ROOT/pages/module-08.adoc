@@ -158,17 +158,17 @@ image::module-08/17_restore.png[link=self, window=blank, width=100%]
 +
 image::module-08/18_restoreyaml.png[link=self, window=blank, width=100%]
 +
-This example will restore the _vmexamples_ namespace resources, including all metadata and resources that were included in the backup but *currently do not exist*.  New PVC/PVs will be created and the snapshot data will be downloaded from the S3 bucket and written to the new PVs.  
+This example will restore the _fedora-01_ VM in the _vmexamples_ namespace, including all metadata and PVCs/PVs that were included in the backup. New PVC/PVs will be created and the snapshot data will be downloaded from the S3 bucket and written to the new PVs.  
 
 [IMPORTANT]
-Any CR that already exists is not modified or restored from the backup.  OADP manages this by attempting to create the resource and if the create fails, it moves on to the next resource.
+Any CR that already exists is not modified or restored from a backup.  OADP manages this by attempting to create the resource and if the create fails, it moves on to the next resource.  Therefore you can backup all VMs in a single namespace and restore just one without impacting the others.
 
 [source,sh,role=execute]
 ----
 apiVersion: velero.io/v1
 kind: Restore
 metadata:
-  generateName: restore-vmexamples-
+  generateName: restore-fedora01-
   namespace: openshift-adp
 spec:
   includedNamespaces:
@@ -180,7 +180,7 @@ spec:
     - backups.velero.io
     - restores.velero.io
     - resticrepositories.velero.io
-  backupName: 'vmexamples-r6h2v'
+  backupName: 'fedora01-n2489'
   restorePVs: true
 ----
 
