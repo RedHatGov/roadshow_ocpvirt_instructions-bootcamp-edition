@@ -161,7 +161,7 @@ image::module-08/18_restoreyaml.png[link=self, window=blank, width=100%]
 This example will restore the _fedora-01_ VM in the _vmexamples_ namespace, including all metadata and PVCs/PVs that were included in the backup. New PVC/PVs will be created and the snapshot data will be downloaded from the S3 bucket and written to the new PVs.  
 
 [IMPORTANT]
-Any CR that already exists is not modified or restored from a backup.  OADP manages this by attempting to create the resource and if the create fails, it moves on to the next resource.  Therefore you can backup all VMs in a single namespace and restore just one without impacting the others.
+Any CR that already exists is not modified or restored from a backup.  OADP manages this by attempting to create the resource and if the create fails, it moves on to the next resource.  Therefore all VMs in a single namespace and be backed up and one VM can be restored without impacting the others.
 
 [source,sh,role=execute]
 ----
