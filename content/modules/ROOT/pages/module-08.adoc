@@ -96,7 +96,7 @@ image::module-08/09_backup.png[link=self, window=blank, width=100%]
 +
 image::module-08/10_oadpBackup.png[link=self, window=blank, width=100%]
 +
-. You can copy and paste the yaml configuration below.  This example will backup the fedora01 VM in _vmexamples_ namespace, including all metadata and PVCs/PVs defined, using snapshots for the PVCs and offload the snapshot to the S3 bucket using the built-in Kopia Data Mover. 
+. You can copy and paste the yaml configuration below.  This example will backup the fedora-01 VM in _vmexamples_ namespace, including all metadata and PVCs/PVs defined, using snapshots for the PVCs and offload the snapshot to the S3 bucket using the built-in Kopia Data Mover. 
 
 [source,sh,role=execute]
 ----
