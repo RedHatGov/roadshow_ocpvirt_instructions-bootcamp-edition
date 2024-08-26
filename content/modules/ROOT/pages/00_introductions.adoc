@@ -52,9 +52,13 @@
 *** Split into teams for Mock Virtualization Assessments
 
 == Friday, August 30th
-* 9AM - 12PM
-*** Teams present readouts from Mock Assessments and Dicovery Sessions
-* 12PM - 12:30PM
+* 9AM - 9:25AM
+*** Gathering, review Mock Assessment
+* 9:30AM - 10:00AM
+*** Group picture on the Red Hat Tower
+* 10AM - 12PM
+*** Review HLD & Approach from ongoing projects
+* 12PM - 12:30
 *** Ask an OpenShift Architect, with https://www.youtube.com/@AlesNosekTSP[Ales Nosek]
 * 12:30 ->
 *** Close out
@@ -75,7 +79,7 @@ image::introductions/ah.png[]
 
 == BootCamp Vendor Guests
 
-image::introductions/trilio-jeff.jpg[]
+image::introductions/trilio-jeff.png[]
 
 * Jeff Ligon
 * Senior Solutions Architect at Trilio
