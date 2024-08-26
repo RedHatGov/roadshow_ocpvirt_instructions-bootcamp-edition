@@ -129,8 +129,6 @@ When the backup of all the matching resources in the _vmexamples_ namespace is c
 
 image::module-08/13_backupComplete.png[link=self, window=blank, width=100%]
 
-
-
 [[restore]]
 == Restoring a Virtual Machine
 
