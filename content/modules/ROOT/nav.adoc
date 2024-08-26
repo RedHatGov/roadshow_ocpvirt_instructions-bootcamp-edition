@@ -58,6 +58,6 @@
 ** xref:22_disconnected.adoc[Disconnected Environments]
 ** xref:19_service_route.adoc[Using a Service and Route to expose an application]
 ** xref:20_metallb.adoc[MetalLB concepts]
-** xref:17_trilio_backup.adoc[Trilio Lab]
+** xref:17_trilio_backup.adoc[Trilio Data Protection Lab]
 ** xref:24_presales.adoc[Pre Sales, Discovery Sessions, and Virtualization Assessments]
 
