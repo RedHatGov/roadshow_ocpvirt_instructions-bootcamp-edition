@@ -8,10 +8,23 @@ link:https://docs.google.com/forms/d/e/1FAIpQLSd6LlAXh2ogLXLsvW-t5gwktvQyOEKW0Mg
 
 == Please feel free to reach out any time! 
 
--Andrew
+- Ken Savich
+mailto:ken@redhat.com[ken@redhat.com]
 
--Scott
+- Brenda McLaren
+mailto:bmclaren@redhat.com[bmclaren@redhat.com]
 
--Brian
+- Darin Sorrentino
+mailto:dsorrent@redhat.com[dsorrent@redhat.com]
 
--Freddy
+- Chris Janiszewski
+mailto:cjanisze@redhat.com[cjanisze@redhat.com]
+
+- Maciej Lecki
+mailto:mlecki@redhat.com[mlecki@redhat.com]
+
+- Paul Halmos
+mailto:phalmos@redhat.com[phalmos@redhat.com]
+
+- Dawn Marini
+mailto:dawn@redhat.com[dawn@redhat.com]
