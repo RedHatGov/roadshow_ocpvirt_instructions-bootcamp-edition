@@ -41,22 +41,22 @@ In this Lab the OCP cluster has a NAT forward for external access. This causes t
 
 . On the left navagation pane, expand *Networking*, select *Ingresses*.
 +
-image::Trilio/networkingIngresses.PNG[]
+image::Trilio/networkingIngresses.png[]
 +
 . Select *k8s-triliovault* from the list and click on the *YAML* menu option in the top horizontal menu bar.
 +
-image::Trilio/k8s-triliovaultIngress.PNG[]
+image::Trilio/k8s-triliovault.png[]
 +
 . Modify the `spec.rules.host` parameter.  The host name should be trilio-system-apps._XXXX_.dynamic.redhatworkshops.io, where the _XXXX_ is your specific workshop instance name.  Click *Save*.  
 +
-image::Trilio/rules.host.PNG[]
+image::Trilio/rules.host.png[]
 +
 [NOTE] 
 The notification this resource is managed by TVM triliovault-manager will be displayd.  Click *Save* again.  You can verify your changes by scrolling back down to the .spec.rules.host to verify your changes were saved.
 +
-image::Trilio/k8s-triliovaultIngress.PNG[]
+image::Trilio/k8s-triliovaultIngress.png[]
 +
-. In the left navigation pane, expand *Networking* and select *Routes*. There will be four routes listed in the trilio-system project.   Click the route that ends with the '\'
+. In the left navigation pane, expand *Networking* and select *Routes*. There will be four routes listed in the trilio-system project.   Click the route that ends with the backslash '/'.
 +
 image::Trilio/login.PNG[]
 
