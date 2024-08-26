@@ -96,16 +96,21 @@ image::module-08/09_backup.png[link=self, window=blank, width=100%]
 +
 image::module-08/10_oadpbackup.png[link=self, window=blank, width=100%]
 +
-. You can copy and paste the yaml configuration below.  This example will backup the _vmexamples_ namespace, including all metadata and resources defined, using snapshots for the PVCs and offload the snapshot to the S3 bucket using the built-in Kopia Data Mover. 
+. You can copy and paste the yaml configuration below.  This example will backup the fedora01 VM in _vmexamples_ namespace, including all metadata and PVCs/PVs defined, using snapshots for the PVCs and offload the snapshot to the S3 bucket using the built-in Kopia Data Mover. 
 
 [source,sh,role=execute]
 ----
 apiVersion: velero.io/v1
 kind: Backup
 metadata:
-  generateName: vmexamples-
+  generateName: fedora01-
   namespace: openshift-adp
 spec:
+  orLabelSelectors:
+  - matchLabels:
+      app: fedora01
+  - matchLabels:
+      vm.kubevirt.io/name: fedora01
   includedNamespaces:
     - vmexamples
   snapshotVolumes: true
@@ -120,7 +125,7 @@ The *ttl* is the retention period of the backup.  If the snapshot data is not mo
 [TIP]
 Use the *generateName:* feature to append random characters to the end of the given name to ensure the name is unique.
 
-When the backup of all resources in the vmexamples namespace is complete the *Status* of the backup will be _Completed_.
+When the backup of all the matching resources in the _vmexamples_ namespace is complete the *Status* of the backup will be _Completed_.
 
 image::module-08/13_backupcomplete.png[link=self, window=blank, width=100%]
 
