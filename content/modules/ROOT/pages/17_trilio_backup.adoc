@@ -8,49 +8,56 @@
 In this lab we will be installing the Trilio backup operator and restoring virtual machines on Openshift. 
 
 === Installing the Operator
-Search the Operator hub for the Trilio for kubernetes. 
+. Search the Operator hub for the Trilio for kubernetes. 
++
+image::Trilio/operator.PNG[link=self, window=blank, width=100%]
++
+. Keep all the default options. The operator will be installed in the trilio-system namespace.  All pods related to Trilio will run in this namespace as to not interfere with security restrictions and quota restrictions. To enalbe the Trilio Backups menu options in the left navigation pane in the OpenShift console, select *Enable* under _Console Plugin_. 
++
+[NOTE]
+The console plugin is a light version of the full Trilio UI.  The full UI is also available using a route.  
++  
+image::Trilio/operator2.PNG[link=self, window=blank, width=100%]
++  
+. Click on Refresh Web console when the operator is installed
++  
+image::Trilio/operator3.PNG[link=self, window=blank, width=100%]
++  
+. If everything is ok, you should see the Trilio Backups option in the left navigation pane.  On the Details pane, click “Create instance”, this will start the Trilio pods.  
++  
+image::Trilio/operator4.PNG[link=self, window=blank, width=100%]
++  
+. On the Create TrilioVaultManager page, accept the defaults, click on the *Create* icon.  
++  
+image::Trilio/operator5.PNG[link=self, window=blank, width=100%]
++  
+. After a few minutes, the Trilio Vault Manager instance should be in a *Deployed* status. 
++  
+image::Trilio/operator6.PNG[link=self, window=blank, width=100%]
 
-image::Trilio/operator.PNG[]
 
-Default options should work ok. The operator will be installed in the namespace trilio-system, and every workload related to Trilio will run there. This is specially useful so our workloads do not interfere with security restrictions, and quota restrictions on normal namespaces. In order to have Trilio Backups tab in the OpenShift console, please select “Enable” under “Console Plugin”. If you don’t want it/need it, you still have the Trilio UI.
+=== Change the Ingresss  
+In this Lab the OCP cluster has a NAT forward for external access. This causes the apps deployed to default to the internal example.com domain.  This must be updated so they can be routed correctly to the internal pods running in your cluster. 
 
-image::Trilio/operator2.PNG[]
-
-Click on Refresh Web console when the operator is installed
-
-image::Trilio/operator3.PNG[]
-
-=== Check everything is deployed correctly
-
-If everything is ok, you should see the Trilio Backups tab on the left (1) and you need to click on “Create instance” (2), which will spin up all Trilio necessary workloads:
-
-image::Trilio/operator4.PNG[]
-
-=== Create Trilio Instance (TVM):
-
-After clicking on “create instance” just accept the defaults:
-
-image::Trilio/operator5.PNG[]
-
-=== Check TVM:
-
-After creating the instance this is what you should see:
-
-image::Trilio/operator6.PNG[]
-
-=== Change the Ingresss
-In this Lab the OCP cluster has a Nat forward for external access. This causes apps to default to the internal example.com and we must reroute them. 
-
-We will modify the triliovault under the trilio-system project. 
-
-.Before ingress changes
-image::Trilio/before-ingress.PNG[]
-
-.After ingress changes
-image::Trilio/after-ingress.PNG[]
-
-Save the yam and this should correct the ingress route for external access. Under the networking > routes users should be able to hit the route: https://trilio-system.apps.xxxx.dynamic.redhatworkshops.io/login
-
+. On the left navagation pane, expand *Networking*, select *Ingresses*.
++
+image::Trilio/networkingIngresses.PNG[]
++
+. Select *k8s-triliovault* from the list and click on the *YAML* menu option in the top horizontal menu bar.
++
+image::Trilio/k8s-triliovaultIngress.PNG[]
++
+. Modify the `spec.rules.host` parameter.  The host name should be trilio-system-apps._XXXX_.dynamic.redhatworkshops.io, where the _XXXX_ is your specific workshop instance name.  Click *Save*.  
++
+image::Trilio/rules.host.PNG[]
++
+[NOTE] 
+The notification this resource is managed by TVM triliovault-manager will be displayd.  Click *Save* again.  You can verify your changes by scrolling back down to the .spec.rules.host to verify your changes were saved.
++
+image::Trilio/k8s-triliovaultIngress.PNG[]
++
+. In the left navigation pane, expand *Networking* and select *Routes*. There will be four routes listed in the trilio-system project.   Click the route that ends with the '\'
++
 image::Trilio/login.PNG[]
 
 === Apply license
@@ -72,15 +79,17 @@ TBD "either Minio or prefab s3 from cloud or ODF is required" It seems all backu
 
 === Backup Targets
 
-For the example we will use an AWS s3 bucket as the target but any S3 backend will work. 
+Trilio requires either an S3 bucket or an NFS export to store the backup data.  For the lab, we will use an internal bucket but for production backups it is highly recommended to use an external bucket.
 
-image::Trilio/backup1.PNG[]
-
-1. Select the cluster
-2. Select Targets
-3. Click on “Create New”
-
-This wizard will appear, fill in with those details for the S3 backup target.
+. Select the tvk-instance from the list of Clusters.  
++
+image::Trilio/tvkinstance.PNG[]
++
+. In the left navigation pane, select *Targets*.  On the far right, click the *Create New* icon.
++
+image::Trilio/targetCreateNew.PNG[]
++
+. This wizard will appear, fill in with those details for the S3 backup target.
 
 Click “Create New”, where we enter the bucket keys, which will be stored in a secret. 
 

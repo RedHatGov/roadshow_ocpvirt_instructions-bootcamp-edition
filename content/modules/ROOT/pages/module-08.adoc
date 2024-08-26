@@ -71,7 +71,7 @@ Setting a _DeletionPolicy_ of `Retain` on the _VolumeSnapShotClass_ will preserv
 +
 image::module-08/11_volumesnapshotclass.png[link=self, window=blank, width=100%]
 +
-. Click the *YAML* option from the top horizontal menu. Update the YAML configuration to set *DeletionPolicy* to *Retain*.  Click *Save*
+. Click the *YAML* option from the top horizontal menu. Update the YAML configuration to set *DeletionPolicy* to *Retain*.  Click *Save*.
 +
 image::module-08/12_rbdplugin-yaml.png[link=self, window=blank, width=100%]
 +
