@@ -125,7 +125,7 @@ The *ttl* is the retention period of the backup.  If the snapshot data is not mo
 [TIP]
 Use the *generateName:* feature to append random characters to the end of the given name to ensure the name is unique.
 
-When the backup of all the matching resources in the _vmexamples_ namespace is complete the *Status* of the backup will be _Completed_.
+When the backup of all matching resources specified is complete the *Status* of the backup will be _Completed_.
 
 image::module-08/13_backupComplete.png[link=self, window=blank, width=100%]
 
@@ -184,13 +184,9 @@ spec:
   restorePVs: true
 ----
 
-When the backup of all resources in the vmexamples namespace is complete the *Status* of the backup will be _Completed_.  
-
+When the restore is complete the *Status* of the backup will be _Completed_.  
 
 image::module-08/19_restorecomplete.png[link=self, window=blank, width=100%]
-
-
-
 
 
 [[CLI_commands]]
