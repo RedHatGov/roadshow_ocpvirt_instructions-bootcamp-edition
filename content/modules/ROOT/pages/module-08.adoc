@@ -94,7 +94,7 @@ image::module-08/09_backup.png[link=self, window=blank, width=100%]
 +
 . Click the *CreateBackup*.  Select the *YAML* view option.  
 +
-image::module-08/10_oadpbackup.png[link=self, window=blank, width=100%]
+image::module-08/10_oadpBackup.png[link=self, window=blank, width=100%]
 +
 . You can copy and paste the yaml configuration below.  This example will backup the fedora01 VM in _vmexamples_ namespace, including all metadata and PVCs/PVs defined, using snapshots for the PVCs and offload the snapshot to the S3 bucket using the built-in Kopia Data Mover. 
 
@@ -108,9 +108,9 @@ metadata:
 spec:
   orLabelSelectors:
   - matchLabels:
-      app: fedora01
+      app: fedora-01
   - matchLabels:
-      vm.kubevirt.io/name: fedora01
+      vm.kubevirt.io/name: fedora-01
   includedNamespaces:
     - vmexamples
   snapshotVolumes: true
@@ -127,7 +127,7 @@ Use the *generateName:* feature to append random characters to the end of the gi
 
 When the backup of all the matching resources in the _vmexamples_ namespace is complete the *Status* of the backup will be _Completed_.
 
-image::module-08/13_backupcomplete.png[link=self, window=blank, width=100%]
+image::module-08/13_backupComplete.png[link=self, window=blank, width=100%]
 
 
 
