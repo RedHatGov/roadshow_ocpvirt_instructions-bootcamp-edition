@@ -67,7 +67,7 @@ image::introductions/ml.png[]
 
 == Lab URL
 
-* link:https://redhat.enterprise.slack.com/archives/C07048NFL6M[Labs URL in SLACK Channel]
+* link:https://redhat.enterprise.slack.com/archives/C07HJ1QR6EM[Labs URL in SLACK Channel]
 
 == Objectives
 
