@@ -61,11 +61,6 @@ image::introductions/ml.png[]
 * Maciej Lecki
 * Senior Specialist Solution Architect, NA HQ Virt Team
 
-image::introductions/dm.png[]
-
-* Dawn Marini
-* Specialist Solution Architect, NA HQ Virt Team
-
 == Class Introductions
 
 * All
