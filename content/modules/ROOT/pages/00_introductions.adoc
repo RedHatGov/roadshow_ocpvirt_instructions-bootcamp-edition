@@ -19,7 +19,7 @@
 * 11AM - 12PM
 *** Lunch
 * 12PM - 1PM
-*** BU Product overview and roadmap with Sachin Mullick
+*** BU Product overview and roadmap
 * 1PM - 2PM 
 *** Presentation: Virt Lab Validation & Rosetta Stone
 * 2PM - 6PM (Breaks as needed)
@@ -35,19 +35,19 @@
 * 12PM - 1PM
 *** Lunch
 * 1PM - 6PM (breaks as needed)
-*** Additional Labs from DO316 Chapters 7 & 8
+*** Additional Labs from DO316 Chapters 4, 5, 7 & 8
 
 == Thursday, August 29th
-* 9AM - 11AM
-*** Trilio demo, and lab presented by Rodolfo Casas, Senior Solutions Architect & Red Hat Certified Architect from Trilio
-* 11AM - 11:30AM
+* 9AM - 9:30AM
 *** Exam Certification Acceleration Tips
-* 11:30AM - 12PM
-*** Setup for Mock Discovery Sessions & Mock Virtualization Assessments
+* 9:30AM - 10AM
+*** Presentation: OCP-Virt PreSales/Discovery
+* 10AM - 12PM
+*** Trilio demo, and lab presented by Jeff Ligon, Senior Solutions Architect from Trilio
 * 12PM - 1PM
 *** Lunch
 * 1PM - 2PM 
-*** Split into teams for Mock Discovery Sessions
+*** Presentation: Virtualization Migration Assessments
 * 2PM - 6PM
 *** Split into teams for Mock Virtualization Assessments
 
@@ -73,22 +73,12 @@ image::introductions/ah.png[]
 * Andrew Harrison
 * Managing Architect, STP
 
-image::introductions/th.png[]
-
-* Taylor Johnston
-* Associate Consultant, PDP
-
-image::introductions/tm.png[]
-
-* Tom McGinnis
-* Senior Consultant, STP
-
 == BootCamp Vendor Guests
 
-image::introductions/trilio-rodolfo.jpg[]
+image::introductions/trilio-jeff.jpg[]
 
-* Rodolfo Casas
-* Senior Solutions Architect at Trilio | RHCA and Red Hat Instructor
+* Jeff Ligon
+* Senior Solutions Architect at Trilio
 
 == Class Introductions
 
@@ -100,7 +90,7 @@ image::introductions/trilio-rodolfo.jpg[]
 
 == Lab URL
 
-* link:https://redhat.enterprise.slack.com/archives/C07048NFL6M[Labs URL in SLACK Channel]
+* link:https://redhat.enterprise.slack.com/archives/C07FY690WCR[Labs URL in SLACK Channel]
 
 == Objectives
 
