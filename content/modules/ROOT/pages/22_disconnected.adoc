@@ -462,19 +462,18 @@ spec:
 == Resources
 
 Mirror Registry: A standalone Quay deployment for hosting OpenShift content. +
-https://mirror.openshift.com/pub/openshift-v4/clients/mirror-registry/latest/ +
-https://github.com/quay/mirror-registry
+link:https://mirror.openshift.com/pub/openshift-v4/clients/mirror-registry/latest/[mirror registry^] +
+link:https://github.com/quay/mirror-registry[quay github mirror registry^]
 
 oc-mirror: OpenShift client plugin for managing OpenShift releases, operator catalogs, and other image content +
-https://mirror.openshift.com/pub/openshift-v4/amd64/clients/ocp/latest/oc-mirror.tar.gz +
-https://github.com/openshift/oc-mirror
+link:https://mirror.openshift.com/pub/openshift-v4/amd64/clients/ocp/latest/oc-mirror.tar.gz[oc client^] +
+link:https://github.com/openshift/oc-mirror[oc mirror^] 
 
 Pull secret download +
-https://console.redhat.com/openshift/downloads +
-https://console.redhat.com/openshift/create/local
+link:https://console.redhat.com/openshift/downloads[download^] +
+link:https://console.redhat.com/openshift/create/local[create local^]
 
-OpenShift Virtualization Automatic Bootsource Update
-https://docs.openshift.com/dedicated/virt/storage/virt-automatic-bootsource-updates.html
+link:https://docs.openshift.com/dedicated/virt/storage/virt-automatic-bootsource-updates.html[OpenShift Virtualization Automatic Bootsource Update^]
 
 [NOTE]
 It is not necessary for this workshop to deploy VMs from a local registry. You can continue to the next module.
