@@ -61,18 +61,13 @@ image::introductions/ml.png[]
 * Maciej Lecki
 * Senior Specialist Solution Architect, NA HQ Virt Team
 
-image::introductions/dm.png[]
-
-* Dawn Marini
-* Specialist Solution Architect, NA HQ Virt Team
-
 == Class Introductions
 
 * All
 
 == Lab URL
 
-* link:https://redhat.enterprise.slack.com/archives/C07048NFL6M[Labs URL in SLACK Channel]
+* link:https://redhat.enterprise.slack.com/archives/C07HJ1QR6EM[Labs URL in SLACK Channel^]
 
 == Objectives
 
@@ -102,29 +97,29 @@ Adopt cloud-native development and/or cloud-native operations: Red Hat OpenShift
 
 == Content Links
 
-link:http://demo.redhat.com[Openshift Virtualization Roadshow]
+link:http://demo.redhat.com[Openshift Virtualization Roadshow^]
 
-link:https://role.rhu.redhat.com/rol-rhu/app/catalog?q=do316[ROLE DO316]
+link:https://role.rhu.redhat.com/rol-rhu/app/catalog?q=do316[ROLE DO316^]
 
-link:https://github.com/emcon33/Virtualization-on-ROSA[OpenShift on ROSA]
+link:https://github.com/emcon33/Virtualization-on-ROSA[OpenShift on ROSA^]
 
-link:https://red.ht/virtkit[Content Kit]
+link:https://red.ht/virtkit[Content Kit^]
 
-link:https://catalog.redhat.com/platform/red-hat-openshift/virtualization[Certified Partners list]
+link:https://catalog.redhat.com/platform/red-hat-openshift/virtualization[Certified Partners list^]
 
-link:https://source.redhat.com/departments/sales/globalservices/virtualization[OCP-Virtualization Enablement Global Page]
+link:https://source.redhat.com/departments/sales/globalservices/virtualization[OCP-Virtualization Enablement Global Page^]
 
-link:https://portfoliohub.redhat.com/v3/serviceskit/openshift_virtualization_assessment[Virtualization Migration Assessment]
+link:https://portfoliohub.redhat.com/v3/serviceskit/openshift_virtualization_assessment[Virtualization Migration Assessment^]
 
-link:https://portfoliohub.redhat.com/v3/serviceskit/openshift_virt_pov[OpenShift Virtualization Proof of Value]
+link:https://portfoliohub.redhat.com/v3/serviceskit/openshift_virt_pov[OpenShift Virtualization Proof of Value^]
 
-link:https://portfoliohub.redhat.com/v3/servicesmap/openshift_virt[Pre-Sales Virt]
+link:https://portfoliohub.redhat.com/v3/servicesmap/openshift_virt[Pre-Sales Virt^]
 
-link:https://docs.google.com/document/d/177hXVSm1hSwG4tvCQ_jx1Cg2RwSjTe4yMVqLx0k17_U/edit?usp=sharing[Virtualization Migration Assessment Delivery Guide]
+link:https://docs.google.com/document/d/177hXVSm1hSwG4tvCQ_jx1Cg2RwSjTe4yMVqLx0k17_U/edit?usp=sharing[Virtualization Migration Assessment Delivery Guide^]
 
-link:https://docs.google.com/document/d/1-sm-mjAyYezDGd0ZgbjZFcur8Tf1J2vezHNBVGYwb68/edit?usp=sharing[Technical OpenShift Virt Discovery Questions]
+link:https://docs.google.com/document/d/1-sm-mjAyYezDGd0ZgbjZFcur8Tf1J2vezHNBVGYwb68/edit?usp=sharing[Technical OpenShift Virt Discovery Questions^]
 
-link:https://docs.google.com/spreadsheets/d/1i7e57sZVfju87Zw32lyyv1cWLN0fvP5FJW2qZlVMwoE/edit#gid=0[Resource Master]
+link:https://docs.google.com/spreadsheets/d/1i7e57sZVfju87Zw32lyyv1cWLN0fvP5FJW2qZlVMwoE/edit#gid=0[Resource Master^]
 
 == Getting there with your friends
 

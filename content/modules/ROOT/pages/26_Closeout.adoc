@@ -2,16 +2,29 @@
 
 == We hope that you found this bootcamp to be informative and educational
 
-link:https://docs.google.com/forms/d/e/1FAIpQLSd6LlAXh2ogLXLsvW-t5gwktvQyOEKW0MgO0C7cA6TxrTAZ-A/viewform?usp=sf_link[Survey]
+link:https://forms.gle/6vJL3cEYx1zHD6gC8[Please take a moment to fill out our survey^]
 
 == Take your EX316!
 
 == Please feel free to reach out any time! 
 
--Andrew
+- Ken Savich
+mailto:ken@redhat.com[ken@redhat.com]
 
--Scott
+- Brenda McLaren
+mailto:bmclaren@redhat.com[bmclaren@redhat.com]
 
--Brian
+- Darin Sorrentino
+mailto:dsorrent@redhat.com[dsorrent@redhat.com]
 
--Freddy
+- Chris Janiszewski
+mailto:cjanisze@redhat.com[cjanisze@redhat.com]
+
+- Maciej Lecki
+mailto:mlecki@redhat.com[mlecki@redhat.com]
+
+- Paul Halmos
+mailto:phalmos@redhat.com[phalmos@redhat.com]
+
+- Dawn Marini
+mailto:dawn@redhat.com[dawn@redhat.com]
