@@ -159,7 +159,7 @@ image::module-03/20_VM_addDisk.png[link=self, window=blank,width=100%]
 +
 . Click the *Add Disk* icon.  In the _Add Disk_ dialog window, update the name to *appdisk*, and enter 5 GiB for the _PersistentVolumeDisk size_, and update the StorageClass to *ocs-storagecluster-ceph-rbd*.  Click the *Save* icon.  The PVC and underlying PV will be created and attached to the VM as /dev/sda in this case.  
 +
-image::module-03/21_VM_addDiskpopup.png[link=self, window=blank,width=100%]
+image::module-03/21_VM_adddiskpopup.png[link=self, window=blank,width=100%]
 +
 image::module-03/22_VM_diskadded.png[link=self, window=blank,width=100%]
 +
