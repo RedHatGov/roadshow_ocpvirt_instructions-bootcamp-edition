@@ -90,7 +90,7 @@ image::Trilio/objectbucketclaim.png[link=self, window=blank, width=100%]
 * StorageClass: openshift-storage.noobaa.io
 * BucketClass: noobaa-default-bucket-class  
 +
-image::Trilio/openshiftlogin.png[link=self, window=blank, width=100%]
+image::Trilio/targetCreateNew.png[link=self, window=blank, width=100%]
 
 
 === Backup Targets
