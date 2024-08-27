@@ -90,7 +90,7 @@ image::Trilio/objectbucketclaim.png[link=self, window=blank, width=100%]
 * StorageClass: openshift-storage.noobaa.io
 * BucketClass: noobaa-default-bucket-class  
 +
-image::Trilio/targetCreateNew.png[link=self, window=blank, width=100%]
+image::Trilio/triliobucket.png[link=self, window=blank, width=100%]
 
 
 === Backup Targets
@@ -106,16 +106,16 @@ image::Trilio/tvkinstance.png[]
 image::Trilio/targetCreateNew.png[]
 +
 . On the _Create Target_ pop-up window, enter the following information:
-* Namespace
-* Threshold Capacity
-* Vendor Details - select ObjectStore 
-* Vendor - Other
-* Bucket Name - from the _OpenShift Console GUI_, select *Storage*, *Object Storage*, *ObjectBucketClaims*, select the *trilio-bucket*.  Scroll to the bottom and use the copy features for the _Bucket Name_ field and paste it to the _Bucket Name_ field.
-* Region - us-east-1
-* URL - from the OCP GUI, select *Networking*, *Routes*, filter on _S3_. Copy the S3 route to the clipboard and paste the value to the _URL_ field.
-* Skip Certificate Verification - enabled
-* Object store credentials - from the _OpenShift Console GUI_, select *Storage*, *Object Storage*, *ObjectBucketClaims*, select the *trilio-bucket*.  Scroll to the bottom and use the copy features for the AWS Access Key and Secret Key to copy and paste them in the appropriate fields in the _Create Secret_ dialog window.
-* Enable Browsing - enabled
+* Namespace: trilio-system
+* Threshold Capacity: 1 TiB
+* Vendor Details: ObjectStore 
+* Vendor: Other
+* Bucket Name: from the _OpenShift Console GUI_, select *Storage*, *Object Storage*, *ObjectBucketClaims*, select the *trilio-bucket*.  Scroll to the bottom and use the copy features for the _Bucket Name_ field and paste it to the _Bucket Name_ field.
+* Region: us-east-1
+* URL: from the OCP GUI, select *Networking*, *Routes*, filter on _S3_. Copy the S3 route to the clipboard and paste the value to the _URL_ field.
+* Skip Certificate Verification: enabled
+* Object store credentials: from the _OpenShift Console GUI_, select *Storage*, *Object Storage*, *ObjectBucketClaims*, select the *trilio-bucket*.  Scroll to the bottom and use the copy features for the _Access Key_ and _Secret Key_ to copy and paste them in the appropriate fields in the _Create Secret_ dialog window.
+* Enable Browsing: enabled
 +
 image::Trilio/createtarget.png[]
 +
@@ -125,29 +125,22 @@ image::Trilio/createsecret.png[]
 +
 image::Trilio/triliobuckettarget.png[]
 +
-. The target will initially be in an `InProgress` state.  After a few minutes, the target should be in an `Available` state.  Scroll to the right to see the _Status_ field.
+. The target will initially be in an `InProgress` state.  After a few minutes, the target should be in an `Available` state.  You may need to scroll to the right to see the _Status_ field.
 +
 image::Trilio/availableStatus.png[]
 
 
 === NameSpace Backups 
 
-In the _Virtual Machine Management_ lab exercise, we had created the _vmexamples_ namespace along with virtual machine fedora-01.  In the _Storage Management_ lab we created the fedora-02 virtual machine.  And if you completed the _Migrating Virtual Machines_ lab, you also will have the winweb0[12] and database virtual machines. For the _Trilio Data Protection_ lab, please apply all instructions to the vmexamples namespace.
+In the _Virtual Machine Management_ lab exercise, we had created the _vmexamples_ namespace along with virtual machine fedora-01.  In the _Storage Management_ lab we created the fedora-02 virtual machine.  And if you completed the _Migrating Virtual Machines_ lab, you also will have the winweb0[12] and database virtual machines. For the _Trilio Data Protection_ lab, please apply all instructions to the _vmexamples_ namespace.
 
-We are going to protect everything inside, apps and VMs. BTW, they can be running https://github.com/kubevirt/kubevirt/blob/main/docs/freeze.md. If it is a  VM backup then Trilio internally runs a custom hook job which uses virt-freezer to freeze/quiesce the VM and once data snapshotting is done Trilio unfreeze/unquiesce the VM. Trilio also checks if qemu-guest-agent is running or not in the VM.
+To obtain a consistent snapshot of the virtual machines, Trilio uses the virt-freeze/unfreeze features of the qemu-guest-agent.  This will quiesce the filesystem and flush the buffers prior to taking the snaphot and then unfreeze the filesystems after the snapshot has completed.  
+[NOTE]
+For more information on the quiesce features, see https://github.com/kubevirt/kubevirt/blob/main/docs/freeze.md. 
 
-We will be using the vmexamples project. 
-```
-Project: vmexamples
-Virtual Machines: 
-  - database
-  - winweb01
-  - winweb02
+. From the left navigation pane, expand *Trilio Backup*, select *Backups*.  Click the *Create Backup* icon.
 
-```
-Go to the Trilio UI, and create a new Backup Plan with this info…and click Next, Next and “skip & create”. 
-
-image::Trilio/backup4.PNG[]
+image::Trilio/createbackup.PNG[]
 
 Finally we will run the create backup giving the backup a name and creating it. 
 
