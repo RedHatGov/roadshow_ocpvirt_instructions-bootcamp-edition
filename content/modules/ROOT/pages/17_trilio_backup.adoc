@@ -56,9 +56,13 @@ The notification this resource is managed by TVM triliovault-manager will be dis
 +
 image::Trilio/k8s-triliovaultIngress.PNG[link=self, window=blank, width=100%]
 +
-. In the left navigation pane, expand *Networking* and select *Routes*. There will be four routes listed in the trilio-system project.   Click the route that ends with the backslash '/'.
+. In the left navigation pane, expand *Networking* and select *Routes*. There will be four routes listed in the trilio-system project.   Click the route that ends with the backslash '/'.  This will launch the Trilio UI login screen in a new tab.
 +
 image::Trilio/login.PNG[link=self, window=blank, width=100%]
++
+. Click the Sign-in via OpenShift icon; login using the admin credentials to the Kubernetes cluster.
++
+
 
 === Apply license
 
@@ -84,14 +88,16 @@ image::Trilio/objectbucketclaim.PNG[link=self, window=blank, width=100%]
 . Click the *Create ObjectBucketClaim* icon.  Input the following and click *Create*.
 * ObjectBucketClaim Name: trilio-bucket
 * StorageClass: openshift-storage.noobaa.io
-* BucketClass: noobaa-default-bucket-class
-image::Trilio/triliobucket.PNG[link=self, window=blank, width=100%]
+* BucketClass: noobaa-default-bucket-class  
 +
+image::Trilio/openshiftlogin.PNG[link=self, window=blank, width=100%]
+
 
 === Backup Targets
 
+Configure Trilio to use the new S3 bucket created in the previous step.
 
-. Select the tvk-instance from the list of Clusters.  
+. Under `CLUSTER MANAGEMENT`, select the *tvk-instance* from the list of Clusters.  
 +
 image::Trilio/tvkinstance.PNG[]
 +
@@ -99,17 +105,30 @@ image::Trilio/tvkinstance.PNG[]
 +
 image::Trilio/targetCreateNew.PNG[]
 +
-. This wizard will appear, fill in with those details for the S3 backup target.
+. On the Create Target pop-up window, enter the following information:
+* Namespace
+* Threshold Capacity
+* Vendor Details - select ObjectStore 
+* Vendor - Other
+* Bucket Name - from the OCP GUI, select *Storage*, *Object Storage*, *ObjectBucketClaims*, select the *trilio-bucket*.  Scroll to the bottom and use the copy features for the _Bucket Name_ field and paste it to the _Bucket Name_ field in the _Create Target_ field.
+* Region - us-east-1
+* URL - from the OCP GUI, select *Networking*, *Routes*, filter on _S3_. Copy the S3 route to the clipboard and paste the value to the _URL_ field.
+* Skip Certificate Verification - enabled
+* Object store credentials - from the OCP GUI, select Storage, Object Storage, ObjectBucketClaims, select the trilio-bucket.  Scroll to the bottom and use the copy features for the AWS Access Key and Secret Key to copy and paste them in the appropriate fields on the Create Secret dialog window.
+* Enable Browsing - enabled
++
+image::Trilio/createtarget.PNG[]
++
+image::Trilio/createsecret.PNG[]
++
+. On the pop-up window, enter a name for the new target and click the *Create Target* icon.
++
+image::Trilio/triliobuckettarget.PNG[]
++
+. The target will initially be in an `InProgress` state.  After a few minutes, the target should be in an `Available` state.  Scroll to the right to see the _Status_ field.
++
+image::Trilio/InProgress.PNG[]
 
-Click “Create New”, where we enter the bucket keys, which will be stored in a secret. 
-
-We enter the credentials we want to use, for example:
-
-image::Trilio/backup2.PNG[]
-
-After creating the secret, and the target will progress to an available status and is ready for use in backup plans. 
-
-image::Trilio/backup3.PNG[]
 
 === NameSpace Backups 
 
