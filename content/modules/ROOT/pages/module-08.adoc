@@ -12,6 +12,8 @@ This workshop segment will explore the configuration of OADP to store the backup
 OADP stores the backups in an S3 bucket.  For this lab we are going to use internal storage but for production environments the recommendation is to use an external S3 destination.  This can be through the MultiCloud Gateway or a direct connection to a cloud provider or to an on-premise S3 instance. This section reviews the S3 object bucket claim that already exists and has been configured in the OADP Data Protection Application.
 
 . To view the bucket, expand *Storage* in the left navigation pane.  Click *Object Storage*.  From the horizontal menu, click *Object Bucket Claim*.  Ensure that _Project_ is set to All Projects.
+[NOTE]
+If the left navigation pane does not have the _Data Foundation_ or _Object Storage_ options available under the Storage section, expand *Operator Hub*, select *Installed Operators*, and then select *OpenShift Data Foundation*.  In the _Details_ section of the operator, on the right, click the pencil under _Console plugin_ to enable it.  
 +
 image::module-08/01_obc.png[link=self, window=blank, width=100%]
 +
