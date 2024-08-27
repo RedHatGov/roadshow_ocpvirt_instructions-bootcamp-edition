@@ -132,9 +132,9 @@ image::Trilio/availableStatus.PNG[]
 
 === NameSpace Backups 
 
-In the lab, we have these namespace vmexamples. Please apply all instructions to the vmexamples namespace, where you have your migrated VMs.
+In the _Virtual Machine Management_ lab exercise, we had created the _vmexamples_ namespace along with virtual machine fedora-01.  In the _Storage Management_ lab we created the fedora-02 virtual machine.  And if you completed the _Migrating Virtual Machines_ lab, you also will have the winweb0[12] and database virtual machines. For the _Trilio Data Protection_ lab, please apply all instructions to the vmexamples namespace.
 
-We are going to protect everything inside, apps and VMs (three in this case). BTW, they can be running https://github.com/kubevirt/kubevirt/blob/main/docs/freeze.md. If it is a  VM backup then Trilio internally runs a custom hook job which uses virt-freezer to freeze/quiesce the VM and once data snapshotting is done Trilio unfreeze/unquiesce the VM. Trilio also checks if qemu-guest-agent is running or not in the VM.
+We are going to protect everything inside, apps and VMs. BTW, they can be running https://github.com/kubevirt/kubevirt/blob/main/docs/freeze.md. If it is a  VM backup then Trilio internally runs a custom hook job which uses virt-freezer to freeze/quiesce the VM and once data snapshotting is done Trilio unfreeze/unquiesce the VM. Trilio also checks if qemu-guest-agent is running or not in the VM.
 
 We will be using the vmexamples project. 
 ```
