@@ -161,7 +161,7 @@ image::module-08/18_restoreyaml.png[link=self, window=blank, width=100%]
 This example will restore the _fedora-01_ VM in the _vmexamples_ namespace, including all metadata and PVCs/PVs that were included in the backup. New PVC/PVs will be created and the snapshot data will be downloaded from the S3 bucket and written to the new PVs.  
 
 [IMPORTANT]
-Any CR that already exists is not modified or restored from a backup.  OADP manages this by attempting to create the resource and if the create fails, it moves on to the next resource.  Therefore all VMs in a single namespace and be backed up and one VM can be restored without impacting the others.
+Any CR that already exists is not modified or restored from a backup.  OADP manages this by attempting to create the resource and if the create fails, it moves on to the next resource.  Therefore all VMs in a single namespace can be backed up collectively and one VM can be restored without impacting the others.
 
 [source,sh,role=execute]
 ----
@@ -205,32 +205,25 @@ Once you have the alias defined, you can easily get information on the backup an
 velero get backups
 ----
 ```
-NAME               STATUS      ERRORS   WARNINGS   CREATED                         EXPIRES   STORAGE LOCATION   SELECTOR
-vmexamples-l6ckl   Completed   0        2          2024-08-16 15:49:12 +0000 UTC   19h       oadp-dpa-1         <none>
+NAME             STATUS      ERRORS   WARNINGS   CREATED                         EXPIRES   STORAGE LOCATION   SELECTOR
+fedora01-n2489   Completed   0        0          2024-08-26 22:20:34 +0000 UTC   29d       oadp-dpa-1         <none>
 ```
 
 Use the `velero describe`` command to retrieve a summary or warnings and errors associtaed with a backup or restore.
 [source,sh,role=execute]
 ----
-velero describe backup vmexamples-l6ckl
+velero describe backup fedora01-n2489
 ----
 ```
-Name:         vmexamples-l6ckl
+Name:         fedora01-n2489
 Namespace:    openshift-adp
 Labels:       velero.io/storage-location=oadp-dpa-1
-Annotations:  velero.io/source-cluster-k8s-gitversion=v1.28.11+add48d0
+Annotations:  velero.io/resource-timeout=10m0s
+              velero.io/source-cluster-k8s-gitversion=v1.28.11+add48d0
               velero.io/source-cluster-k8s-major-version=1
               velero.io/source-cluster-k8s-minor-version=28
 
 Phase:  Completed
-
-
-Warnings:
-  Velero:     <none>
-  Cluster:    <none>
-  Namespaces:
-    vmexamples:   resource: /virtualmachines.kubevirt.io name: /restore-c593efc2-810b-48d4-808d-0bdccb2f125e-rootdisk
-                  resource: /virtualmachineinstances.kubevirt.io name: /restore-c593efc2-810b-48d4-808d-0bdccb2f125e-rootdisk
 
 Namespaces:
   Included:  vmexamples
@@ -239,32 +232,51 @@ Namespaces:
 Resources:
   Included:        *
   Excluded:        <none>
-  Cluster-scoped:  excluded
+  Cluster-scoped:  auto
 
 Label selector:  <none>
 
+Or label selector:  app=fedora-01 or vm.kubevirt.io/name=fedora-01
+
 Storage Location:  oadp-dpa-1
 
-Velero-Native Snapshot PVs:  true
+Velero-Native Snapshot PVs:  auto
+Snapshot Move Data:          false
+Data Mover:                  velero
 
-TTL:  24h0m0s
+TTL:  720h0m0s
 
 CSISnapshotTimeout:    10m0s
-ItemOperationTimeout:  1h0m0s
+ItemOperationTimeout:  4h0m0s
 
 Hooks:  <none>
 
 Backup Format Version:  1.1.0
 
-Started:    2024-08-16 15:49:12 +0000 UTC
-Completed:  2024-08-16 15:49:47 +0000 UTC
+Started:    2024-08-26 22:20:34 +0000 UTC
+Completed:  2024-08-26 22:20:59 +0000 UTC
 
-Expiration:  2024-08-17 15:49:12 +0000 UTC
+Expiration:  2024-09-25 22:20:34 +0000 UTC
 
-Total items to be backed up:  117
-Items backed up:              117
+Total items to be backed up:  24
+Items backed up:              24
 
-Velero-Native Snapshots: <none included>
+Backup Item Operations:  3 of 3 completed successfully, 0 failed (specify --details for more information)
+Backup Volumes:
+  Velero-Native Snapshots: <none included>
+
+  CSI Snapshots:
+    vmexamples/fedora-01:
+      Snapshot: included, specify --details for more information
+    vmexamples/fedora-02-appdisk:
+      Snapshot: included, specify --details for more information
+    vmexamples/restore-be40177b-a972-4566-8bbf-6a5c77093dc3-rootdisk:
+      Snapshot: included, specify --details for more information
+
+  Pod Volume Backups: <none included>
+
+HooksAttempted:  4
+HooksFailed:     0
 ```
 
 
@@ -277,13 +289,13 @@ velero backup logs vmexamples-l6ckl
 
 ```
 ... output truncated
-time="2024-08-16T15:49:46Z" level=info msg="handling DataVolume vmexamples/fedora02-fedora02-appdisk" backup=openshift-adp/vmexamples-l6ckl cmd=/plugins/kubevirt-velero-plugin logSource="/remote-source/app/pkg/plugin/dv_backup_item_action.go:130" pluginName=kubevirt-velero-plugin
-time="2024-08-16T15:49:46Z" level=info msg="Skipping item because it's already been backed up." backup=openshift-adp/vmexamples-l6ckl logSource="/remote-source/velero/app/pkg/backup/item_backupper.go:168" name=fedora02-fedora02-appdisk namespace=vmexamples resource=persistentvolumeclaims
-time="2024-08-16T15:49:46Z" level=info msg="Backed up 117 items out of an estimated total of 118 (estimate will change throughout the backup)" backup=openshift-adp/vmexamples-l6ckl logSource="/remote-source/velero/app/pkg/backup/backup.go:405" name=fedora02-fedora02-appdisk namespace=vmexamples progress= resource=datavolumes.cdi.kubevirt.io
-time="2024-08-16T15:49:46Z" level=info msg="Processing item" backup=openshift-adp/vmexamples-l6ckl logSource="/remote-source/velero/app/pkg/backup/backup.go:365" name=restore-c94ba27b-f11d-4364-b281-04140e29e9ee-rootdisk namespace=vmexamples progress= resource=datavolumes.cdi.kubevirt.io
-time="2024-08-16T15:49:46Z" level=info msg="Skipping item because it's already been backed up." backup=openshift-adp/vmexamples-l6ckl logSource="/remote-source/velero/app/pkg/backup/item_backupper.go:168" name=restore-c94ba27b-f11d-4364-b281-04140e29e9ee-rootdisk namespace=vmexamples resource=datavolumes.cdi.kubevirt.io
-time="2024-08-16T15:49:46Z" level=info msg="Backed up 117 items out of an estimated total of 117 (estimate will change throughout the backup)" backup=openshift-adp/vmexamples-l6ckl logSource="/remote-source/velero/app/pkg/backup/backup.go:405" name=restore-c94ba27b-f11d-4364-b281-04140e29e9ee-rootdisk namespace=vmexamples progress= resource=datavolumes.cdi.kubevirt.io
-time="2024-08-16T15:49:46Z" level=info msg="Backed up a total of 117 items" backup=openshift-adp/vmexamples-l6ckl logSource="/remote-source/velero/app/pkg/backup/backup.go:436" progress=
+time="2024-08-26T22:20:54Z" level=info msg="Found associated CRD virtualmachines.kubevirt.io to add to backup" backup=openshift-adp/fedora01-n2489 logSource="/remote-source/velero/app/pkg/backup/backup.go:581"
+time="2024-08-26T22:20:54Z" level=info msg="Backing up item" backup=openshift-adp/fedora01-n2489 logSource="/remote-source/velero/app/pkg/backup/item_backupper.go:176" name=virtualmachines.kubevirt.io namespace= resource=customresourcedefinitions.apiextensions.k8s.io
+time="2024-08-26T22:20:54Z" level=info msg="Executing custom action" backup=openshift-adp/fedora01-n2489 logSource="/remote-source/velero/app/pkg/backup/item_backupper.go:363" name=virtualmachines.kubevirt.io namespace= resource=customresourcedefinitions.apiextensions.k8s.io
+time="2024-08-26T22:20:54Z" level=info msg="Executing RemapCRDVersionAction" backup=openshift-adp/fedora01-n2489 cmd=/velero logSource="/remote-source/velero/app/pkg/backup/actions/remap_crd_version_action.go:61" pluginName=velero
+time="2024-08-26T22:20:54Z" level=info msg="Exiting RemapCRDVersionAction, the cluster does not support v1beta1 CRD" backup=openshift-adp/fedora01-n2489 cmd=/velero logSource="/remote-source/velero/app/pkg/backup/actions/remap_crd_version_action.go:88" pluginName=velero
+time="2024-08-26T22:20:54Z" level=info msg="Summary for skipped PVs: []" backup=openshift-adp/fedora01-n2489 logSource="/remote-source/velero/app/pkg/backup/backup.go:494"
+time="2024-08-26T22:20:54Z" level=info msg="Backed up a total of 24 items" backup=openshift-adp/fedora01-n2489 logSource="/remote-source/velero/app/pkg/backup/backup.go:498" progress=
 ```
 
 You can specify the Velero log level in the DataProtectionApplication resource.  This option is available starting from OADP 1.0.3.
@@ -311,5 +323,20 @@ The following `logLevel` values are available:
 
 It is recommended to use `debug` for most logs.
 
+Deleting a backup or restore CRD must be done through the CLI.  Backups will be deleted when the TTL expires but if you want to delete them prior to the TTL (ie. partially failed), you must use the `velero` CLI to remove the backup from the S3 bucket.  
 
+[source,sh,role=execute]
+----
+velero delete restore restore-fedora01-8q8zk
+----
+
+```
+velero delete restore restore-fedora01-8q8zk
+Are you sure you want to continue (Y/N)? y
+Request to delete restore "restore-fedora01-8q8zk" submitted successfully.
+The restore will be fully deleted after all associated data (restore files in object storage) are removed.
+```
+
+[IMPORTANT]
+The S3 bucket is the source of truth for the backups.  If a backup or restore CR is deleted using the GUI, when Velero scans the bucket to reconcile the metadata, the CRD will be recreated within the OADP Operator.  This behavior is what also supports the ability to restore resources from one cluster to another.
 
