@@ -333,7 +333,6 @@ velero delete restore restore-fedora01-8q8zk
 ----
 
 ```
-velero delete restore restore-fedora01-8q8zk
 Are you sure you want to continue (Y/N)? y
 Request to delete restore "restore-fedora01-8q8zk" submitted successfully.
 The restore will be fully deleted after all associated data (restore files in object storage) are removed.

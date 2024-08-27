@@ -75,11 +75,21 @@ At this point the operator has been configured and is ready to start accepting b
 
 === Setup s3 backup 
 
-TBD "either Minio or prefab s3 from cloud or ODF is required" It seems all backup/recover I've seen used s3 for kubernetes persistent data. 
+Trilio requires either an S3 bucket or an NFS export to store the backup data.  For the lab, we will use an internal bucket but for production backups it is highly recommended to use an external bucket.
+
+. Expand *Storage* in the left navigation pane, select *Object Storage*, and select *Object Bucket Claims* from the top horizontal menu.
++
+image::Trilio/objectbucketclaim.PNG[link=self, window=blank, width=100%]
++
+. Click the *Create ObjectBucketClaim* icon.  Input the following and click *Create*.
+* ObjectBucketClaim Name: trilio-bucket
+* StorageClass: openshift-storage.noobaa.io
+* BucketClass: noobaa-default-bucket-class
+image::Trilio/triliobucket.PNG[link=self, window=blank, width=100%]
++
 
 === Backup Targets
 
-Trilio requires either an S3 bucket or an NFS export to store the backup data.  For the lab, we will use an internal bucket but for production backups it is highly recommended to use an external bucket.
 
 . Select the tvk-instance from the list of Clusters.  
 +
