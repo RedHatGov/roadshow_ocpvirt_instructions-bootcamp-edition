@@ -83,14 +83,14 @@ Trilio requires either an S3 bucket or an NFS export to store the backup data.  
 
 . Expand *Storage* in the left navigation pane, select *Object Storage*, and select *Object Bucket Claims* from the top horizontal menu.
 +
-image::Trilio/objectbucketclaim.PNG[link=self, window=blank, width=100%]
+image::Trilio/objectbucketclaim.png[link=self, window=blank, width=100%]
 +
 . Click the *Create ObjectBucketClaim* icon.  Input the following and click *Create*.
 * ObjectBucketClaim Name: trilio-bucket
 * StorageClass: openshift-storage.noobaa.io
 * BucketClass: noobaa-default-bucket-class  
 +
-image::Trilio/openshiftlogin.PNG[link=self, window=blank, width=100%]
+image::Trilio/openshiftlogin.png[link=self, window=blank, width=100%]
 
 
 === Backup Targets
@@ -99,11 +99,11 @@ Configure Trilio to use the new S3 bucket created in the previous step.
 
 . Under `CLUSTER MANAGEMENT`, select the *tvk-instance* from the list of Clusters.  
 +
-image::Trilio/tvkinstance.PNG[]
+image::Trilio/tvkinstance.png[]
 +
 . In the left navigation pane, select *Targets*.  On the far right, click the *Create New* icon.
 +
-image::Trilio/targetCreateNew.PNG[]
+image::Trilio/targetCreateNew.png[]
 +
 . On the _Create Target_ pop-up window, enter the following information:
 * Namespace
@@ -117,17 +117,17 @@ image::Trilio/targetCreateNew.PNG[]
 * Object store credentials - from the _OpenShift Console GUI_, select *Storage*, *Object Storage*, *ObjectBucketClaims*, select the *trilio-bucket*.  Scroll to the bottom and use the copy features for the AWS Access Key and Secret Key to copy and paste them in the appropriate fields in the _Create Secret_ dialog window.
 * Enable Browsing - enabled
 +
-image::Trilio/createtarget.PNG[]
+image::Trilio/createtarget.png[]
 +
-image::Trilio/createsecret.PNG[]
+image::Trilio/createsecret.png[]
 +
 . On the pop-up window, enter a name for the new target and click the *Create Target* icon.
 +
-image::Trilio/triliobuckettarget.PNG[]
+image::Trilio/triliobuckettarget.png[]
 +
 . The target will initially be in an `InProgress` state.  After a few minutes, the target should be in an `Available` state.  Scroll to the right to see the _Status_ field.
 +
-image::Trilio/availableStatus.PNG[]
+image::Trilio/availableStatus.png[]
 
 
 === NameSpace Backups 
