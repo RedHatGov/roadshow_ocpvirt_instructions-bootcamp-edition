@@ -8,32 +8,38 @@
 In this lab we will be installing the Trilio backup operator and restoring virtual machines on Openshift. 
 
 === Installing the Operator
-. Search the Operator hub for the Trilio for kubernetes. 
+. In the left pane, expand *Operators*, select *Operator Hub*.  In the search box, enter *Trilio*.  Click on the *Trilio* tile.  
 +
-image::Trilio/operator.PNG[link=self, window=blank, width=100%]
+image::Trilio/operator.png[link=self, window=blank, width=100%]
 +
-. Keep all the default options. The operator will be installed in the trilio-system namespace.  All pods related to Trilio will run in this namespace as to not interfere with security restrictions and quota restrictions. To enalbe the Trilio Backups menu options in the left navigation pane in the OpenShift console, select *Enable* under _Console Plugin_. 
+. Click the *Install* icon on the _Trilio for Kubernetes_ pop-up.  
++
+image::Trilio/operator2.png[link=self, window=blank, width=100%]
++
+. Keep all the default options. The operator will be installed in the _trilio-system_ namespace.  All pods related to Trilio will run in this namespace as to not interfere with security restrictions and quota restrictions. To enable the _Trilio Backups_ menu options in the left navigation pane in the OpenShift console, select *Enable* under _Console Plugin_. 
 +
 [NOTE]
 The console plugin is a light version of the full Trilio UI.  The full UI is also available using a route.  
 +  
-image::Trilio/operator2.PNG[link=self, window=blank, width=100%]
+image::Trilio/operator3.png[link=self, window=blank, width=100%]
 +  
-. Click on Refresh Web console when the operator is installed
+. Once the operator is installed, click on *Refresh Web* link.  This will add the _Trilio Backups_ plug-in to the OpenShift Console GUI. After the console refreshes, click the *View Operator* icon.
 +  
-image::Trilio/operator3.PNG[link=self, window=blank, width=100%]
+image::Trilio/operator4.png[link=self, window=blank, width=100%]
 +  
-. If everything is ok, you should see the Trilio Backups option in the left navigation pane.  On the Details pane, click “Create instance”, this will start the Trilio pods.  
-+  
-image::Trilio/operator4.PNG[link=self, window=blank, width=100%]
-+  
-. On the Create TrilioVaultManager page, accept the defaults, click on the *Create* icon.  
+. On the Details pane, click *Create instance* link, this will create an instance of Trilio and start all the required pods.  
 +  
 image::Trilio/operator5.PNG[link=self, window=blank, width=100%]
 +  
-. After a few minutes, the Trilio Vault Manager instance should be in a *Deployed* status. 
+. On the _Create TrilioVaultManager_ page, for this demo, you can accept the defaults.  Scroll to the bottom, click the *Create* icon.  
+[NOTE]
+For customer environments, some of the defaults may need to be changed.  There are various logLevel that could provide a deeper level of information for troubleshooting.  Affinity rules and tolerations can also be configured along with CPU and memory requests and limits.  
 +  
 image::Trilio/operator6.PNG[link=self, window=blank, width=100%]
++  
+. After a few minutes, the Trilio Vault Manager instance should be in a *Deployed* status. 
++  
+image::Trilio/operator7.png[link=self, window=blank, width=100%]
 
 
 === Change the Ingresss  

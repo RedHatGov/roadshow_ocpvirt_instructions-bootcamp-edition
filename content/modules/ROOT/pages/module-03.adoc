@@ -64,7 +64,7 @@ image::module-03/04_Snapshots_Overview.png[link=self, window=blank, width=100%]
 +
 image::module-03/05_Snapshot_Menu.png[link=self, window=blank, width=100%]
 
-. Press *Take snapshot* and a dialog will open
+. Press *Take snapshot* and a dialog window will open.  Update the name to fedora01-snap.
 +
 [NOTE]
 There is a warning about the *cloudinitdisk* not being included in the snapshot. This is expected and happens because it is an ephemeral disk.
@@ -147,6 +147,10 @@ image::module-03/19_VM_Cloned.png[link=self, window=blank, width=100%]
 +
 [IMPORTANT]
 The cloned VM will have the same identity as the source VM, which may cause conflicts with applications and other clients interacting with the VM. Use caution when cloning a VM connected to an external network or in the same project.
++
+. Select the YAML option from the horizontal menu. Update the *.metadata.name* and the *.spec.template.metadata.labels.kubevirt.io/domain* to fedora-02.  This is an example of the new VM having the same identity as the source VM. This information should be updated accordingly when cloning VMs.
+
+
 
 [[attach_disk]]
 == Attaching Additional Disks
@@ -157,12 +161,14 @@ Additional disks may be required for an application that runs on the virtual mac
 +
 image::module-03/20_VM_addDisk.png[link=self, window=blank,width=100%]
 +
-. Click the *Add Disk* icon.  In the _Add Disk_ dialog window, update the name to *appdisk*, and enter 5 GiB for the _PersistentVolumeDisk size_, and update the StorageClass to *ocs-storagecluster-ceph-rbd*.  Click the *Save* icon.  The PVC and underlying PV will be created and attached to the VM as /dev/sda in this case.  
+. Click the *Add Disk* icon.  In the _Add Disk_ dialog window, update the name to *appdisk*, enter 5 GiB for the _PersistentVolumeDisk size_, and update the StorageClass to *ocs-storagecluster-ceph-rbd-virtualization*.  Click the *Save* icon.  The PVC and underlying PV will be created and attached to the VM as /dev/sda in this case.  
 +
 image::module-03/21_VM_adddiskpopup.png[link=self, window=blank,width=100%]
 +
 image::module-03/22_VM_diskadded.png[link=self, window=blank,width=100%]
 +
+[NOTE]
+The VM name will automatically be prepended to the disk name.
 . Click the *Console* option from the top menu.  Login to the console and run the _lsblk_ command.  You'll see the 5 GiB disk as sda.
 +
 image::module-03/23_VM_consolesda.png[link=self, window=blank,width=100%]
@@ -176,7 +182,7 @@ The disk was created as standard block device. You can create a filesystem on th
 ----
 sudo mkfs.ext4 /dev/sda
 sudo mkdir /app
-sudo echo /dev/sda /app ext4 defaults 0 0 >> /etc/fstab
+echo /dev/sda /app ext4 defaults 0 0 | sudo tee -a /etc/fstab
 sudo systemctl daemon-reload
 sudo mount /app
 cd /app; df -h .

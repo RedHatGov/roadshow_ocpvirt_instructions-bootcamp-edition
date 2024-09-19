@@ -104,7 +104,7 @@ NOTE: This section of the lab is primarily performed through the CLI. You will n
 
 === Create a MultiNetwork Policy
 
-For this section of the lab we are going to create a *MultiNetwork Policy* that prevents all network traffice from reaching the VM's that are attached to our vmexamples/vlan0 *Network Attachment Definition* including our VMs fedora01, and fedora02. We will then explictly allow one-way connectivity from fedora02 to fedora01 to show how we can find tune network connections, even within the same namespace.
+For this section of the lab we are going to create a *MultiNetwork Policy* that prevents all network traffice from reaching the VM's that are attached to our vmexamples/vlan0 *Network Attachment Definition* including our VMs fedora01, and fedora02. We will then explictly allow one-way connectivity from fedora02 to fedora01 to show how we can fine tune network connections, even within the same namespace.
 
 NOTE: The IP addresses of your virtual guests may differ from those in the attached images or examples, verify the correct addresses present in your lab environment by clicking on the Overview screen for each VM and taking a look at the *Network interfaces* tile.
 

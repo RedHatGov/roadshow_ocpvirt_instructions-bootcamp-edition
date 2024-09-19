@@ -72,7 +72,7 @@ image::module-01/06_Create_VM_Quick.png[link=self, window=blank, width=100%]
 +
 image::module-01/07_Create_VM_Quick_Name.png[link=self, window=blank, width=100%]
 
-. In the top section on the right, you will see a collapsed area called *Optional parameters*. Expand that section and you will see where you can set the *CLOUD_USER_PASSWORD*.  Feel free to set this to something easy to remember/type so later in the course, you can easily login as the *fedora* user.
+. In the top section on the right, you will see a collapsed area called *Optional parameters*. Expand that section and you will see where you can set the *CLOUD_USER_PASSWORD*.  Feel free to set this to something easy to remember/type so later in the course, you can easily login as the *fedora* user.  Click the *Quick create VirtualMachine* icon in the lower left to create the Fedora VM.
 +
 image::module-01/23_VM_Optional_Parameters.png[link=self, window=blank, width=100%]
 
@@ -124,7 +124,7 @@ In this environment, the default StorageClass, which defines the source and type
 +
 image::module-01/14_Network_Tab.png[link=self, window=blank, width=100%]
 +
-When a VM is created, an interface on the *PodNetworking* network of type *masquerade* is created by default. This connects the VM to the SDN and provides access from the VM to outside the OpenShift cluster. Other VMs, and Pods, in the cluster can access the virtual machine using this interface. Furthermore, a VM connected to the SDN can be accessed externally using a Route, or Service with type load balancer, or even have a Network Attachment Definition configured to allow direct access to external networks.
+When a VM is created, an interface on the *Pod networking* network of type *masquerade* is created by default. This connects the VM to the SDN and provides access from the VM to outside the OpenShift cluster. Other VMs, and Pods, in the cluster can access the virtual machine using this interface. Furthermore, a VM connected to the SDN can be accessed externally using a Route, or Service with type load balancer, or even have a Network Attachment Definition configured to allow direct access to external networks.
 
 This concept will be a new concept for those coming from other virtualization platforms.  Those administrators are used to Virtual Machines being directly connected to Data Center VLAN networks. Openshift Virtualization does have this capability as well, utilizing xref:https://docs.openshift.com/container-platform/4.16/networking/multiple_networks/understanding-multiple-networks.html[Multus].
 
