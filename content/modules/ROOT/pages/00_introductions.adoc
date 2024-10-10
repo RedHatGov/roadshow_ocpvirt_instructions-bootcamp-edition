@@ -2,65 +2,65 @@
 
 = Agenda
 
-== Tuesday, October 15th 9AM through Friday October 18th 12:30PM
+== Tuesday, October 15th 9am through Friday October 18th 12:30pm
 
-* Tuesday 9AM - 6PM  EDT
-* Wednesday 9AM - 6PM EDT
-* Thursday 9AM - 6PM EDT
-* Friday 9am - 12:30PM EDT
+* Tuesday 9am - 6pm  EDT
+* Wednesday 9am - 6pm EDT
+* Thursday 9am - 6pm EDT
+* Friday 9am - 12:30pm EDT
 
 == Tuesday, August 27th
-* 9AM - 10AM
+* 9am - 10am
 *** Getting setup
 *** Introductions
 *** Lab URLs and details
-* 10AM - 11AM
+* 10am - 11am
 *** Presentation: OpenShift and Virtualization in a Disconnected World
-* 11AM - 12PM
+* 11am - 12pm
 *** https://meet.google.com/vtx-etcm-cxt[BU Product overview and roadmap]
-* 12PM - 1PM
+* 12pm - 1pm
 *** Lunch
-* 1PM - 2PM 
+* 1pm - 2pm 
 *** Presentation: Virt Lab Validation & Rosetta Stone
-* 2PM - 6PM (Breaks as needed)
+* 2pm - 6pm (Breaks as needed)
 *** Additional Virt Labs from Workshop
 
 == Wednesday, August 28th
-* 9AM - 9:30AM
+* 9am - 9:30am
 *** Follow-ups, Clean-ups with Virt Labs
-* 9:30AM - 10AM
+* 9:30am - 10am
 *** Presentation: OpenShift Virtualization Networking & Storage
-* 10AM - 12PM
+* 10am - 12pm
 *** Networking & Storage Labs
-* 12PM - 1PM
+* 12pm - 1pm
 *** Lunch
-* 1PM - 6PM (breaks as needed)
+* 1pm - 6pm (breaks as needed)
 *** Additional Labs from DO316 Chapters 4, 5, 7 & 8
 
 == Thursday, August 29th
-* 9AM - 9:30AM
+* 9am - 9:30am
 *** Exam Certification Acceleration Tips
-* 9:30AM - 10AM
+* 9:30am - 10am
 *** Presentation: OCP-Virt PreSales/Discovery
-* 10AM - 12PM
+* 10am - 12pm
 *** Trilio demo, and lab presented by Rodolfo Casas, Senior Solutions Architect from Trilio
-* 12PM - 1PM
+* 12pm - 1pm
 *** Lunch
-* 1PM - 2PM 
+* 1pm - 2pm 
 *** Presentation: Virtualization Migration Assessments
-* 2PM - 6PM
+* 2pm - 6pm
 *** Split into teams for Mock Virtualization Assessments
 
 == Friday, August 30th
-* 9AM - 9:25AM
+* 9am - 9:25am
 *** Gathering, review Mock Assessment
-* 9:30AM - 10:00AM
+* 9:30am - 10:00am
 *** Group picture on the Red Hat Tower
-* 10AM - 12PM
+* 10am - 12pm
 *** Review HLD & Approach from ongoing projects
-* 12PM - 12:30
+* 12pm - 12:30pm
 *** Ask an OpenShift Architect, with https://www.youtube.com/@AlesNosekTSP[Ales Nosek]
-* 12:30 ->
+* 12:30pm ->
 *** Close out
 *** Survey (Please do the survey, it's the only metrics we get from these events. It just takes a couple minutes)
 *** Lunch & Go Home!
