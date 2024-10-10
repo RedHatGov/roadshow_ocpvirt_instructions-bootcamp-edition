@@ -9,7 +9,7 @@
 * Thursday 9am - 6pm EDT
 * Friday 9am - 12:30pm EDT
 
-== Tuesday, August 27th
+== Tuesday, October 15th
 * 9am - 10am
 *** Getting setup
 *** Introductions
@@ -17,7 +17,7 @@
 * 10am - 11am
 *** Presentation: OpenShift and Virtualization in a Disconnected World
 * 11am - 12pm
-*** https://meet.google.com/vtx-etcm-cxt[BU Product overview and roadmap]
+*** https://meet.google.com/vtx-etcm-cxt[Weekly OpenShift Virtualization Technical BU interlock /w Sachin Mullick]
 * 12pm - 1pm
 *** Lunch
 * 1pm - 2pm 
@@ -25,7 +25,7 @@
 * 2pm - 6pm (Breaks as needed)
 *** Additional Virt Labs from Workshop
 
-== Wednesday, August 28th
+== Wednesday, October 16th (IN RED ROVER FOR WEDNESDAY ONLY)
 * 9am - 9:30am
 *** Follow-ups, Clean-ups with Virt Labs
 * 9:30am - 10am
@@ -37,32 +37,37 @@
 * 1pm - 6pm (breaks as needed)
 *** Additional Labs from DO316 Chapters 4, 5, 7 & 8
 
-== Thursday, August 29th
-* 9am - 9:30am
+== Thursday, October 17th
+* 9am - 10am
 *** Exam Certification Acceleration Tips
-* 9:30am - 10am
+* 10am - 12pm
+*** Trilio demo, and lab presented by Rodolfo Casas, Senior Solutions Architect from Trilio
 *** Presentation: OCP-Virt PreSales/Discovery
 * 10am - 12pm
 *** Trilio demo, and lab presented by Rodolfo Casas, Senior Solutions Architect from Trilio
 * 12pm - 1pm
 *** Lunch
 * 1pm - 2pm 
-*** Presentation: Virtualization Migration Assessments
-* 2pm - 6pm
+*** Presentation: OCP-Virt PreSales/Discovery
+* 2pm - 2:30pm
+*** Group Picture Under The Big Hat (meet @ 19th floor, Red Wall by Elevator)
+* 2:30pm - 3:30pm
+*** HLD & Approach Doc Overview
+* 3:30pm - 6:00pm (Breaks as needed)
 *** Split into teams for Mock Virtualization Assessments
 
-== Friday, August 30th
-* 9am - 9:25am
-*** Gathering, review Mock Assessment
-* 9:30am - 10:00am
-*** Group picture on the Red Hat Tower
-* 10am - 12pm
-*** Review HLD & Approach from ongoing projects
+== Friday, October 18th
+* 9am - 10am
+*** Gathering, Finishing up HLD & Approach docs from Mock Assessments
+* 10am - 11:30am
+*** Read outs of HLD & Approach docs from breakout groups
+* 11:30am - 12pm
+*** Update https://app.skills-base.com/o/redhat[Skills Base for OKE, OCP-Virt (CNV), and MTV
+*** https://forms.gle/bvEoqtzG8ncCT9XY9[PLEASE FILL OUT THE SURVEY!] It's only a few questions, and the metrics we get from it ensure that we get to keep holding classes like this in the future!!
 * 12pm - 12:30pm
 *** Ask an OpenShift Architect, with https://www.youtube.com/@AlesNosekTSP[Ales Nosek]
 * 12:30pm ->
 *** Close out
-*** Survey (Please do the survey, it's the only metrics we get from these events. It just takes a couple minutes)
 *** Lunch & Go Home!
 
 == Instructors
