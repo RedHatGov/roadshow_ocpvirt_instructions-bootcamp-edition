@@ -2,7 +2,7 @@
 
 = Agenda
 
-== Tuesday, August 27th 9AM through Friday August 30th 12:30PM
+== Tuesday, October 15th 9AM through Friday October 18th 12:30PM
 
 * Tuesday 9AM - 6PM  EDT
 * Wednesday 9AM - 6PM EDT
@@ -17,9 +17,9 @@
 * 10AM - 11AM
 *** Presentation: OpenShift and Virtualization in a Disconnected World
 * 11AM - 12PM
-*** Lunch
+*** https://meet.google.com/vtx-etcm-cxt[BU Product overview and roadmap]
 * 12PM - 1PM
-*** BU Product overview and roadmap
+*** Lunch
 * 1PM - 2PM 
 *** Presentation: Virt Lab Validation & Rosetta Stone
 * 2PM - 6PM (Breaks as needed)
@@ -43,7 +43,7 @@
 * 9:30AM - 10AM
 *** Presentation: OCP-Virt PreSales/Discovery
 * 10AM - 12PM
-*** Trilio demo, and lab presented by Jeff Ligon, Senior Solutions Architect from Trilio
+*** Trilio demo, and lab presented by Rodolfo Casas, Senior Solutions Architect from Trilio
 * 12PM - 1PM
 *** Lunch
 * 1PM - 2PM 
@@ -70,18 +70,23 @@
 image::introductions/sw.png[]
 
 * Scott Worthington
-* Presales Managing Architect, STP
+* Managing Architect, STP
 
 image::introductions/ah.png[]
 
 * Andrew Harrison
 * Managing Architect, STP
 
+image::introductions/fm.png[]
+
+* Freddy Montero
+* Managing Architect, STP
+
 == BootCamp Vendor Guests
 
-image::introductions/trilio-jeff.png[]
+image::introductions/trilio-rodolfo.jpg[]
 
-* Jeff Ligon
+* Rodolfo Casas
 * Senior Solutions Architect at Trilio
 
 == Class Introductions
@@ -90,22 +95,24 @@ image::introductions/trilio-jeff.png[]
 
 == BU
 
-* BU Product overview and roadmap with Sachin Mullick
+* BU Product overview and roadmap
 
 == Lab URL
 
-* link:https://redhat.enterprise.slack.com/archives/C07FY690WCR[Labs URL in SLACK Channel]
+* link:https://redhat.enterprise.slack.com/archives/C07MX5VT4HK[Labs URL in SLACK Channel]
 
 == Objectives
 
 * Everything OpenShift VIRT
-** Admin
+** Administration
 ** Virtual machines as containers
+** Creating Virtual Machines & Templates
+** Migration Toolkit for Virtualization
 ** VM Deployments
-** The great VM Migration
-** Automating with Ansible
-** VM networking
-** Pre Sales
+** VM Networking
+** Backup and Recovery
+** Presales, Discovery Sessions, 
+** Virtualization Migration Assessment
 ** Backup and Recovery
 
 == OCP and Virt
