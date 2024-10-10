@@ -62,7 +62,7 @@
 * 10am - 11:30am
 *** Read outs of HLD & Approach docs from breakout groups
 * 11:30am - 12pm
-*** Update https://app.skills-base.com/o/redhat[Skills Base for OKE, OCP-Virt (CNV), and MTV
+*** Update https://app.skills-base.com/o/redhat[Skills Base for OKE, OCP-Virt (CNV), and MTV]
 *** https://forms.gle/bvEoqtzG8ncCT9XY9[PLEASE FILL OUT THE SURVEY!] It's only a few questions, and the metrics we get from it ensure that we get to keep holding classes like this in the future!!
 * 12pm - 12:30pm
 *** Ask an OpenShift Architect, with https://www.youtube.com/@AlesNosekTSP[Ales Nosek]
