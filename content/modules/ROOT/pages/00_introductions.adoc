@@ -34,7 +34,11 @@
 *** Networking & Storage Labs
 * 12pm - 1pm
 *** Lunch
-* 1pm - 6pm (breaks as needed)
+* 1pm - 1:30pm
+*** AAP & Ansible Presentation /w Piyush Patel
+* 1:30pm - 2pm
+*** OpenShift Virtualization Ansible Migration Factory Presentation /w Freddy Montero
+* 2pm - 6pm (breaks as needed)
 *** Additional Labs from DO316 Chapters 4, 5, 7 & 8
 
 == Thursday, October 17th
