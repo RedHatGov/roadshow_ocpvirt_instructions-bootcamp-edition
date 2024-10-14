@@ -8,8 +8,8 @@ link:https://forms.gle/bvEoqtzG8ncCT9XY9[Survey]
 
 == Please feel free to reach out any time! 
 
--Andrew
+-Andrew - mailto:aharrison@redhat.com
 
--Scott
+-Scott - mailto:scott.worthington@redhat.com
 
--Freddy
+-Freddy - mailto:fmontero@redhat.com
