@@ -119,9 +119,9 @@ image::introductions/trilio-rodolfo.jpg[]
 ** Migration Toolkit for Virtualization
 ** VM Deployments
 ** VM Networking
-** Storage
+** VM Storage
 ** Backup and Recovery
-** Presales, Discovery Sessions, 
+** Presales & Discovery Sessions
 ** Virtualization Migration Assessment
 
 == OCP and Virt
