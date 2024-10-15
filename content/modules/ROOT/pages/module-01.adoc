@@ -130,7 +130,7 @@ image::module-01/08_Worker4_Summary_1.png[link=self, window=blank, width=100%]
 +
 NOTE: This step may take several minutes to update as it powers up the host, and collects hardware information.
 +
-. When host discovery and hardware inspection is complete you will see that it shows it's status as *Available*.
+. When host discovery and hardware inspection is complete you will see that it shows its status as *Available*.
 +
 image::module-01/09_Worker4_Summary_2.png[link=self, window=blank, width=100%]
 +
@@ -166,7 +166,7 @@ NOTE: This step can take a few minutes to complete, as the node reboots several 
 +
 image::module-01/14_Worker_4_Provisioning.png[link=self, window=blank, width=100%]
 +
-. Once provisioning is complete you will see the node listed with it's Phase set to *Provisioned as node*.
+. Once provisioning is complete you will see the node listed with its Phase set to *Provisioned as node*.
 +
 image::module-01/15_Provisioned_As_Node.png[link=self, window=blank, width=100%]
 +
@@ -174,7 +174,7 @@ image::module-01/15_Provisioned_As_Node.png[link=self, window=blank, width=100%]
 +
 image::module-01/16_All_Nodes.png[link=self, window=blank, width=100%]
 +
-. We can also click directly on *worker4* under the *Name* column to see it's current status.
+. We can also click directly on *worker4* under the *Name* column to see its current status.
 +
 image::module-01/17_Worker_4_Details.png[link=self, window=blank, width=100%]
 +
