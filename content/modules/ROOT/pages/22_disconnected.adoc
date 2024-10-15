@@ -110,14 +110,16 @@ ad1562a864d448f51df611e47bb0676571275754bf160d293fc7bb5e4a11c2d5
 
 In this section, we create an image set config file for the oc-mirror plugin and mirror content to a local registry. The standalone mirror-registry is a good option for a local registry and is included with OpenShift SKUs. Mirror-registry is supported for supplying disconnected OpenShift images.
 
-Download the oc-mirror tool from the OpenShift public mirror. Credentials for Red Hat registries and local registries should be added to `~/.docker/config.json` or `${XDG_RUNTIME_DIR}/containers/auth.json`. A pull secret is available in \~root on the bastion.
+Download the oc-mirror tool from the OpenShift public mirror at https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/latest/oc-mirror.tar.gz 
+
+Credentials for Red Hat registries and local registries should be added to `~/.docker/config.json` or `${XDG_RUNTIME_DIR}/containers/auth.json`. A pull secret is available in \~root on the bastion.
 
 . Copy pull secret and append local registry credentials:
 +
 [source,bash]
 ----
 $ jq . ~/pull-secret.json > ~/.docker/config.json
-$ podman login --auth-file ~/.docker/config.json --username registry ocp4-bastion.aio.example.com:8443
+$ podman login --authfile ~/.docker/config.json --username registry ocp4-bastion.aio.example.com:8443
 Password: RedHat1
 Login Succeeded!
 ----

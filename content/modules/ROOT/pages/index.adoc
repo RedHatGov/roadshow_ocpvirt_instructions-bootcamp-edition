@@ -88,11 +88,12 @@ Administrator login is available with:
 
 A RHEL bastion host is available with common utilities pre-installed and OpenShift command line access pre-configured.
 
-For SSH access to the bastion execute the following:
+For SSH access to the bastion and to make the prompt distinctive from the Hypervisor, execute the following:
 
 [source,sh,role=execute,subs="attributes"]
 ----
 sudo ssh root@192.168.123.100
+echo PS1=\''\e[33;1m\u@\h: \e[31m\W\e[0m\$ '\' >> ~/.bash_profile && . ./.bash_profile
 ----
 
 === vCenter Access
