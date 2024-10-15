@@ -133,7 +133,7 @@ apiVersion: mirror.openshift.io/v1alpha2
 kind: ImageSetConfiguration
 storageConfig:
   local:
-    path: metadata-redhat-operators-4.13
+    path: metadata-redhat-operators-4.15
 mirror:
   operators:
   - catalog: registry.redhat.io/redhat/redhat-operator-index:v4.13
@@ -164,7 +164,7 @@ Or mirror direct to registry
 +
 [source,bash]
 ----
-$ oc-mirror --config imageset-operators.yaml docker://ocp4-bastion.aio.example.com:8443/
+$ oc-mirror --config imageset-operators.yaml docker://ocp4-bastion.aio.example.com:8443
 ----
 
 == Configure OpenShift to Use Mirror
