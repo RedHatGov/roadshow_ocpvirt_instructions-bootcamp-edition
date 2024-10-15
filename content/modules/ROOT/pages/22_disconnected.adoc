@@ -157,7 +157,7 @@ Mirror to files
 ----
 $ oc-mirror --config imageset-operators.yaml file://archives
 $ scp -r archives admin@disconnected-bastion:
-$ oc-mirror --from ~/archives docker://ocp4-bastion.aio.example.com:8443/
+$ oc-mirror --from ~/archives docker://ocp4-bastion.aio.example.com:8443
 ----
 +
 Or mirror direct to registry
@@ -178,7 +178,7 @@ The oc-mirror tool generates a catalog image for each index mirrored along with 
 $ oc create -n openshift-config configmap custom-ca --from-file=ocp4-bastion.aio.example.com..8443=~/certs/registry.crt
 $ oc patch image.config.openshift.io/cluster --patch '{"spec":{"additionalTrustedCA":{"name":"custom-ca"}}}' --type=merge
 $ oc extract secret/pull-secret -n openshift-config --confirm --to=.
-$ podman login --auth-file .dockerconfigjson --username registry ocp4-bastion.aio.example.com:8443
+$ podman login --authfile .dockerconfigjson --username registry ocp4-bastion.aio.example.com:8443
 Password: RedHat1
 Login Succeeded!
 $ oc set data secret/pull-secret -n openshift-config --from-file=.dockerconfigjson=.dockerconfigjson
